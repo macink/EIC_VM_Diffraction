@@ -2,8 +2,8 @@
 
 using namespace std;
 
-void plot_diffractive_vm_physics_benchmark_mod(TString filename="./output/eicrecon-sartre_coherent_phi_output.root"){
-	
+void plot_diffractive_vm_physics_benchmark_mod(TString filename="./output/eicrecon-sartre_coherent_phi_output.root")
+{	
 	TFile* file = new TFile(filename);
 	TString vm_label="#phi";
 	TString daug_label="K^{+}K^{-}";
@@ -58,13 +58,13 @@ void plot_diffractive_vm_physics_benchmark_mod(TString filename="./output/eicrec
 	h_t_REC_new_method->Draw("P same");
 
 	h_t_trk_REC->SetFillColorAlpha(kBlue,0.4);
-    h_t_trk_REC->SetFillStyle(1001);
+    	h_t_trk_REC->SetFillStyle(1001);
 	h_t_trk_REC->SetMarkerStyle(24);
 	h_t_trk_REC->SetMarkerColor(kBlue);
 	// h_t_trk_REC->Draw("PE3same");
 
 	h_t_combo_REC->SetFillColorAlpha(kRed,0.4);
-    h_t_combo_REC->SetFillStyle(1001);
+    	h_t_combo_REC->SetFillStyle(1001);
 	h_t_combo_REC->SetMarkerStyle(24);
 	h_t_combo_REC->SetMarkerColor(kRed);
 	// h_t_combo_REC->Draw("PE3same");
