@@ -6,6 +6,7 @@ void plot_wRES_cut(TString filename="./output/eicrecon-sartre_coherent_phi_outpu
 {	
 	TFile* file = new TFile(filename);
 	TString vm_label="#phi";
+	TString angle="#pi/12";
 	TString daug_label="K^{+}K^{-}";
 	if(filename=="jpsi") {vm_label="J/#psi";daug_label="e^{+}e^{-}";}
 	//t distribution
@@ -30,6 +31,21 @@ void plot_wRES_cut(TString filename="./output/eicrecon-sartre_coherent_phi_outpu
 	base1->GetXaxis()->SetNdivisions(4,4,0);
 	base1->GetYaxis()->SetNdivisions(5,5,0);
 	base1->Draw();
+
+	// Normalize histograms
+	double integral_MC = h_t_MC->Integral();
+	double integral_REC = h_t_REC->Integral();
+	double integral_REC_wRES_cut = h_t_REC_wRES_cut->Integral();
+	if(integral_MC>0 && integral_REC>0 && integral_REC_wRES_cut>0) 
+	{
+    	h_t_REC->Scale(integral_MC/integral_REC);
+    	h_t_REC_wRES_cut->Scale(integral_MC/integral_REC_wRES_cut);
+	}
+
+	// check number of events
+	//cout << "MC Events: " << integral_MC << endl;
+	//cout << "REC Events: " << integral_REC << endl;
+	//cout << "REC wCUT Events: " << integral_REC_wCUT << endl;
 
 	h_t_MC->Draw("same");
 
@@ -73,6 +89,20 @@ void plot_wRES_cut(TString filename="./output/eicrecon-sartre_coherent_phi_outpu
 	r44_2->SetTextColor(kBlack);
 	r44_2->Draw("same");
 
+	TLatex* r45 = new TLatex(0.55, 0.6, "normalization: #int|#it{t}|_{MC}/#int|#it{t}|_{RECO}");
+	r45->SetNDC();
+	r45->SetTextSize(15);
+	r45->SetTextFont(43);
+	r45->SetTextColor(kBlack);
+	r45->Draw("same");
+
+	TLatex* r46 = new TLatex(0.55, 0.55, "weight: #pi/#theta_{Max}");
+	r46->SetNDC();
+	r46->SetTextSize(15);
+	r46->SetTextFont(43);
+	r46->SetTextColor(kBlack);
+	r46->Draw("same");
+
 	TLegend *w7 = new TLegend(0.48,0.68,0.93,0.76);
 	w7->SetLineColor(kWhite);
 	w7->SetFillColor(0);
@@ -82,20 +112,20 @@ void plot_wRES_cut(TString filename="./output/eicrecon-sartre_coherent_phi_outpu
 	{
 		w7->AddEntry(h_t_MC, "Sartre "+vm_label+" MC ", "L");
 		w7->AddEntry(h_t_REC, "Sartre "+vm_label+" RECO w. true EEMC E ", "P");
-		w7->AddEntry(h_t_REC_wRES_cut, "Sartre "+vm_label+" RECO new method", "P");
+		w7->AddEntry(h_t_REC_wRES_cut, "Sartre "+vm_label+" RECO #theta_{Max}= "+angle, "P");
 
 	}
 	else if(filename=="MCvmAndelectron")
 	{
 		w7->AddEntry(h_t_MC, "Sartre "+vm_label+" MC ", "L");
 		w7->AddEntry(h_t_REC, "Sartre "+vm_label+" RECO w. true e' ", "P");
-		w7->AddEntry(h_t_REC_wRES_cut, "Sartre "+vm_label+" RECO new method", "P");
+		w7->AddEntry(h_t_REC_wRES_cut, "Sartre "+vm_label+" RECO #theta_{Max}= "+angle, "P");
 	}
 	else
 	{
 		w7->AddEntry(h_t_MC, "Sartre "+vm_label+" MC ", "L");
 		w7->AddEntry(h_t_REC, "Sartre "+vm_label+" RECO w. EEMC ", "P");
-		w7->AddEntry(h_t_REC_wRES_cut, "Sartre "+vm_label+" RECO new method", "P");
+		w7->AddEntry(h_t_REC_wRES_cut, "Sartre "+vm_label+" RECO #theta_{Max}= "+angle, "P");
 	}
 	
 
