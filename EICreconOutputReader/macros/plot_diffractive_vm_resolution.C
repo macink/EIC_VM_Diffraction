@@ -1,5 +1,7 @@
 #include "RiceStyle.h"
+
 using namespace std;
+
 void plot_diffractive_vm_resolution(TString filename="./output/eicrecon-sartre_coherent_phi_output.root", int num=0)
 {
 	TFile* file = new TFile(filename);	
