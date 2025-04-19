@@ -35,6 +35,14 @@ void plot_diffractive_vm_combined_dsigma_dt()
 	base1->GetXaxis()->SetNdivisions(4,4,0);
 	base1->GetYaxis()->SetNdivisions(5,5,0);
 	base1->Draw();
+
+	// check number of events
+	//double integral_MC = h_t_MC->Integral();
+	//cout << "MC Events: " << integral_MC << endl;
+	//double integral_REC = h_t_REC->Integral();
+	//cout << "REC Events: " << integral_REC << endl;
+	//double integral_REC_new_method = h_t_REC_new_method->Integral();
+	//cout << "REC new_method Events: " << integral_REC_new_method << endl;
 	
 	h_t_MC->Draw("same");
 	
@@ -77,6 +85,13 @@ void plot_diffractive_vm_combined_dsigma_dt()
 	r44_2->SetTextFont(43);
 	r44_2->SetTextColor(kBlack);
 	r44_2->Draw("same");
+
+	TLatex* r45 = new TLatex(0.55, 0.6, "normalization: #int|#it{t}|_{MC}/#int|#it{t}|_{RECO}");
+	r45->SetNDC();
+	r45->SetTextSize(15);
+	r45->SetTextFont(43);
+	r45->SetTextColor(kBlack);
+	r45->Draw("same");
 	
 	TLegend *w7 = new TLegend(0.48,0.68,0.93,0.76);
 	w7->SetLineColor(kWhite);
@@ -104,5 +119,5 @@ void plot_diffractive_vm_combined_dsigma_dt()
 	
 	w7->Draw("same");
 	c1->Print("/home/macink/miniconda3/envs/bnl_research/macros/eic/EICreconOutputReader/figures/combined/combined_new_method.pdf");
-	}
+}
 	
