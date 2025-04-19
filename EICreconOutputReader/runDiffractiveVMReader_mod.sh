@@ -30,7 +30,7 @@ inputs=("sartre_bnonsat_Au_phi_ab_eAu_1.0000.eicrecon.tree.edm4eic.root"\
         "sartre_bnonsat_Au_phi_ab_eAu_1.0028.eicrecon.tree.edm4eic.root"\
         "sartre_bnonsat_Au_phi_ab_eAu_1.0029.eicrecon.tree.edm4eic.root"\
         "sartre_bnonsat_Au_phi_ab_eAu_1.0030.eicrecon.tree.edm4eic.root"\
-		"sartre_bnonsat_Au_phi_ab_eAu_1.0031.eicrecon.tree.edm4eic.root"\
+	"sartre_bnonsat_Au_phi_ab_eAu_1.0031.eicrecon.tree.edm4eic.root"\
         "sartre_bnonsat_Au_phi_ab_eAu_1.0032.eicrecon.tree.edm4eic.root"\
         "sartre_bnonsat_Au_phi_ab_eAu_1.0033.eicrecon.tree.edm4eic.root"\
         "sartre_bnonsat_Au_phi_ab_eAu_1.0034.eicrecon.tree.edm4eic.root"\
@@ -92,7 +92,7 @@ for input in "${inputs[@]}"; do
     root -b -q src/diffractive_vm_simple_analysis_mod.cxx+\(\"${input}\",\"${output}\"\)
 
     echo "Generating plots for file: ${output}_output.root"
-    root -b -q macros/plot_diffractive_vm_physics_benchmark.C\(\"${output}_output.root\"\)
+    root -b -q macros/plot_diffractive_vm_physics_benchmark_mod.C\(\"${output}_output.root\"\)
     root -b -q macros/plot_diffractive_vm_resolution.C\(\"${output}_output.root\"\)
     root -b -q macros/plot_diffractive_event_kinematics.C\(\"${output}_output.root\"\)
     root -b -q macros/plot_2d.C\(\"${output}_output.root\"\)
