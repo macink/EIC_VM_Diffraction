@@ -1,7 +1,7 @@
 #include "RiceStyle.h"
 using namespace std;
-void plot_diffractive_vm_physics_benchmark_test(TString filename="./output/eicrecon-sartre_coherent_phi_output.root"){
-	
+void plot_diffractive_vm_physics_benchmark_test(TString filename="./output/eicrecon-sartre_coherent_phi_output.root")
+{	
 	TFile* file = new TFile(filename);
 	TString vm_label="#phi";
 	TString daug_label="K^{+}K^{-}";
@@ -37,19 +37,19 @@ void plot_diffractive_vm_physics_benchmark_test(TString filename="./output/eicre
 	h_t_REC->Draw("PEsame");
 
 	h_t_trk_REC->SetFillColorAlpha(kBlue,0.4);
-    h_t_trk_REC->SetFillStyle(1001);
+   	h_t_trk_REC->SetFillStyle(1001);
 	h_t_trk_REC->SetMarkerStyle(24);
 	h_t_trk_REC->SetMarkerColor(kBlue);
 	// h_t_trk_REC->Draw("PE3same");
 
 	h_t_combo_REC->SetFillColorAlpha(kRed,0.4);
-    h_t_combo_REC->SetFillStyle(1001);
+    	h_t_combo_REC->SetFillStyle(1001);
 	h_t_combo_REC->SetMarkerStyle(24);
 	h_t_combo_REC->SetMarkerColor(kRed);
 	// h_t_combo_REC->Draw("PE3same");
 
 	h_t_REC_wCUT->SetFillColorAlpha(kRed,0.4);
-    h_t_REC_wCUT->SetFillStyle(1001);
+    	h_t_REC_wCUT->SetFillStyle(1001);
 	h_t_REC_wCUT->SetMarkerStyle(30);
 	h_t_REC_wCUT->SetMarkerColor(kRed);
 	h_t_REC_wCUT->Draw("P same");
@@ -118,5 +118,4 @@ void plot_diffractive_vm_physics_benchmark_test(TString filename="./output/eicre
 	w7->Draw("same");
 
 	c1->Print("./figures/benchmark-phi-dsigmadt.pdf");
-
 }
