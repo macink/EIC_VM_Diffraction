@@ -7,9 +7,9 @@
 #include "FormFactor_resolution_add_wedge_1D2.h"
 
 auto giveme_t_method_L(TLorentzVector eIn, 
-					   TLorentzVector eOut, 
-					   TLorentzVector pIn, 
-					   TLorentzVector vmOut)
+		TLorentzVector eOut, 
+		TLorentzVector pIn, 
+		TLorentzVector vmOut)
 {
 	TLorentzVector aInVec(pIn.Px()*197,pIn.Py()*197,pIn.Pz()*197,sqrt(pIn.Px()*197*pIn.Px()*197 + pIn.Py()*197*pIn.Py()*197 + pIn.Pz()*197*pIn.Pz()*197 + MASS_AU197*MASS_AU197) );
 	double method_L = 0;
@@ -43,7 +43,7 @@ auto giveme_t_new_method(TLorentzVector eIn,
 }
 
 
-int diffractive_vm_simple_analysis(TString rec_file, TString outputfile)
+int diffractive_vm_simple_analysis_mod(TString rec_file, TString outputfile)
 {	
 // read our configuration	
 TString name_of_input = (TString) rec_file;
@@ -221,15 +221,14 @@ while (tree_reader.Next()) {
 		
 		// apply cut
 		double theta = atan(fabs(qx)/fabs(qy));
-		if (fabs(theta)>PI/12) 
+		if(fabs(theta)>PI/3) 
 		{
     		continue;
 		}
 		else
 		{
-			h_t_REC_2d_wCUT->Fill(qx,qy);
-			h_t_REC_wCUT->Fill(t,6); // weight = theta_max denominator for now
-			
+			h_t_REC_2d_wCUT->Fill(qx,qy,1.5);
+			h_t_REC_wCUT->Fill(t,1.5); 
 		}
 	}
 	
@@ -403,7 +402,7 @@ while (tree_reader.Next()) {
 		double t_trk_REC = giveme_t_method_L(ebeam,scatMCmatchREC,pbeam,vmREC);
     	double t_REC = giveme_t_method_L(ebeam,scatClusEREC,pbeam,vmREC);
     	h_t_trk_REC->Fill( t_trk_REC );
-    	h_t_REC->Fill( t_REC );
+    	h_t_REC->Fill( t_REC, 3);
     	h_t_REC_2D->Fill(t_trk_REC,t_REC);
     	if((t_trk_REC/t_REC) > 0.5 && (t_trk_REC/t_REC) < 1.5)
 		{
@@ -430,19 +429,19 @@ while (tree_reader.Next()) {
 		double qx_rec = sqrt(tx_rec);
 		double qy_rec = sqrt(ty_rec);
 
-		h_t_REC_2d_wRES->Fill(qx_rec,qy_rec);
-		h_t_REC_wRES->Fill(t_rec);
+		h_t_REC_2d_wRES->Fill(qx_rec,qy_rec,3);
+		h_t_REC_wRES->Fill(t_rec,3);
 
 		// apply cut
 		double theta_rec = atan(fabs(qx_rec)/fabs(qy_rec));
-		if (fabs(theta_rec)>PI/12) 
+		if(fabs(theta_rec)>PI/3)
 		{
     		continue;
 		}
 		else
 		{
-			h_t_REC_wRES_cut->Fill(t_rec,12); // weight = theta_max denominator for now
-			h_t_REC_2d_wRES_cut->Fill(qx_rec,qy_rec);
+			h_t_REC_wRES_cut->Fill(t_rec,3);
+			h_t_REC_2d_wRES_cut->Fill(qx_rec,qy_rec,3);
 		}
 
     	//t track resolution 
@@ -462,35 +461,6 @@ while (tree_reader.Next()) {
     }
 
 }
-
-// normalize to method L
-/*
-double theta_max = PI/6;  // Maximum allowed angle
-double weight = theta_max/PI;
-double atomic_mass = 197; // for Au
-
-h_t_REC_wCUT->Scale(weight);
-h_t_REC_wCUT->Scale(weight);
-
-double integral = h_t_REC_wCUT->Integral();
-if(integral>0) 
-{
-    h_t_REC_wCUT->Scale(atomic_mass/integral);
-} 
-else 
-{
-    cout << "Warning: Histogram h_t_REC_wCUT has zero integral!" << endl;
-}
-
-double integral_wRES = h_t_REC_wRES_cut->Integral();
-if(integral_wRES>0) 
-{
-    h_t_REC_wRES_cut->Scale(atomic_mass/integral_wRES);
-} 
-else 
-{
-    cout << "Warning: Histogram h_t_REC_wRES_cut has zero integral!" << endl;
-}*/
 
 output->Write();
 output->Close();
