@@ -1,8 +1,9 @@
 #include "RiceStyle.h"
 using namespace std;
-void plot_diffractive_vm_resolution(TString filename="./output/eicrecon-sartre_coherent_phi_output.root", int num=0){
-
-	TFile* file = new TFile(filename);	TString vm_label="#phi";
+void plot_diffractive_vm_resolution(TString filename="./output/eicrecon-sartre_coherent_phi_output.root", int num=0)
+{
+	TFile* file = new TFile(filename);	
+	TString vm_label="#phi";
 	TString daug_label="K^{+}K^{-}";
 	if(filename=="jpsi") {vm_label="J/#psi";daug_label="e^{+}e^{-}";}
 	TH2D* h_t_res = (TH2D*) file->Get("h_t_res");
@@ -35,9 +36,9 @@ void plot_diffractive_vm_resolution(TString filename="./output/eicrecon-sartre_c
 	if(num==0) h_res=(TH2D*) h_t_res;
 	if(num==1) h_res=(TH2D*) h_trk_t_res;
 
-
 	TH1D* h_res_1D = new TH1D("h_res_1D","",100,0,0.2);
-	for(int ibin=0;ibin<h_res->GetNbinsX();ibin++){
+	for(int ibin=0;ibin<h_res->GetNbinsX();ibin++)
+	{
 		TH1D* tmp=h_res->ProjectionY("tmp",ibin+1,ibin+1);
 		double sigma = tmp->GetStdDev();
 		double sigmaerror = tmp->GetStdDevError();
@@ -99,6 +100,4 @@ void plot_diffractive_vm_resolution(TString filename="./output/eicrecon-sartre_c
 	h_res->Draw("colzsame");
 
 	c2->Print("./figures/benchmark-phi-t-resolution1.pdf");
-
-	
 }
