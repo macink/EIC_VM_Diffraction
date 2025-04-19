@@ -8,7 +8,7 @@ void plot_combined_wRES()
 	TString filename = "/home/macink/miniconda3/envs/bnl_research/macros/eic/EICreconOutputReader/output/combined_histograms_wRES.root";
 	TFile* file = new TFile(filename);
 	TString vm_label="#phi";
-	TString angle = "#pi/12"
+	TString angle = "#pi/12";
 	TString daug_label="K^{+}K^{-}";
 	if(filename=="jpsi") {vm_label="J/#psi";daug_label="e^{+}e^{-}";}
 	//t distribution
