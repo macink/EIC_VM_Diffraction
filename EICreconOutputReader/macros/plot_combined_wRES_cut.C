@@ -126,5 +126,5 @@ void plot_combined_wRES_cut()
 
 	w7->Draw("same");
 	c1->Print("/home/macink/miniconda3/envs/bnl_research/macros/eic/EICreconOutputReader/figures/combined/combined_wRES_cut.pdf");
-	}
+}
 	
