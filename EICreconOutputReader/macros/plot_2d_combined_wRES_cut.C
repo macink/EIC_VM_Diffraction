@@ -27,5 +27,5 @@ void plot_2d_combined_wRES_cut()
 	r46->Draw("same");
 
 	c1->Print("/home/macink/miniconda3/envs/bnl_research/macros/eic/EICreconOutputReader/figures/combined/combined_2d_wRES_cut.pdf");
-	}
+}
 	
