@@ -19,7 +19,7 @@ void plot_2d_combined_wCUT()
 	
 	h_t_REC_2d_wCUT->Draw();
 
-	TLatex* r46 = new TLatex(0.6, 0.9, "#theta_{max}= "+angle);
+	TLatex* r46 = new TLatex(0.45, 0.92, "weight: #pi/2/#theta_{Max}, #theta_{max}= "+angle);
 	r46->SetNDC();
 	r46->SetTextSize(15);
 	r46->SetTextFont(43);
