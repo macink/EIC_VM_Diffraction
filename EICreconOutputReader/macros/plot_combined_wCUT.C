@@ -8,8 +8,7 @@ void plot_combined_wCUT()
 	TString filename = "/home/macink/miniconda3/envs/bnl_research/macros/eic/EICreconOutputReader/output/combined_histograms_wCUT.root";
 	TFile* file = new TFile(filename);
 	TString vm_label="#phi";
-	TString angle="#theta_{Max}=#pi/12";
-	TString normalization="A/#int|#it{t}|";
+	TString angle="#pi/12";
 	TString daug_label="K^{+}K^{-}";
 	if(filename=="jpsi") {vm_label="J/#psi";daug_label="e^{+}e^{-}";}
 	//t distribution
@@ -36,6 +35,14 @@ void plot_combined_wCUT()
 	base1->GetXaxis()->SetNdivisions(4,4,0);
 	base1->GetYaxis()->SetNdivisions(5,5,0);
 	base1->Draw();
+
+	// check number of events
+	//double integral_MC = h_t_MC->Integral();
+	//cout << "MC Events: " << integral_MC << endl;
+	//double integral_REC = h_t_REC->Integral();
+	//cout << "REC Events: " << integral_REC << endl;
+	//double integral_REC_wCUT = h_t_REC_wCUT->Integral();
+	//cout << "REC wCUT Events: " << integral_REC_wCUT << endl;
 	
 	h_t_MC->Draw("same");
 	
@@ -45,7 +52,7 @@ void plot_combined_wCUT()
 	h_t_REC_wCUT->SetMarkerStyle(30);
 	h_t_REC_wCUT->SetMarkerColor(kRed);
 	h_t_REC_wCUT->Draw("P same");
-	
+
 	TLatex* r42 = new TLatex(0.18, 0.91, "eAu 18x110 GeV");
 	r42->SetNDC();
 	r42->SetTextSize(22);
@@ -79,22 +86,20 @@ void plot_combined_wCUT()
 	r44_2->SetTextColor(kBlack);
 	r44_2->Draw("same");
 
-	// Normalize to method E
-	TLatex* r45 = new TLatex(0.5, 0.65, "weight = #pi/2#theta_{max}");
+	TLatex* r45 = new TLatex(0.55, 0.6, "normalization: #int|#it{t}|_{MC}/#int|#it{t}|_{RECO}");
 	r45->SetNDC();
-	r45->SetTextSize(25);
+	r45->SetTextSize(15);
 	r45->SetTextFont(43);
 	r45->SetTextColor(kBlack);
 	r45->Draw("same");
-/*
-	// Normalize to method L
-	TLatex* r45 = new TLatex(0.5, 0.65, "#theta_{max}/#pi * "+normalization);
-	r45->SetNDC();
-	r45->SetTextSize(25);
-	r45->SetTextFont(43);
-	r45->SetTextColor(kBlack);
-	r45->Draw("same");
-*/
+
+	TLatex* r46 = new TLatex(0.55, 0.55, "weight: #pi/2/#theta_{Max}");
+	r46->SetNDC();
+	r46->SetTextSize(15);
+	r46->SetTextFont(43);
+	r46->SetTextColor(kBlack);
+	r46->Draw("same");
+
 	TLegend *w7 = new TLegend(0.48,0.68,0.93,0.76);
 	w7->SetLineColor(kWhite);
 	w7->SetFillColor(0);
@@ -104,21 +109,21 @@ void plot_combined_wCUT()
 	{
 		w7->AddEntry(h_t_MC, "Sartre "+vm_label+" MC ", "L");
 		w7->AddEntry(h_t_REC, "Sartre "+vm_label+" RECO w. true EEMC E ", "P");
-		w7->AddEntry(h_t_REC_wCUT, "Sartre "+vm_label+" RECO cut" +angle, "P");	
+		w7->AddEntry(h_t_REC_wCUT, "Sartre "+vm_label+" RECO #theta_{Max}= "+angle, "P");	
 	}
 	else if(filename=="MCvmAndelectron")
 	{
 		w7->AddEntry(h_t_MC, "Sartre "+vm_label+" MC ", "L");
 		w7->AddEntry(h_t_REC, "Sartre "+vm_label+" RECO w. true e' ", "P");
-		w7->AddEntry(h_t_REC_wCUT, "Sartre "+vm_label+" RECO cut" +angle, "P");
+		w7->AddEntry(h_t_REC_wCUT, "Sartre "+vm_label+" RECO #theta_{Max}= "+angle, "P");
 	}
 	else
 	{
 		w7->AddEntry(h_t_MC, "Sartre "+vm_label+" MC ", "L");
 		w7->AddEntry(h_t_REC, "Sartre "+vm_label+" RECO w. EEMC ", "P");
-		w7->AddEntry(h_t_REC_wCUT, "Sartre "+vm_label+" RECO cut" +angle, "P");
+		w7->AddEntry(h_t_REC_wCUT, "Sartre "+vm_label+" RECO #theta_{Max}= "+angle, "P");
 	}
 		
 	w7->Draw("same");
 	c1->Print("/home/macink/miniconda3/envs/bnl_research/macros/eic/EICreconOutputReader/figures/combined/combined_wCUT.pdf");
-	}
+}
