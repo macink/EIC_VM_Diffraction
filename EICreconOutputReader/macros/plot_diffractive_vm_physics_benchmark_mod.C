@@ -1,6 +1,8 @@
 #include "RiceStyle.h"
+
 using namespace std;
-void plot_diffractive_vm_physics_benchmark(TString filename="./output/eicrecon-sartre_coherent_phi_output.root"){
+
+void plot_diffractive_vm_physics_benchmark_mod(TString filename="./output/eicrecon-sartre_coherent_phi_output.root"){
 	
 	TFile* file = new TFile(filename);
 	TString vm_label="#phi";
@@ -30,6 +32,21 @@ void plot_diffractive_vm_physics_benchmark(TString filename="./output/eicrecon-s
 	base1->GetXaxis()->SetNdivisions(4,4,0);
 	base1->GetYaxis()->SetNdivisions(5,5,0);
 	base1->Draw();
+
+	// Normalize histograms
+	double integral_MC = h_t_MC->Integral();
+	double integral_REC = h_t_REC->Integral();
+	double integral_REC_new_method = h_t_REC_new_method->Integral();
+	if(integral_MC>0 && integral_REC>0 && integral_REC_new_method>0) 
+	{
+    	h_t_REC->Scale(integral_MC/integral_REC);
+    	h_t_REC_new_method->Scale(integral_MC/integral_REC_new_method);
+	}
+
+	// check number of events
+	//cout << "MC Events: " << integral_MC << endl;
+	//cout << "REC Events: " << integral_REC << endl;
+	//cout << "REC new_method Events: " << integral_REC_new_method << endl;
 
 	h_t_MC->Draw("same");
 
@@ -84,6 +101,13 @@ void plot_diffractive_vm_physics_benchmark(TString filename="./output/eicrecon-s
 	r44_2->SetTextFont(43);
 	r44_2->SetTextColor(kBlack);
 	r44_2->Draw("same");
+
+	TLatex* r45 = new TLatex(0.55, 0.6, "normalization: #int|#it{t}|_{MC}/#int|#it{t}|_{RECO}");
+	r45->SetNDC();
+	r45->SetTextSize(15);
+	r45->SetTextFont(43);
+	r45->SetTextColor(kBlack);
+	r45->Draw("same");
 
 	TLegend *w7 = new TLegend(0.48,0.68,0.93,0.76);
 	w7->SetLineColor(kWhite);
