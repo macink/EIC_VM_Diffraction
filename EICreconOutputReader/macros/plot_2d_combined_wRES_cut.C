@@ -19,7 +19,7 @@ void plot_2d_combined_wRES_cut()
 	
 	h_t_REC_2d_wRES_cut->Draw();
 
-	TLatex* r46 = new TLatex(0.6, 0.92, "weight: #pi/#theta_{Max}, #theta_{max}= "+angle);
+	TLatex* r46 = new TLatex(0.4, 0.92, "weight: #pi/#theta_{Max}, #theta_{max}= "+angle);
 	r46->SetNDC();
 	r46->SetTextSize(15);
 	r46->SetTextFont(43);
