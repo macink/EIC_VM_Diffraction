@@ -8,6 +8,7 @@ void plot_combined_wRES()
 	TString filename = "/home/macink/miniconda3/envs/bnl_research/macros/eic/EICreconOutputReader/output/combined_histograms_wRES.root";
 	TFile* file = new TFile(filename);
 	TString vm_label="#phi";
+	TString angle = "#pi/12"
 	TString daug_label="K^{+}K^{-}";
 	if(filename=="jpsi") {vm_label="J/#psi";daug_label="e^{+}e^{-}";}
 	//t distribution
@@ -34,6 +35,14 @@ void plot_combined_wRES()
 	base1->GetXaxis()->SetNdivisions(4,4,0);
 	base1->GetYaxis()->SetNdivisions(5,5,0);
 	base1->Draw();
+
+	// check number of events
+	//double integral_MC = h_t_MC->Integral();
+	//cout << "MC Events: " << integral_MC << endl;
+	//double integral_REC = h_t_REC->Integral();
+	//cout << "REC Events: " << integral_REC << endl;
+	//double integral_REC_wRES = h_t_REC_wRES->Integral();
+	//cout << "REC wRES Events: " << integral_REC_wRES << endl;
 	
 	h_t_MC->Draw("same");
 	
@@ -76,6 +85,20 @@ void plot_combined_wRES()
 	r44_2->SetTextFont(43);
 	r44_2->SetTextColor(kBlack);
 	r44_2->Draw("same");
+
+	TLatex* r45 = new TLatex(0.55, 0.6, "normalization: #int|#it{t}|_{MC}/#int|#it{t}|_{RECO}");
+	r45->SetNDC();
+	r45->SetTextSize(15);
+	r45->SetTextFont(43);
+	r45->SetTextColor(kBlack);
+	r45->Draw("same");
+
+	TLatex* r46 = new TLatex(0.55, 0.55, "weight: #pi/#theta_{Max}, #theta_{max}= "+angle);
+	r46->SetNDC();
+	r46->SetTextSize(15);
+	r46->SetTextFont(43);
+	r46->SetTextColor(kBlack);
+	r46->Draw("same");
 	
 	TLegend *w7 = new TLegend(0.48,0.68,0.93,0.76);
 	w7->SetLineColor(kWhite);
