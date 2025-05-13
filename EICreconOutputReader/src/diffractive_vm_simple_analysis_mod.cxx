@@ -46,12 +46,49 @@ auto giveme_t_new_method(TLorentzVector eIn,
 int diffractive_vm_simple_analysis_mod(TString rec_file, TString outputfile)
 {	
 // read our configuration	
+TString listname = rec_file;
+TString outname = outputfile;
+
+TChain *chain = new TChain("events");
+
+int nfiles = 0;
+char filename[512];
+ifstream *inputstream = new ifstream;
+inputstream->open(listname.Data());
+if(!inputstream)
+{
+  printf("[e] Cannot open file list: %s\n", listname.Data());
+}
+while(inputstream->good())
+{
+  inputstream->getline(filename, 512);
+  if(inputstream->good())
+	{
+	  TFile *ftmp = TFile::Open(filename, "read");
+	  if(!ftmp||!(ftmp->IsOpen())||!(ftmp->GetNkeys())) 
+		{
+		  printf("[e] Could you open file: %s\n", filename);
+		} 
+	  else
+		{
+		  cout<<"[i] Add "<<nfiles<<"th file: "<<filename<<endl;
+		  chain->Add(filename);
+		  nfiles++;
+		}
+	}
+}
+inputstream->close();
+printf("[i] Read in %d files with %lld events in total\n", nfiles, chain->GetEntries());
+TTreeReader tree_reader(chain);
+
+// read our configuration	
+/*
 TString name_of_input = (TString) rec_file;
 std::cout << "Input file = " << name_of_input << endl;
 auto tree = new TChain("events");
 tree->Add(name_of_input);
 TTreeReader tree_reader(tree);       // !the tree reader
-
+*/
 TTreeReaderArray<int> mc_genStatus_array = {tree_reader, "MCParticles.generatorStatus"};
 // MC particle pz array for each MC particle
 TTreeReaderArray<float> mc_px_array = {tree_reader, "MCParticles.momentum.x"};
@@ -133,7 +170,8 @@ TH1D* h_energy_calibration_REC = new TH1D("h_energy_calibration_REC",";E (GeV)",
 TH1D* h_EoverP_REC = new TH1D("h_EoverP_REC",";E/p",200,0,2);
 TH1D* h_ClusOverHit_REC = new TH1D("h_ClusOverHit_REC",";cluster energy / new cluster energy",200,0,2);
 
-tree_reader.SetEntriesRange(0, tree->GetEntries());
+//tree_reader.SetEntriesRange(0, tree->GetEntries());
+chain->GetEntries();
 while (tree_reader.Next()) {
 	/*
 	Beam particles
