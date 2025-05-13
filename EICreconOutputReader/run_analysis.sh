@@ -7,39 +7,6 @@ if [ -z $submit ]; then
     submit=0
 fi
 
-##################################################
-### Local test ###
-##################################################
-
-if [ $submit -eq 0 ]; then
-    echo "[i] Running locally"
-    g++ diffractive_vm_simple_analysis_mod.cxx -o analysis
-    ./analysis
-    exit
-fi
-
-###############################################################
-### Interactive running for real data using file list       ###
-###############################################################
-
-if [ $submit -eq 1 ]; then
-    configs=(sartre_bnonsat_Au_phi_ab_eAu_q2_15)
-
-    for config in "${configs[@]}"; do
-        echo "[i] Running config = $config"
-
-        for i in `seq 1 4`; do
-            filelist=input_files/file.${config}.run${i}.list
-            rm $filelist
-            find /eic/u/macink/EICreconOutputReader/${config}/reco*_run${i}.*root > $filelist
-            output=PHI.${config}.run${i}.root
-            echo $filelist $output
-            g++ diffractive_vm_simple_analysis_mod.cxx -o analysis
-            ./analysis $filelist $output
-        done
-    done
-fi
-
 ###############################################################
 ### Batch production for real data using file list          ###
 ###############################################################
