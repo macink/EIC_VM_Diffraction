@@ -4,82 +4,9 @@
 #include <cmath>
 #include "TF1.h"
 #include "TF2.h"
+#include "TSystem.h"
 
-/*"sartre_bnonsat_Au_phi_ab_eAu_1.0000.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0001.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0002.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0004.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0005.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0006.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0007.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0008.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0009.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0010.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0011.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0012.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0013.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0014.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0015.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0016.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0017.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0018.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0019.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0020.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0021.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0022.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0023.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0024.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0025.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0026.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0027.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0028.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0029.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0030.eicrecon.tree.edm4eic.root"\
-		"sartre_bnonsat_Au_phi_ab_eAu_1.0031.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0032.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0033.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0034.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0035.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0036.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0037.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0038.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0039.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0040.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0041.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0042.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0043.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0044.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0045.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0046.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0047.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0048.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0049.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0050.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0051.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0052.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0053.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0054.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0055.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0056.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0057.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0058.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0059.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0060.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0061.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0062.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0063.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0064.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0065.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0066.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0067.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0068.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0069.eicrecon.tree.edm4eic.root"\
-        "sartre_bnonsat_Au_phi_ab_eAu_1.0070.eicrecon.tree.edm4eic.root"*/
-
-auto giveme_t_method_L(TLorentzVector eIn, 
-					   TLorentzVector eOut, 
-					   TLorentzVector pIn, 
-					   TLorentzVector vmOut)
+auto giveme_t_method_L(TLorentzVector eIn, TLorentzVector eOut, TLorentzVector pIn, TLorentzVector vmOut)
 {
 	TLorentzVector aInVec(pIn.Px()*197,pIn.Py()*197,pIn.Pz()*197,sqrt(pIn.Px()*197*pIn.Px()*197 + pIn.Py()*197*pIn.Py()*197 + pIn.Pz()*197*pIn.Pz()*197 + MASS_AU197*MASS_AU197) );
 	double method_L = 0;
@@ -116,49 +43,49 @@ auto giveme_t_new_method(TLorentzVector eIn,
 int diffractive_vm_simple_analysis_mod(TString rec_file, TString outputfile)
 {	
 // read our configuration	
-TString listname = rec_file;
-TString outname = outputfile;
+    TString listname = rec_file;
+    TString outname = outputfile;
 
-TChain *chain = new TChain("events");
+  TChain *chain = new TChain("events");
 
-int nfiles = 0;
-char filename[512];
-ifstream *inputstream = new ifstream;
-inputstream->open(listname.Data());
-if(!inputstream)
-{
-  printf("[e] Cannot open file list: %s\n", listname.Data());
-}
-while(inputstream->good())
-{
-  inputstream->getline(filename, 512);
-  if(inputstream->good())
-	{
-	  TFile *ftmp = TFile::Open(filename, "read");
-	  if(!ftmp||!(ftmp->IsOpen())||!(ftmp->GetNkeys())) 
-		{
-		  printf("[e] Could you open file: %s\n", filename);
-		} 
-	  else
-		{
-		  cout<<"[i] Add "<<nfiles<<"th file: "<<filename<<endl;
-		  chain->Add(filename);
-		  nfiles++;
-		}
-	}
-}
+  int nfiles = 0;
+  char filename[512];
+  ifstream *inputstream = new ifstream;
+  inputstream->open(listname.Data());
+  if(!inputstream)
+    {
+      printf("[e] Cannot open file list: %s\n", listname.Data());
+    }
+  while(inputstream->good())
+    {
+      inputstream->getline(filename, 512);
+      if(inputstream->good())
+        {
+          TFile *ftmp = TFile::Open(filename, "read");
+          if(!ftmp||!(ftmp->IsOpen())||!(ftmp->GetNkeys())) 
+            {
+              printf("[e] Could you open file: %s\n", filename);
+            } 
+          else
+            {
+              cout<<"[i] Add "<<nfiles<<"th file: "<<filename<<endl;
+              chain->Add(filename);
+              nfiles++;
+            }
+        }
+    }
 inputstream->close();
 printf("[i] Read in %d files with %lld events in total\n", nfiles, chain->GetEntries());
 TTreeReader tree_reader(chain);
 
-/*
+    /*
 TString name_of_input = (TString) rec_file;
 std::cout << "Input file = " << name_of_input << endl;
 auto tree = new TChain("events");
 tree->Add(name_of_input);
 TTreeReader tree_reader(tree);       // !the tree reader
 */
-
+    
 TTreeReaderArray<int> mc_genStatus_array = {tree_reader, "MCParticles.generatorStatus"};
 // MC particle pz array for each MC particle
 TTreeReaderArray<float> mc_px_array = {tree_reader, "MCParticles.momentum.x"};
@@ -223,15 +150,20 @@ TH2D* h_t_REC_2D = new TH2D("h_t_REC_2D",";t_{trk,REC} (GeV^{2}); t_{EEMC,REC} (
 TH2D* h_t_RECMC_2D = new TH2D("h_t_RECMC_2D",";t_{MC} (GeV^{2}); t_{trk,REC} / t_{EEMC,REC} ",100,0,0.2,200,-10,10);
 
 // combined plots
+//t distribution
 TH1D* h_t_REC_new_method = new TH1D("h_t_REC_new_method",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_new_method_wZ = new TH1D("h_t_REC_new_method_wZ",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+//t distribution with resolution only and with angle cut only (for testing)
 TH1D* h_t_REC_wRES = new TH1D("h_t_REC_wRES",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 TH1D* h_t_REC_wCUT = new TH1D("h_t_REC_wCUT",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+//t distribution with cut only (for testing)
 TH1D* h_t_REC_wCUT_pi2 = new TH1D("h_t_REC_wCUT_pi2",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 TH1D* h_t_REC_wCUT_pi3 = new TH1D("h_t_REC_wCUT_pi3",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 TH1D* h_t_REC_wCUT_pi4 = new TH1D("h_t_REC_wCUT_pi4",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 TH1D* h_t_REC_wCUT_pi6 = new TH1D("h_t_REC_wCUT_pi6",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 TH1D* h_t_REC_wCUT_pi9 = new TH1D("h_t_REC_wCUT_pi9",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 TH1D* h_t_REC_wCUT_pi12 = new TH1D("h_t_REC_wCUT_pi12",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+//t distribution with resolution and angle cut
 TH1D* h_t_REC_wRES_cut = new TH1D("h_t_REC_wRES_cut",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 TH1D* h_t_REC_wRES_cut_pi2 = new TH1D("h_t_REC_wRES_cut_pi2",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 TH1D* h_t_REC_wRES_cut_pi3 = new TH1D("h_t_REC_wRES_cut_pi3",";t_{REC} (GeV^{2}); counts",100,0,0.2);
@@ -239,9 +171,15 @@ TH1D* h_t_REC_wRES_cut_pi4 = new TH1D("h_t_REC_wRES_cut_pi4",";t_{REC} (GeV^{2})
 TH1D* h_t_REC_wRES_cut_pi6 = new TH1D("h_t_REC_wRES_cut_pi6",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 TH1D* h_t_REC_wRES_cut_pi9 = new TH1D("h_t_REC_wRES_cut_pi9",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 TH1D* h_t_REC_wRES_cut_pi12 = new TH1D("h_t_REC_wRES_cut_pi12",";t_{REC} (GeV^{2}); counts",100,0,0.2);
-
+TH1D* h_t_REC_wRES_cut_pi16 = new TH1D("h_t_REC_wRES_cut_pi16",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi20 = new TH1D("h_t_REC_wRES_cut_pi20",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi24 = new TH1D("h_t_REC_wRES_cut_pi24",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+//t distribution 2d
 TH2D* h_t_REC_2d = new TH2D("h_t_REC_2d",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wZ = new TH2D("h_t_REC_2d_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+//t distribution 2d with resolution only 
 TH2D* h_t_REC_2d_wRES = new TH2D("h_t_REC_2d_wRES",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+//t distribution 2d with resolution and angle cut
 TH2D* h_t_REC_2d_wRES_cut = new TH2D("h_t_REC_2d_wRES_cut",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 TH2D* h_t_REC_2d_wRES_cut_pi2 = new TH2D("h_t_REC_2d_wRES_cut_pi2",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 TH2D* h_t_REC_2d_wRES_cut_pi3 = new TH2D("h_t_REC_2d_wRES_cut_pi3",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
@@ -249,6 +187,10 @@ TH2D* h_t_REC_2d_wRES_cut_pi4 = new TH2D("h_t_REC_2d_wRES_cut_pi4",";#sqrt{t_{x}
 TH2D* h_t_REC_2d_wRES_cut_pi6 = new TH2D("h_t_REC_2d_wRES_cut_pi6",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 TH2D* h_t_REC_2d_wRES_cut_pi9 = new TH2D("h_t_REC_2d_wRES_cut_pi9",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 TH2D* h_t_REC_2d_wRES_cut_pi12 = new TH2D("h_t_REC_2d_wRES_cut_pi12",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi16 = new TH2D("h_t_REC_2d_wRES_cut_pi16",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi20 = new TH2D("h_t_REC_2d_wRES_cut_pi20",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi24 = new TH2D("h_t_REC_2d_wRES_cut_pi24",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+//t distribution with angle cut only
 TH2D* h_t_REC_2d_wCUT = new TH2D("h_t_REC_2d_wCUT",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 TH2D* h_t_REC_2d_wCUT_pi2 = new TH2D("h_t_REC_2d_wCUT_pi2",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 TH2D* h_t_REC_2d_wCUT_pi3 = new TH2D("h_t_REC_2d_wCUT_pi3",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
@@ -256,6 +198,9 @@ TH2D* h_t_REC_2d_wCUT_pi4 = new TH2D("h_t_REC_2d_wCUT_pi4",";#sqrt{t_{x}} (GeV);
 TH2D* h_t_REC_2d_wCUT_pi6 = new TH2D("h_t_REC_2d_wCUT_pi6",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 TH2D* h_t_REC_2d_wCUT_pi9 = new TH2D("h_t_REC_2d_wCUT_pi9",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 TH2D* h_t_REC_2d_wCUT_pi12 = new TH2D("h_t_REC_2d_wCUT_pi12",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi16 = new TH2D("h_t_REC_2d_wCUT_pi16",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi20 = new TH2D("h_t_REC_2d_wCUT_pi20",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi24 = new TH2D("h_t_REC_2d_wCUT_pi24",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 
 //energy clus
 TH2D* h_emClus_position_REC = new TH2D("h_emClus_position_REC",";x (mm);y (mm)",80,-800,800,80,-800,800);
@@ -282,8 +227,12 @@ while (tree_reader.Next()) {
 	TLorentzVector scatMC(0,0,0,0);
 	int mc_elect_index=-1;
 	double maxPt=-99.;
+
 	for(int imc=0;imc<mc_px_array.GetSize();imc++){
-		TVector3 mctrk(mc_px_array[imc],mc_py_array[imc],mc_pz_array[imc]);	
+        TVector3 mctrk(static_cast<double>(mc_px_array[imc]), 
+               static_cast<double>(mc_py_array[imc]), 
+               static_cast<double>(mc_pz_array[imc]));
+		//TVector3 mctrk(mc_px_array[imc],mc_py_array[imc],mc_pz_array[imc]);	
 		if(mc_genStatus_array[imc]==4){//4 is Sartre.
 			if(mc_pdg_array[imc]==11) ebeam.SetVectM(mctrk, MASS_ELECTRON);
 				if(mc_pdg_array[imc]==2212) pbeam.SetVectM(mctrk, MASS_PROTON);
@@ -297,12 +246,13 @@ while (tree_reader.Next()) {
 		}
 		if(mc_pdg_array[imc]==321
 			&& mc_genStatus_array[imc]==1) kplusMC.SetVectM(mctrk,MASS_KAON);
+        //cout << mc_pdg_array[imc] << endl;
 		if(mc_pdg_array[imc]==-321
 			&& mc_genStatus_array[imc]==1) kminusMC.SetVectM(mctrk,MASS_KAON);
-
+        //cout << mc_pdg_array[imc] << endl;
 	}
 	vmMC=kplusMC+kminusMC; 
-	
+	cout << "this is working!! " << endl;
 
 	//protection.
 	if(ebeam.E()==pbeam.E() && ebeam.E()==0) {
@@ -313,8 +263,8 @@ while (tree_reader.Next()) {
 	double Q2=-(qbeam).Mag2();  
 	double pq=pbeam.Dot(qbeam);
 	double y= pq/pbeam.Dot(ebeam);
-	
-	//MC level phase space cut
+
+    //MC level phase space cut
 	if(Q2<1.||Q2>10.) continue;
 	if(y<0.01||y>0.85) continue;
 	h_Q2_e->Fill(Q2);
@@ -342,57 +292,74 @@ while (tree_reader.Next()) {
 
 		TVector3 py_vector = nHat*pv;
 		TLorentzVector py(py_vector.X(),py_vector.Y(),0,0);
-		TLorentzVector px = T - py;
+        TLorentzVector px = T - py;
+        TLorentzVector pz(0,0,px.Z(),px.E());
+		TLorentzVector px_true = T - py - pz;
 
-		TLorentzVector pz(0,0,px.Z(),px.E());
-		TLorentzVector px_test = T - py - pz;
-		double tx = -(px_test).Mag2();
-
-		//double tx = -(px).Mag2();
+        double tx = -(px).Mag2();
+		double tx_true = -(px_true).Mag2();
 		double ty = -(py).Mag2();
+        double t_true = tx_true+ty;
 		double t = tx+ty;
 		double qx = sqrt(tx);
+        double qx_true = sqrt(tx_true);
 		double qy = sqrt(ty);
 
-		h_t_REC_2d->Fill(qx,qy);
-		h_t_REC_new_method->Fill(t);
+		h_t_REC_2d->Fill(qx_true,qy);
+        h_t_REC_2d_wZ->Fill(qx,qy);
+        h_t_REC_new_method_wZ->Fill(t);
+		h_t_REC_new_method->Fill(t_true);
+        //cout << "t:  " << t << endl;
 		
 		// apply cut
-		double theta = atan(fabs(qx)/fabs(qy));
-		if(fabs(theta)<PI/6) 
+		double theta = atan(fabs(qx_true)/fabs(qy));
+        //test with cut only -> should be same as truth with out resolution
+		if(fabs(theta)<PI/9) 
 		{
-    		h_t_REC_2d_wCUT->Fill(qx,qy);
-			h_t_REC_wCUT->Fill(t); 
+			h_t_REC_wCUT->Fill(t_true); 
+            h_t_REC_2d_wCUT->Fill(qx_true,qy);
 		}
 		if(fabs(theta)<PI/2) 
 		{
-			h_t_REC_wCUT_pi2->Fill(t);
-			h_t_REC_2d_wCUT_pi2->Fill(qx,qy);
+			h_t_REC_wCUT_pi2->Fill(t_true);
+			h_t_REC_2d_wCUT_pi2->Fill(qx_true,qy);
 		}
 		if(fabs(theta)<PI/3) 
 		{
-			h_t_REC_wCUT_pi3->Fill(t);
-			h_t_REC_2d_wCUT_pi3->Fill(qx,qy);
+			h_t_REC_wCUT_pi3->Fill(t_true);
+			h_t_REC_2d_wCUT_pi3->Fill(qx_true,qy);
 		}
 		if(fabs(theta)<PI/4) 
 		{
-			h_t_REC_wCUT_pi4->Fill(t);
-			h_t_REC_2d_wCUT_pi4->Fill(qx,qy);
+			h_t_REC_wCUT_pi4->Fill(t_true);
+			h_t_REC_2d_wCUT_pi4->Fill(qx_true,qy);
 		}
 		if(fabs(theta)<PI/6) 
 		{
-			h_t_REC_wCUT_pi6->Fill(t);
-			h_t_REC_2d_wCUT_pi6->Fill(qx,qy);
+			h_t_REC_wCUT_pi6->Fill(t_true);
+			h_t_REC_2d_wCUT_pi6->Fill(qx_true,qy);
 		}
 		if(fabs(theta)<PI/9) 
 		{
-			h_t_REC_wCUT_pi9->Fill(t);
-			h_t_REC_2d_wCUT_pi9->Fill(qx,qy);
+			h_t_REC_wCUT_pi9->Fill(t_true);
+			h_t_REC_2d_wCUT_pi9->Fill(qx_true,qy);
 		}
 		if(fabs(theta)<PI/12) 
 		{
-			h_t_REC_wCUT_pi12->Fill(t);
-			h_t_REC_2d_wCUT_pi12->Fill(qx,qy);
+			h_t_REC_wCUT_pi12->Fill(t_true);
+			h_t_REC_2d_wCUT_pi12->Fill(qx_true,qy);
+		}
+        if(fabs(theta)<PI/16) 
+		{
+			h_t_REC_2d_wCUT_pi16->Fill(qx_true,qy);
+		}
+        if(fabs(theta)<PI/20) 
+		{
+			h_t_REC_2d_wCUT_pi20->Fill(qx_true,qy);
+		}
+        if(fabs(theta)<PI/24) 
+		{
+			h_t_REC_2d_wCUT_pi24->Fill(qx_true,qy);
 		}
 	
 	}
@@ -588,20 +555,16 @@ while (tree_reader.Next()) {
 
 		TVector3 py_vector_rec = nHat_rec*pv_rec;
 		TLorentzVector py_rec(py_vector_rec.X(),py_vector_rec.Y(),0,0);
-		TLorentzVector px_rec = T_rec - py_rec;
-
-		TLorentzVector pz_rec(0,0,px_rec.Z(),px_rec.E());
-		TLorentzVector px_rec_test = T_rec - py_rec - pz_rec;
-		double tx_rec = -(px_rec_test).Mag2();
-
-		//double tx_rec = -(px_rec).Mag2();
+        TLorentzVector px_rec = T_rec - py_rec;
+        TLorentzVector pz_rec(0,0,px_rec.Z(),px_rec.E());
+		TLorentzVector px_rec_true = T_rec - py_rec - pz_rec;
+		
+        double tx_rec = -(px_rec_true).Mag2();
 		double ty_rec = -(py_rec).Mag2();
 		double t_rec = tx_rec+ty_rec;
 		double qx_rec = sqrt(tx_rec);
 		double qy_rec = sqrt(ty_rec);
 
-		//h_t_REC_2d_wRES->Fill(qx_rec,qy_rec,2);
-		//h_t_REC_wRES->Fill(t_rec,2);
 		h_t_REC_2d_wRES->Fill(qx_rec,qy_rec);
 		h_t_REC_wRES->Fill(t_rec);
 
@@ -658,8 +621,21 @@ while (tree_reader.Next()) {
     		h_t_REC_wRES_cut_pi12->Fill(t_rec);
 			h_t_REC_2d_wRES_cut_pi12->Fill(qx_rec,qy_rec);
 		}
-		
-
+		if(fabs(theta_rec)<PI/16)
+		{
+    		h_t_REC_wRES_cut_pi16->Fill(t_rec);
+			h_t_REC_2d_wRES_cut_pi16->Fill(qx_rec,qy_rec);
+		}
+        if(fabs(theta_rec)<PI/20)
+		{
+    		h_t_REC_wRES_cut_pi20->Fill(t_rec);
+			h_t_REC_2d_wRES_cut_pi20->Fill(qx_rec,qy_rec);
+		}
+        if(fabs(theta_rec)<PI/24)
+		{
+    		h_t_REC_wRES_cut_pi24->Fill(t_rec);
+			h_t_REC_2d_wRES_cut_pi24->Fill(qx_rec,qy_rec);
+		}
     }
 
 }
