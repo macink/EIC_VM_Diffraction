@@ -153,9 +153,14 @@ TH2D* h_t_RECMC_2D = new TH2D("h_t_RECMC_2D",";t_{MC} (GeV^{2}); t_{trk,REC} / t
 //t distribution
 TH1D* h_t_REC_new_method = new TH1D("h_t_REC_new_method",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 TH1D* h_t_REC_new_method_wZ = new TH1D("h_t_REC_new_method_wZ",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_new_method_wE = new TH1D("h_t_REC_new_method_wE",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 //t distribution with resolution only and with angle cut only (for testing)
 TH1D* h_t_REC_wRES = new TH1D("h_t_REC_wRES",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_wZ = new TH1D("h_t_REC_wRES_wZ",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_wE = new TH1D("h_t_REC_wRES_wE",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 TH1D* h_t_REC_wCUT = new TH1D("h_t_REC_wCUT",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wCUT_wZ = new TH1D("h_t_REC_wCUT_wZ",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wCUT_wE = new TH1D("h_t_REC_wCUT_wE",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 //t distribution with cut only (for testing)
 TH1D* h_t_REC_wCUT_pi2 = new TH1D("h_t_REC_wCUT_pi2",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 TH1D* h_t_REC_wCUT_pi3 = new TH1D("h_t_REC_wCUT_pi3",";t_{REC} (GeV^{2}); counts",100,0,0.2);
@@ -174,11 +179,36 @@ TH1D* h_t_REC_wRES_cut_pi12 = new TH1D("h_t_REC_wRES_cut_pi12",";t_{REC} (GeV^{2
 TH1D* h_t_REC_wRES_cut_pi16 = new TH1D("h_t_REC_wRES_cut_pi16",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 TH1D* h_t_REC_wRES_cut_pi20 = new TH1D("h_t_REC_wRES_cut_pi20",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 TH1D* h_t_REC_wRES_cut_pi24 = new TH1D("h_t_REC_wRES_cut_pi24",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+//t distribution with resolution and angle cut with qz absorbed into qx
+TH1D* h_t_REC_wRES_cut_wZ = new TH1D("h_t_REC_wRES_cut_wZ",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi2_wZ = new TH1D("h_t_REC_wRES_cut_pi2_wZ",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi3_wZ = new TH1D("h_t_REC_wRES_cut_pi3_wZ",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi4_wZ = new TH1D("h_t_REC_wRES_cut_pi4_wZ",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi6_wZ = new TH1D("h_t_REC_wRES_cut_pi6_wZ",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi9_wZ = new TH1D("h_t_REC_wRES_cut_pi9_wZ",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi12_wZ = new TH1D("h_t_REC_wRES_cut_pi12_wZ",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi16_wZ = new TH1D("h_t_REC_wRES_cut_pi16_wZ",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi20_wZ = new TH1D("h_t_REC_wRES_cut_pi20_wZ",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi24_wZ = new TH1D("h_t_REC_wRES_cut_pi24_wZ",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+//t distribution with resolution and angle cut with E absorbed into qx
+TH1D* h_t_REC_wRES_cut_wE = new TH1D("h_t_REC_wRES_cut_wE",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi2_wE = new TH1D("h_t_REC_wRES_cut_pi2_wE",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi3_wE = new TH1D("h_t_REC_wRES_cut_pi3_wE",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi4_wE = new TH1D("h_t_REC_wRES_cut_pi4_wE",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi6_wE = new TH1D("h_t_REC_wRES_cut_pi6_wE",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi9_wE = new TH1D("h_t_REC_wRES_cut_pi9_wE",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi12_wE = new TH1D("h_t_REC_wRES_cut_pi12_wE",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi16_wE = new TH1D("h_t_REC_wRES_cut_pi16_wE",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi20_wE = new TH1D("h_t_REC_wRES_cut_pi20_wE",";t_{REC} (GeV^{2}); counts",100,0,0.2);
+TH1D* h_t_REC_wRES_cut_pi24_wE = new TH1D("h_t_REC_wRES_cut_pi24_wE",";t_{REC} (GeV^{2}); counts",100,0,0.2);
 //t distribution 2d
 TH2D* h_t_REC_2d = new TH2D("h_t_REC_2d",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 TH2D* h_t_REC_2d_wZ = new TH2D("h_t_REC_2d_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wE = new TH2D("h_t_REC_2d_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 //t distribution 2d with resolution only 
 TH2D* h_t_REC_2d_wRES = new TH2D("h_t_REC_2d_wRES",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_wZ = new TH2D("h_t_REC_2d_wRES_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_wE = new TH2D("h_t_REC_2d_wRES_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 //t distribution 2d with resolution and angle cut
 TH2D* h_t_REC_2d_wRES_cut = new TH2D("h_t_REC_2d_wRES_cut",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 TH2D* h_t_REC_2d_wRES_cut_pi2 = new TH2D("h_t_REC_2d_wRES_cut_pi2",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
@@ -190,6 +220,28 @@ TH2D* h_t_REC_2d_wRES_cut_pi12 = new TH2D("h_t_REC_2d_wRES_cut_pi12",";#sqrt{t_{
 TH2D* h_t_REC_2d_wRES_cut_pi16 = new TH2D("h_t_REC_2d_wRES_cut_pi16",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 TH2D* h_t_REC_2d_wRES_cut_pi20 = new TH2D("h_t_REC_2d_wRES_cut_pi20",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 TH2D* h_t_REC_2d_wRES_cut_pi24 = new TH2D("h_t_REC_2d_wRES_cut_pi24",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+//t distribution 2d with resolution and angle cut with qz absorbed into qx
+TH2D* h_t_REC_2d_wRES_cut_wZ = new TH2D("h_t_REC_2d_wRES_cut_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi2_wZ = new TH2D("h_t_REC_2d_wRES_cut_pi2_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi3_wZ = new TH2D("h_t_REC_2d_wRES_cut_pi3_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi4_wZ = new TH2D("h_t_REC_2d_wRES_cut_pi4_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi6_wZ = new TH2D("h_t_REC_2d_wRES_cut_pi6_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi9_wZ = new TH2D("h_t_REC_2d_wRES_cut_pi9_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi12_wZ = new TH2D("h_t_REC_2d_wRES_cut_pi12_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi16_wZ = new TH2D("h_t_REC_2d_wRES_cut_pi16_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi20_wZ = new TH2D("h_t_REC_2d_wRES_cut_pi20_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi24_wZ = new TH2D("h_t_REC_2d_wRES_cut_pi24_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+//t distribution 2d with resolution and angle cut with E absorbed into qx
+TH2D* h_t_REC_2d_wRES_cut_wE = new TH2D("h_t_REC_2d_wRES_cut_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi2_wE = new TH2D("h_t_REC_2d_wRES_cut_pi2_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi3_wE = new TH2D("h_t_REC_2d_wRES_cut_pi3_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi4_wE = new TH2D("h_t_REC_2d_wRES_cut_pi4_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi6_wE = new TH2D("h_t_REC_2d_wRES_cut_pi6_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi9_wE = new TH2D("h_t_REC_2d_wRES_cut_pi9_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi12_wE = new TH2D("h_t_REC_2d_wRES_cut_pi12_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi16_wE = new TH2D("h_t_REC_2d_wRES_cut_pi16_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi20_wE = new TH2D("h_t_REC_2d_wRES_cut_pi20_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wRES_cut_pi24_wE = new TH2D("h_t_REC_2d_wRES_cut_pi24_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 //t distribution with angle cut only
 TH2D* h_t_REC_2d_wCUT = new TH2D("h_t_REC_2d_wCUT",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 TH2D* h_t_REC_2d_wCUT_pi2 = new TH2D("h_t_REC_2d_wCUT_pi2",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
@@ -201,6 +253,28 @@ TH2D* h_t_REC_2d_wCUT_pi12 = new TH2D("h_t_REC_2d_wCUT_pi12",";#sqrt{t_{x}} (GeV
 TH2D* h_t_REC_2d_wCUT_pi16 = new TH2D("h_t_REC_2d_wCUT_pi16",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 TH2D* h_t_REC_2d_wCUT_pi20 = new TH2D("h_t_REC_2d_wCUT_pi20",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 TH2D* h_t_REC_2d_wCUT_pi24 = new TH2D("h_t_REC_2d_wCUT_pi24",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+//t distribution with angle cut only -> qz absorbed into qx
+TH2D* h_t_REC_2d_wCUT_wZ = new TH2D("h_t_REC_2d_wCUT_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi2_wZ = new TH2D("h_t_REC_2d_wCUT_pi2_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi3_wZ = new TH2D("h_t_REC_2d_wCUT_pi3_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi4_wZ = new TH2D("h_t_REC_2d_wCUT_pi4_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi6_wZ = new TH2D("h_t_REC_2d_wCUT_pi6_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi9_wZ = new TH2D("h_t_REC_2d_wCUT_pi9_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi12_wZ = new TH2D("h_t_REC_2d_wCUT_pi12_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi16_wZ = new TH2D("h_t_REC_2d_wCUT_pi16_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi20_wZ = new TH2D("h_t_REC_2d_wCUT_pi20_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi24_wZ = new TH2D("h_t_REC_2d_wCUT_pi24_wZ",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+//t distribution with angle cut only -> E absorbed into qx
+TH2D* h_t_REC_2d_wCUT_wE = new TH2D("h_t_REC_2d_wCUT_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi2_wE= new TH2D("h_t_REC_2d_wCUT_pi2_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi3_wE = new TH2D("h_t_REC_2d_wCUT_pi3_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi4_wE = new TH2D("h_t_REC_2d_wCUT_pi4_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi6_wE = new TH2D("h_t_REC_2d_wCUT_pi6_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi9_wE = new TH2D("h_t_REC_2d_wCUT_pi9_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi12_wE = new TH2D("h_t_REC_2d_wCUT_pi12_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi16_wE = new TH2D("h_t_REC_2d_wCUT_pi16_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi20_wE = new TH2D("h_t_REC_2d_wCUT_pi20_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
+TH2D* h_t_REC_2d_wCUT_pi24_wE = new TH2D("h_t_REC_2d_wCUT_pi24_wE",";#sqrt{t_{x}} (GeV); #sqrt{t_{y}} (GeV)",100,0,0.2,100,0,0.2);
 
 //energy clus
 TH2D* h_emClus_position_REC = new TH2D("h_emClus_position_REC",";x (mm);y (mm)",80,-800,800,80,-800,800);
@@ -288,34 +362,47 @@ while (tree_reader.Next()) {
 		TVector3 e_momentum = ebeam.Vect();
 		TVector3 nHat = e_momentum.Cross(eScattered_momentum); // nHat = p_e x p_e'
 		nHat = nHat.Unit();
+        
+        // define projected y-component
 		double pv = vmMC.Vect().Dot(nHat);
-
 		TVector3 py_vector = nHat*pv;
 		TLorentzVector py(py_vector.X(),py_vector.Y(),0,0);
-        TLorentzVector px = T - py;
+        double ty = -(py).Mag2();
+        double qy = sqrt(ty);
+        
+        // define x-component with z-component absorbed into x
+        TLorentzVector px = T - py; 
+        double tx = -(px).Mag2();
+		double qx = sqrt(tx);
+        double t = tx+ty;
+        
+        // define x-component with z-component removed
         TLorentzVector pz(0,0,px.Z(),px.E());
 		TLorentzVector px_true = T - py - pz;
-
-        double tx = -(px).Mag2();
-		double tx_true = -(px_true).Mag2();
-		double ty = -(py).Mag2();
-        double t_true = tx_true+ty;
-		double t = tx+ty;
-		double qx = sqrt(tx);
+        double tx_true = -(px_true).Mag2();
         double qx_true = sqrt(tx_true);
-		double qy = sqrt(ty);
+		double t_true = tx_true+ty;
 
+		// define x-component  E-component and z-component removed
+        TLorentzVector pz_true(0,0,px.Z(),0);
+		TLorentzVector px_wE = T - py - pz_true;
+        double tx_wE = -(px_wE).Mag2();
+        double qx_wE = sqrt(tx_wE);
+		double t_wE = tx_wE+ty;
+        
 		h_t_REC_2d->Fill(qx_true,qy);
         h_t_REC_2d_wZ->Fill(qx,qy);
-        h_t_REC_new_method_wZ->Fill(t);
+		h_t_REC_2d_wE->Fill(qx_wE,qy);
 		h_t_REC_new_method->Fill(t_true);
+		h_t_REC_new_method_wZ->Fill(t);
+		h_t_REC_new_method_wE->Fill(t_wE);
         //cout << "t:  " << t << endl;
 		
-		// apply cut
+		// apply cut with qz and E subtracted out of qx-component
 		double theta = atan(fabs(qx_true)/fabs(qy));
-        //test with cut only -> should be same as truth with out resolution
 		if(fabs(theta)<PI/9) 
 		{
+			//test with cut only -> should be same as truth with out resolution
 			h_t_REC_wCUT->Fill(t_true); 
             h_t_REC_2d_wCUT->Fill(qx_true,qy);
 		}
@@ -360,6 +447,96 @@ while (tree_reader.Next()) {
         if(fabs(theta)<PI/24) 
 		{
 			h_t_REC_2d_wCUT_pi24->Fill(qx_true,qy);
+		}
+
+		// apply cut with z subtracted out of x-component
+		double theta_wE = atan(fabs(qx_wE)/fabs(qy));
+		if(fabs(theta_wE)<PI/9) 
+		{
+			//test with cut only -> should be same as truth with out resolution
+			h_t_REC_wCUT_wE->Fill(t_wE); 
+            h_t_REC_2d_wCUT_wE->Fill(qx_wE,qy);
+		}
+		if(fabs(theta_wE)<PI/2) 
+		{
+			h_t_REC_2d_wCUT_pi2_wE->Fill(qx_wE,qy);
+		}
+		if(fabs(theta_wE)<PI/3) 
+		{
+			h_t_REC_2d_wCUT_pi3_wE->Fill(qx_wE,qy);
+		}
+		if(fabs(theta_wE)<PI/4) 
+		{
+			h_t_REC_2d_wCUT_pi4_wE->Fill(qx_wE,qy);
+		}
+		if(fabs(theta_wE)<PI/6) 
+		{
+			h_t_REC_2d_wCUT_pi6_wE->Fill(qx_wE,qy);
+		}
+		if(fabs(theta_wE)<PI/9) 
+		{
+			h_t_REC_2d_wCUT_pi9_wE->Fill(qx_wE,qy);
+		}
+		if(fabs(theta_wE)<PI/12) 
+		{
+			h_t_REC_2d_wCUT_pi12_wE->Fill(qx_wE,qy);
+		}
+        if(fabs(theta_wE)<PI/16) 
+		{
+			h_t_REC_2d_wCUT_pi16_wE->Fill(qx_wE,qy);
+		}
+        if(fabs(theta_wE)<PI/20) 
+		{
+			h_t_REC_2d_wCUT_pi20_wE->Fill(qx_wE,qy);
+		}
+        if(fabs(theta_wE)<PI/24) 
+		{
+			h_t_REC_2d_wCUT_pi24_wE->Fill(qx_wE,qy);
+		}
+
+        // apply cut with z absorbed into x
+		double theta_wZ = atan(fabs(qx)/fabs(qy));
+        //test with cut only -> should be same as truth with out resolution
+		if(fabs(theta_wZ)<PI/9) 
+		{
+			h_t_REC_wCUT_wZ->Fill(t); 
+            h_t_REC_2d_wCUT_wZ->Fill(qx,qy);
+		}
+		if(fabs(theta_wZ)<PI/2) 
+		{
+			h_t_REC_2d_wCUT_pi2_wZ->Fill(qx,qy);
+		}
+		if(fabs(theta_wZ)<PI/3) 
+		{
+			h_t_REC_2d_wCUT_pi3_wZ->Fill(qx,qy);
+		}
+		if(fabs(theta_wZ)<PI/4) 
+		{
+			h_t_REC_2d_wCUT_pi4_wZ->Fill(qx,qy);
+		}
+		if(fabs(theta_wZ)<PI/6) 
+		{
+			h_t_REC_2d_wCUT_pi6_wZ->Fill(qx,qy);
+		}
+		if(fabs(theta_wZ)<PI/9) 
+		{
+			h_t_REC_2d_wCUT_pi9_wZ->Fill(qx,qy);
+		}
+		if(fabs(theta_wZ)<PI/12) 
+		{
+			h_t_REC_2d_wCUT_pi12_wZ->Fill(qx,qy);
+		}
+        if(fabs(theta_wZ)<PI/16) 
+		{
+			h_t_REC_2d_wCUT_pi16_wZ->Fill(qx,qy);
+		}
+        if(fabs(theta_wZ)<PI/20) 
+		{
+			h_t_REC_2d_wCUT_pi20_wZ->Fill(qx,qy);
+		}
+        if(fabs(theta_wZ)<PI/24) 
+		{
+			h_t_REC_2d_wCUT_pi24_wZ->Fill(qx,qy);
 		}
 	
 	}
@@ -551,22 +728,40 @@ while (tree_reader.Next()) {
 		TVector3 e_momentum = ebeam.Vect();
 		TVector3 nHat_rec = e_momentum.Cross(eScattered_momentum_rec); // nHat = p_e x p_e'
 		nHat_rec = nHat_rec.Unit();
-		double pv_rec = vmREC.Vect().Dot(nHat_rec);
 
-		TVector3 py_vector_rec = nHat_rec*pv_rec;
+        // define projected y-component
+		double pv_rec = vmREC.Vect().Dot(nHat_rec);
+        TVector3 py_vector_rec = nHat_rec*pv_rec;
 		TLorentzVector py_rec(py_vector_rec.X(),py_vector_rec.Y(),0,0);
+        double ty_rec = -(py_rec).Mag2();
+        double qy_rec = sqrt(ty_rec);
+
+        // define qx-component with qz absorbed into qx
         TLorentzVector px_rec = T_rec - py_rec;
+        double tx_rec_wZ = -(px_rec).Mag2();
+        double t_rec_wZ = tx_rec_wZ + ty_rec;
+        double qx_rec_wZ = sqrt(tx_rec_wZ);
+
+        // define qx-component with qz and E subtracted out
         TLorentzVector pz_rec(0,0,px_rec.Z(),px_rec.E());
 		TLorentzVector px_rec_true = T_rec - py_rec - pz_rec;
-		
         double tx_rec = -(px_rec_true).Mag2();
-		double ty_rec = -(py_rec).Mag2();
 		double t_rec = tx_rec+ty_rec;
 		double qx_rec = sqrt(tx_rec);
-		double qy_rec = sqrt(ty_rec);
+
+		// define x-component with z subtracted out
+        TLorentzVector pz_rec_true(0,0,px_rec.Z(),0);
+		TLorentzVector px_rec_wE = T_rec - py_rec - pz_rec_true;
+        double tx_rec_wE = -(px_rec_wE).Mag2();
+		double t_rec_wE = tx_rec_wE+ty_rec;
+		double qx_rec_wE = sqrt(tx_rec_wE);
 
 		h_t_REC_2d_wRES->Fill(qx_rec,qy_rec);
+        h_t_REC_2d_wRES_wZ->Fill(qx_rec_wZ,qy_rec);
+		h_t_REC_2d_wRES_wE->Fill(qx_rec_wE,qy_rec);
 		h_t_REC_wRES->Fill(t_rec);
+        h_t_REC_wRES_wZ->Fill(t_rec_wZ);
+		h_t_REC_wRES_wE->Fill(t_rec_wE);
 
 	
     	//t track resolution 
@@ -584,7 +779,7 @@ while (tree_reader.Next()) {
     	res= (vmMC.Pt()-vmREC.Pt())/vmMC.Pt();
 		h_VM_res->Fill(vmMC.Pt(), res);
 
-		// apply cut
+		// apply cut with z subtracted out of x
 		double theta_rec = atan(fabs(qx_rec)/fabs(qy_rec));
 		if(fabs(theta_rec)<PI/6)
 		{
@@ -635,6 +830,112 @@ while (tree_reader.Next()) {
 		{
     		h_t_REC_wRES_cut_pi24->Fill(t_rec);
 			h_t_REC_2d_wRES_cut_pi24->Fill(qx_rec,qy_rec);
+		}
+
+        // apply cut with z absorbed into x
+		double theta_rec_wZ = atan(fabs(qx_rec_wZ)/fabs(qy_rec));
+		if(fabs(theta_rec_wZ)<PI/6)
+		{
+    		h_t_REC_wRES_cut_wZ->Fill(t_rec_wZ);
+			h_t_REC_2d_wRES_cut_wZ->Fill(qx_rec,qy_rec);
+		}
+		if(fabs(theta_rec_wZ)<PI/2)
+		{
+            h_t_REC_wRES_cut_pi2_wZ->Fill(t_rec_wZ);
+			h_t_REC_2d_wRES_cut_pi2_wZ->Fill(qx_rec_wZ,qy_rec);
+		}
+		if(fabs(theta_rec_wZ)<PI/3)
+		{
+            h_t_REC_wRES_cut_pi3_wZ->Fill(t_rec_wZ);
+			h_t_REC_2d_wRES_cut_pi3_wZ->Fill(qx_rec_wZ,qy_rec);
+		}
+		if(fabs(theta_rec_wZ)<PI/4)
+		{
+            h_t_REC_wRES_cut_pi4_wZ->Fill(t_rec_wZ);
+			h_t_REC_2d_wRES_cut_pi4_wZ->Fill(qx_rec_wZ,qy_rec);
+		}
+		if(fabs(theta_rec_wZ)<PI/6)
+		{
+            h_t_REC_wRES_cut_pi6_wZ->Fill(t_rec_wZ);
+			h_t_REC_2d_wRES_cut_pi6_wZ->Fill(qx_rec_wZ,qy_rec);
+		}
+		if(fabs(theta_rec_wZ)<PI/9)
+		{
+            h_t_REC_wRES_cut_pi9_wZ->Fill(t_rec_wZ);
+			h_t_REC_2d_wRES_cut_pi9_wZ->Fill(qx_rec_wZ,qy_rec);
+		}
+		if(fabs(theta_rec_wZ)<PI/12)
+		{
+            h_t_REC_wRES_cut_pi12_wZ->Fill(t_rec_wZ);
+			h_t_REC_2d_wRES_cut_pi12_wZ->Fill(qx_rec_wZ,qy_rec);
+		}
+		if(fabs(theta_rec_wZ)<PI/16)
+		{
+            h_t_REC_wRES_cut_pi16_wZ->Fill(t_rec_wZ);
+			h_t_REC_2d_wRES_cut_pi16_wZ->Fill(qx_rec_wZ,qy_rec);
+		}
+        if(fabs(theta_rec_wZ)<PI/20)
+		{
+            h_t_REC_wRES_cut_pi20_wZ->Fill(t_rec_wZ);
+			h_t_REC_2d_wRES_cut_pi20_wZ->Fill(qx_rec_wZ,qy_rec);
+		}
+        if(fabs(theta_rec_wZ)<PI/24)
+		{
+            h_t_REC_wRES_cut_pi24_wZ->Fill(t_rec_wZ);
+			h_t_REC_2d_wRES_cut_pi24_wZ->Fill(qx_rec_wZ,qy_rec);
+		}
+
+		// apply cut with E absorbed into x
+		double theta_rec_wE = atan(fabs(qx_rec_wE)/fabs(qy_rec));
+		if(fabs(theta_rec_wE)<PI/6)
+		{
+    		h_t_REC_wRES_cut_wE->Fill(t_rec_wE);
+			h_t_REC_2d_wRES_cut_wE->Fill(qx_rec_wE,qy_rec);
+		}
+		if(fabs(theta_rec_wE)<PI/2)
+		{
+            h_t_REC_wRES_cut_pi2_wE->Fill(t_rec_wE);
+			h_t_REC_2d_wRES_cut_pi2_wE->Fill(qx_rec_wE,qy_rec);
+		}
+		if(fabs(theta_rec_wE)<PI/3)
+		{
+            h_t_REC_wRES_cut_pi3_wE->Fill(t_rec_wE);
+			h_t_REC_2d_wRES_cut_pi3_wE->Fill(qx_rec_wE,qy_rec);
+		}
+		if(fabs(theta_rec_wE)<PI/4)
+		{
+            h_t_REC_wRES_cut_pi4_wE->Fill(t_rec_wE);
+			h_t_REC_2d_wRES_cut_pi4_wE->Fill(qx_rec_wE,qy_rec);
+		}
+		if(fabs(theta_rec_wE)<PI/6)
+		{
+            h_t_REC_wRES_cut_pi6_wE->Fill(t_rec_wE);
+			h_t_REC_2d_wRES_cut_pi6_wE->Fill(qx_rec_wE,qy_rec);
+		}
+		if(fabs(theta_rec_wE)<PI/9)
+		{
+            h_t_REC_wRES_cut_pi9_wE->Fill(t_rec_wE);
+			h_t_REC_2d_wRES_cut_pi9_wE->Fill(qx_rec_wE,qy_rec);
+		}
+		if(fabs(theta_rec_wE)<PI/12)
+		{
+            h_t_REC_wRES_cut_pi12_wE->Fill(t_rec_wE);
+			h_t_REC_2d_wRES_cut_pi12_wE->Fill(qx_rec_wE,qy_rec);
+		}
+		if(fabs(theta_rec_wE)<PI/16)
+		{
+            h_t_REC_wRES_cut_pi16_wE->Fill(t_rec_wE);
+			h_t_REC_2d_wRES_cut_pi16_wE->Fill(qx_rec_wE,qy_rec);
+		}
+        if(fabs(theta_rec_wE)<PI/20)
+		{
+            h_t_REC_wRES_cut_pi20_wE->Fill(t_rec_wE);
+			h_t_REC_2d_wRES_cut_pi20_wE->Fill(qx_rec_wE,qy_rec);
+		}
+        if(fabs(theta_rec_wE)<PI/24)
+		{
+            h_t_REC_wRES_cut_pi24_wE->Fill(t_rec_wE);
+			h_t_REC_2d_wRES_cut_pi24_wE->Fill(qx_rec_wE,qy_rec);
 		}
     }
 
