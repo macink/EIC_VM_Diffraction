@@ -2,24 +2,20 @@
 
 submit=$1
 
-if [ -z $submit ]; then
-    echo "[i] Set it to submit = 0 for local test"
-    submit=0
-fi
-
 ###############################################################
 ### Batch production for real data using file list          ###
 ###############################################################
 
 if [ $submit -eq 2 ]; then
-    #configs=(sartre_bnonsat_Au_phi_ab_eAu_q2_15)
     configs=(sartre_bnonsat_Au_phi_ab_eAu)
+    #configs=(sartre1.39-1.0_coherent_phi_eCa_bsat_18x137.5_q2_1to10_ab)
+    #configs=(BeAGLE1.03.02-1.0_phi_eCa_18x137.5_q2_1to10_ab)
 
     pwd=$PWD
     for config in "${configs[@]}"; do
         echo "[i] Running config = $config"
 
-        odir=/eic/u/macink/EICreconOutputReader/analysis/$config
+        odir=/eic/u/macink/EICreconOutputReader/analysis25.6.1/$config
         logdir=$odir/log
         if [ ! -d $odir ]; then
             mkdir -pv $odir
@@ -32,8 +28,8 @@ if [ $submit -eq 2 ]; then
         cp -v ${executable} $odir/.
         cp -v analysis $odir/.
         cp -v pleaseIncludeMe.h $odir/.
-        cp -v diffractive_vm_simple_analysis_mod.cxx $odir/.
-        cp -v runDiffractiveVMReader_mod.sh $odir/.
+        cp -v diffractive_vm_analysis.cxx $odir/. 
+        cp -v run_DiffractiveVM.sh $odir/.
 
         echo $odir/$executable
         # Initializing Condor File
