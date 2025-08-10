@@ -9,10 +9,10 @@
 #include "FF_WS_Transforms_2D.h"
 #include "WoodsSaxon_1D.h"
 #include "WoodsSaxon_2D.h"
-#include "dsigma_resolution_add_wedge_1D.h"
+//#include "dsigma_resolution_add_wedge_1D.h"
 #include "WedgeResolution.h"
 #include "FormFactor_resolution_add_wedge_1D.h"
-#include "FormFactor_resolution_add_wedge_1D2.h"
+//#include "FormFactor_resolution_add_wedge_1D2.h"
 #include "FormFactor_resolution_add_wedge_2D.h"
 //#include "FormFactor_transform_resolution_add_wedge_1D.h"
 #include "FormFactor_transform_resolution_add_wedge_2D.h"
@@ -134,10 +134,14 @@ void WS_transform_2D_hist()
 void FFq_squared_fun()
 {
     double A = 197, Vo = 2.12, R = 6.38, a0 = 0.7;
-    double q_min = 0.001, q_max = 0.3;
+    double q_min = 0.0, q_max = 0.447;
     FormFactor_q_1D ff(A,Vo,R,a0,q_min,q_max);
     TF1 *test = ff.getFormFactorq_1D();
+    test->SetTitle("Form Factor: |F(q)|^{2}");
+    test->GetXaxis()->SetTitle("q [GeV/c]");
+    test->GetYaxis()->SetTitle("|F(q = #sqrt{t})|^{2}");
     test->Draw();
+    gPad->SetLogy(1);
 }
 
 
@@ -145,11 +149,16 @@ void FFq_squared_fun()
 void FFt_squared_fun()
 {
     double A = 197, Vo = 2.12, R = 6.38, a0 = 0.7;
-    double t_min = 0.0001, t_max = 0.1;
+    double t_min = 0.0, t_max = 0.2;
     double bins = 1000, r_min = 0, r_max = 15;
     FormFactor_t_1D ff(A,Vo,R,a0,t_min,t_max,bins,r_min,r_max);
     TF1 *test = ff.getFormFactort_1D();
+    test->SetTitle("Form Factor: |F(t)|^{2}");
+    test->GetXaxis()->SetTitle("|t| [GeV/c]^{2}");
+    test->GetYaxis()->SetTitle("|F(t)|^{2}");
+    test->SetLineColor(kBlue);
     test->Draw();
+    gPad->SetLogy(1);
 }
 
 void FFt_hist()
@@ -165,7 +174,7 @@ void FFt_hist()
 void FFt_transform_fun()
 {
     double A = 197, Vo = 2.12, R = 6.38, a0 = 0.7;
-    double t_min = 0.0001, t_max = 0.1;
+    double t_min = 0.0, t_max = 0.2;
     double bins = 1000, r_min = 0, r_max = 15;
     FormFactor_t_1D ff(A,Vo,R,a0,t_min,t_max,bins,r_min,r_max);
     TF1 *test = ff.getTransformedFF_TF1();
@@ -175,10 +184,15 @@ void FFt_transform_fun()
 void FFt_transform_hist()
 {
     double A = 197, Vo = 2.12, R = 6.38, a0 = 0.7;
-    double t_min = 0.0001, t_max = 0.1;
-    double bins = 1000, r_min = 0, r_max = 15;
+    double t_min = 0.0001, t_max = 0.2;
+    double bins = 1000, r_min = -12, r_max = 12;
     FormFactor_t_1D ff(A,Vo,R,a0,t_min,t_max,bins,r_min,r_max);
     TH1D *test = ff.getTransformedFF_hist();
+    test->SetTitle("Fourier Transform of |F(t)|^{2}");
+    test->GetXaxis()->SetTitle("b [fm]");
+    test->GetYaxis()->SetTitle("F(b)/#int F(b) db");
+    test->SetLineColor(kBlack);
+    test->SetStats(kFALSE);
     test->Draw();
 }
 
@@ -207,8 +221,8 @@ void FFq_2D_hist()
     ff_histz->SetTitle("|F(q_{x},q_{y})|^{2}");
     ff_histz->GetYaxis()->SetTitleSize(0.04);
     ff_histz->GetXaxis()->SetTitleSize(0.04);
-    ff_histz->GetXaxis()->SetTitle("q_{x} = #sqrt{t_{x}} [GeV/c]");
-    ff_histz->GetYaxis()->SetTitle("q_{y} = #sqrt{t_{y}} [GeV/c]");
+    ff_histz->GetXaxis()->SetTitle("q_{x} = #sqrt{|t_{x}|} [GeV/c]");
+    ff_histz->GetYaxis()->SetTitle("q_{y} = #sqrt{|t_{y}|} [GeV/c]");
     ff_histz->GetYaxis()->SetTitleOffset(1.4);
     ff_histz->GetXaxis()->SetTitleOffset(1.1);
     ff_histz->Draw("col");
@@ -1677,8 +1691,8 @@ TH2D *ff_wRes25 = ff_wResCut25.getSmeared_hist();
     ff_wRes25->SetTitle("|F(q_{x},q_{y})|^{2} with 25 MeV/c Resolution");
     ff_wRes25->GetYaxis()->SetTitleSize(0.04);
     ff_wRes25->GetXaxis()->SetTitleSize(0.04);
-    ff_wRes25->GetXaxis()->SetTitle("q_{x} = #sqrt{t_{x}} [GeV/c]");
-    ff_wRes25->GetYaxis()->SetTitle("q_{y} = #sqrt{t_{y}} [GeV/c]");
+    ff_wRes25->GetXaxis()->SetTitle("q_{x} = #sqrt{|t_{x}|} [GeV/c]");
+    ff_wRes25->GetYaxis()->SetTitle("q_{y} = #sqrt{|t_{y}|} [GeV/c]");
     ff_wRes25->GetYaxis()->SetTitleOffset(1.4);
     ff_wRes25->GetXaxis()->SetTitleOffset(1.1);
     ff_wRes25->Draw("col");
@@ -1763,9 +1777,12 @@ void ATHENA_data()
     double t_min = 0, t_max = 0.17;
     double r_min = 0, r_max = 15;
 
-    FormFactor_t_1D ff(A,Vo,R,a0,t_min,t_max,bins,r_min,r_max);
+    TCanvas* c1 = new TCanvas("c1","c1",800,600);
+
+   /* FormFactor_t_1D ff(A,Vo,R,a0,t_min,t_max,bins,r_min,r_max);
     TH1D *ff_true = ff.getFF_hist();
-    ff_true->GetYaxis()->SetTitle("|F(t)|^{2}");
+    ff_true->SetTitle("Compare with ATHENA");
+    ff_true->GetYaxis()->SetTitle("|F(t)|^{2}, d#sigma/d|t| [nb/GeV^{2}/c^{2}]");
     ff_true->GetXaxis()->SetTitle("|t| [GeV^{2}/c^{2}]");
     ff_true->GetYaxis()->SetTitleSize(0.047);
     ff_true->GetXaxis()->SetTitleSize(0.047);
@@ -1775,7 +1792,8 @@ void ATHENA_data()
     ff_true->SetLineStyle(1);
     ff_true->SetLineWidth(2);
     ff_true->SetLineColor(kBlack);
-    ff_true->Draw();
+    //ff_true->Draw();
+    */
 
     const int incoherent_bins = 91;
     double incoherent_min = 0.001, incoherent_max = 0.18; 
@@ -1803,11 +1821,11 @@ void ATHENA_data()
         64.1997561565852,64.1997561565852,64.1997561565852,61.7163084604715,61.7163084604715,65.4787073680391,62.9457858323086,60.5108456368344};
 
     TGraph *incoherent_hist = new TGraph(incoherent_bins, incoherent_xvals, incoherent_yvals);
-    incoherent_hist->SetMarkerColor(kBlack);
+    incoherent_hist->SetMarkerColor(kGreen+2);
     incoherent_hist->GetYaxis()->SetRangeUser(1e-2,1e5);
-    incoherent_hist->SetMarkerSize(0.3);
+    incoherent_hist->SetMarkerSize(0.5);
     incoherent_hist->SetMarkerStyle(25);
-    incoherent_hist->Draw("P same");
+    //incoherent_hist->Draw("P same");
 
     const int detector_bins = 36;
     double detector_min = 0.003, detector_max = 0.18;
@@ -1827,9 +1845,9 @@ void ATHENA_data()
      detector_hist->GetYaxis()->SetRangeUser(1e-2,1e5);
      detector_hist->SetMarkerSize(.5);
      detector_hist->SetMarkerStyle(27);
-     detector_hist->Draw("P SAME ");
+     //detector_hist->Draw("P SAME ");
 
-    // Coherent from plot scan
+     //Coherent from plot scan
     const int coherent_bins = 149;
     double coherent_min = 0.0006, coherent_max = 0.18; 
     double coherent_xvals[coherent_bins] = {0.000611746937010025,0.00261959623537762,0.00282038116521438,0.0042258756740717,0.0042258756740717,0.00663529483211282,
@@ -1869,6 +1887,13 @@ void ATHENA_data()
         0.300182847524764,0.214660261405754,0.202325907758978,0.169414675649648,0.123561601415304,0.0901189302861088,0.0683725795511678,0.063185160082014,0.045183604233252,
         0.0409399471020499,0.0342804732040046,0.0255003432707026,0.0255003432707026,0.0205263684479667,0.0161998687139596,0.0132997754119192};
     
+             TGraph *coherent_hist = new TGraph(coherent_bins, coherent_xvals, coherent_yvals);
+     coherent_hist->SetLineColor(kBlack);
+     coherent_hist->GetYaxis()->SetRangeUser(1e-2,1e5);
+     //detector_hist->SetMarkerSize(.5);
+     //detector_hist->SetMarkerStyle(27);
+     coherent_hist->Draw();
+
     const int methodL_bins = 46;
     double methodL_min = 0.0015, methodL_max = 0.18;
     double methodL_xvals[methodL_bins] ={0.0016156715861938217, 0.004426660603908457,0.006635294832112816,0.009245498919990693,0.011855703007868562,0.01426512216590968,
@@ -1894,14 +1919,15 @@ void ATHENA_data()
     methodL_hist->Draw("P SAME");
     methodL_hist->Draw("L SAME");
 
-    FormFactor_resolution_add_wedge_1D ff_wResCut_25(A,Vo,R,a0,t_min,t_max,bins,phi_min,phi_max,sigma25,r_min,r_max);
+  /*  FormFactor_resolution_add_wedge_1D ff_wResCut_25(A,Vo,R,a0,t_min,t_max,bins,phi_min,phi_max,sigma25,r_min,r_max);
     TH1D *ff_25 = ff_wResCut_25.getWedgeRes_hist_1D();
     ff_25->Scale((1/pi)*197./ff_25->Integral(), "width");
     ff_25->GetYaxis()->SetRangeUser(1e-2,1e5);
     ff_25->SetLineStyle(2);
     ff_25->SetLineWidth(3);
+    //ff_25->SetLineColor(kRed);
     ff_25->SetLineColor(kGreen+2);
-    ff_25->Draw("same");
+    //ff_25->Draw("same");
 
     FormFactor_resolution_add_wedge_1D ff_wResCut_50(A,Vo,R,a0,t_min,t_max,bins,phi_min,phi_max,sigma50,r_min,r_max);
     TH1D *ff_50 = ff_wResCut_50.getWedgeRes_hist_1D();
@@ -1910,39 +1936,45 @@ void ATHENA_data()
     ff_50->SetLineStyle(3);
     ff_50->SetLineWidth(3);
     ff_50->SetLineColor(kOrange+2);
-    ff_50->Draw("same");
+    //ff_50->Draw("same");
 
-    FormFactor_resolution_add_wedge_1D ff_wResCut_100(A,Vo,R,a0,t_min,t_max,bins,phi_min,phi_max,sigma100,r_min,r_max);
-    TH1D *ff_100 = ff_wResCut_100.getWedgeRes_hist_1D();
-    ff_100->Scale((1/pi)*197./ff_100->Integral(), "width");
-    ff_100->GetYaxis()->SetRangeUser(1e-2,1e5);
-    ff_100->SetLineStyle(9);
-    ff_100->SetLineColor(kMagenta);
-    ff_100->Draw("same");
-   
+    //FormFactor_resolution_add_wedge_1D ff_wResCut_100(A,Vo,R,a0,t_min,t_max,bins,phi_min,phi_max,sigma100,r_min,r_max);
+    //TH1D *ff_100 = ff_wResCut_100.getWedgeRes_hist_1D();
+    //ff_100->Scale((1/pi)*197./ff_100->Integral(), "width");
+    //ff_100->GetYaxis()->SetRangeUser(1e-2,1e5);
+    //ff_100->SetLineStyle(9);
+    //ff_100->SetLineColor(kMagenta);
+    //ff_100->Draw("same");
+   */
     
     // Upper right legend
-    auto legend = new TLegend(0.55,0.74,0.77,0.84);
-    legend->AddEntry(incoherent_hist,"Truth: incoherent","p");
-    legend->AddEntry(detector_hist,"Reco.: incoherent","p");
-    legend->AddEntry(methodL_hist,"Reco.: coherent","p");
+    auto legend = new TLegend(0.55,0.68,0.87,0.88);
+    //legend->AddEntry(ff_true,"Truth","l");
+    legend->AddEntry(coherent_hist,"Truth","l");
+    legend->AddEntry(methodL_hist,"Method L reco","p");
+    //legend->AddEntry(ff_25,"25 MeV/c res.","l");
+    //legend->AddEntry(ff_50,"50 MeV/c res.","l");
+    //legend->AddEntry(incoherent_hist,"Truth: incoherent","p");
+    //legend->AddEntry(detector_hist,"Reco.: incoherent","p");
+    //legend->AddEntry(methodL_hist,"Reco.: coherent","p");
     legend->SetTextSize(0.04);
     legend->SetBorderSize(0);
     legend->Draw("same");
 
     // Lower legend
-    auto legend3 = new TLegend(0.15,0.14,0.27,0.3);
-    legend3->SetHeader("Applied res.");
-    legend3->AddEntry(ff_25,"   25 MeV/c","l");
-    legend3->AddEntry(ff_50,"   50 MeV/c","l");
-    legend3->AddEntry(ff_100,"   100 MeV/c","l");
-    legend3->AddEntry(ff_true,"Truth: coherent","l");
-    legend3->SetTextSize(0.04);
-    legend3->SetBorderSize(0);
-    legend3->Draw("same");
+    //auto legend3 = new TLegend(0.15,0.14,0.27,0.3);
+    //legend3->SetHeader("Applied res.");
+    //legend3->AddEntry(ff_25,"   25 MeV/c","l");
+    //legend3->AddEntry(ff_50,"   50 MeV/c","l");
+    //legend3->AddEntry(ff_100,"   100 MeV/c","l");
+    //legend3->AddEntry(ff_true,"Truth: coherent","l");
+    //legend3->SetTextSize(0.04);
+    //legend3->SetBorderSize(0);
+    //legend3->Draw("same");
    
 gPad->SetLogy(1);
 gStyle->SetOptStat(0);
+c1->Print("compare_athena_v2.pdf");
 }
 
 
@@ -2997,7 +3029,7 @@ void process_dsigma_dt_with_smearing_and_wedge()
     delete hist;
 }
 
- 
+ /*
 void dsigma_test_fun()
 {
     double A = 197, Vo = 2.12, R = 6.38, a0 = 0.7;
@@ -3059,7 +3091,7 @@ void dsigma_test_hist_cut()
     gPad->SetLogy(1);
 }
 
-
+*/
 
 
     // Integrand to calcuate smearing

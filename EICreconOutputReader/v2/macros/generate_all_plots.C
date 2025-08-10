@@ -34,9 +34,7 @@ void generate_all_plots(TString filename)
 	TH1D* h_t_MC = (TH1D*) file->Get("h_t_MC");
 	TH1D* h_t_REC = (TH1D*) file->Get("h_t_REC");
 	TH1D* h_t_REC_new_method = (TH1D*) file->Get("h_t_REC_new_method");
-	TH1D* h_t_REC_new_method_wZ = (TH1D*) file->Get("h_t_REC_new_method_wZ");
-	TH1D* h_t_REC_new_method_wE = (TH1D*) file->Get("h_t_REC_new_method_wE");
-	//t reco with resolution and angle cut
+	//t reco with resolution and angle cut (E rec)
 	TH1D* h_t_REC_wRES_cut_pi2 = (TH1D*) file->Get("h_t_REC_wRES_cut_pi2");
 	TH1D* h_t_REC_wRES_cut_pi3 = (TH1D*) file->Get("h_t_REC_wRES_cut_pi3");
 	TH1D* h_t_REC_wRES_cut_pi4 = (TH1D*) file->Get("h_t_REC_wRES_cut_pi4");
@@ -46,38 +44,12 @@ void generate_all_plots(TString filename)
 	TH1D* h_t_REC_wRES_cut_pi16 = (TH1D*) file->Get("h_t_REC_wRES_cut_pi16");
 	TH1D* h_t_REC_wRES_cut_pi20 = (TH1D*) file->Get("h_t_REC_wRES_cut_pi20");
 	TH1D* h_t_REC_wRES_cut_pi24 = (TH1D*) file->Get("h_t_REC_wRES_cut_pi24");
-	//t reco with resolution and angle cut with qz absorbed into qx
-	TH1D* h_t_REC_wRES_cut_pi2_wZ = (TH1D*) file->Get("h_t_REC_wRES_cut_pi2_wZ");
-	TH1D* h_t_REC_wRES_cut_pi3_wZ = (TH1D*) file->Get("h_t_REC_wRES_cut_pi3_wZ");
-	TH1D* h_t_REC_wRES_cut_pi4_wZ = (TH1D*) file->Get("h_t_REC_wRES_cut_pi4_wZ");
-	TH1D* h_t_REC_wRES_cut_pi6_wZ = (TH1D*) file->Get("h_t_REC_wRES_cut_pi6_wZ");
-	TH1D* h_t_REC_wRES_cut_pi9_wZ = (TH1D*) file->Get("h_t_REC_wRES_cut_pi9_wZ");
-	TH1D* h_t_REC_wRES_cut_pi12_wZ = (TH1D*) file->Get("h_t_REC_wRES_cut_pi12_wZ");
-	TH1D* h_t_REC_wRES_cut_pi16_wZ = (TH1D*) file->Get("h_t_REC_wRES_cut_pi16_wZ");
-	TH1D* h_t_REC_wRES_cut_pi20_wZ = (TH1D*) file->Get("h_t_REC_wRES_cut_pi20_wZ");
-	TH1D* h_t_REC_wRES_cut_pi24_wZ = (TH1D*) file->Get("h_t_REC_wRES_cut_pi24_wZ");
-	//t reco with resolution and angle cut with E absorbed into qx
-	TH1D* h_t_REC_wRES_cut_pi2_wE = (TH1D*) file->Get("h_t_REC_wRES_cut_pi2_wE");
-	TH1D* h_t_REC_wRES_cut_pi3_wE = (TH1D*) file->Get("h_t_REC_wRES_cut_pi3_wE");
-	TH1D* h_t_REC_wRES_cut_pi4_wE = (TH1D*) file->Get("h_t_REC_wRES_cut_pi4_wE");
-	TH1D* h_t_REC_wRES_cut_pi6_wE = (TH1D*) file->Get("h_t_REC_wRES_cut_pi6_wE");
-	TH1D* h_t_REC_wRES_cut_pi9_wE = (TH1D*) file->Get("h_t_REC_wRES_cut_pi9_wE");
-	TH1D* h_t_REC_wRES_cut_pi12_wE = (TH1D*) file->Get("h_t_REC_wRES_cut_pi12_wE");
-	TH1D* h_t_REC_wRES_cut_pi16_wE = (TH1D*) file->Get("h_t_REC_wRES_cut_pi16_wE");
-	TH1D* h_t_REC_wRES_cut_pi20_wE = (TH1D*) file->Get("h_t_REC_wRES_cut_pi20_wE");
-	TH1D* h_t_REC_wRES_cut_pi24_wE = (TH1D*) file->Get("h_t_REC_wRES_cut_pi24_wE");
 	//t reco with only resolution no cut and with only cut no resolution (for testing)
 	TH1D* h_t_REC_wRES = (TH1D*) file->Get("h_t_REC_wRES");
-	TH1D* h_t_REC_wRES_wZ = (TH1D*) file->Get("h_t_REC_wRES_wZ");
-	TH1D* h_t_REC_wRES_wE = (TH1D*) file->Get("h_t_REC_wRES_wE");
 	TH1D* h_t_REC_wCUT = (TH1D*) file->Get("h_t_REC_wCUT"); // all angle cuts with no resolution will be the same
-	TH1D* h_t_REC_wCUT_wZ = (TH1D*) file->Get("h_t_REC_wCUT_wZ");
-	TH1D* h_t_REC_wCUT_wE = (TH1D*) file->Get("h_t_REC_wCUT_wE");
 	//t reco 2d
 	TH2D* h_t_REC_2d = (TH2D*) file->Get("h_t_REC_2d");
-	TH2D* h_t_REC_2d_wZ = (TH2D*) file->Get("h_t_REC_2d_wZ");
-	TH2D* h_t_REC_2d_wE = (TH2D*) file->Get("h_t_REC_2d_wE");
-	// t reco 2d with resolution and angle cut
+	// t reco 2d with resolution and angle cut (E rec)
 	TH2D* h_t_REC_2d_wRES_cut_pi2 = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi2");
 	TH2D* h_t_REC_2d_wRES_cut_pi3 = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi3");
 	TH2D* h_t_REC_2d_wRES_cut_pi4 = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi4");
@@ -87,30 +59,8 @@ void generate_all_plots(TString filename)
 	TH2D* h_t_REC_2d_wRES_cut_pi16 = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi16");
 	TH2D* h_t_REC_2d_wRES_cut_pi20 = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi20");
 	TH2D* h_t_REC_2d_wRES_cut_pi24 = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi24");
-	// t reco 2d with resolution and angle cut with qz absorbed into qx
-	TH2D* h_t_REC_2d_wRES_cut_pi2_wZ = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi2_wZ");
-	TH2D* h_t_REC_2d_wRES_cut_pi3_wZ = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi3_wZ");
-	TH2D* h_t_REC_2d_wRES_cut_pi4_wZ = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi4_wZ");
-	TH2D* h_t_REC_2d_wRES_cut_pi6_wZ = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi6_wZ");
-	TH2D* h_t_REC_2d_wRES_cut_pi9_wZ = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi9_wZ");
-	TH2D* h_t_REC_2d_wRES_cut_pi12_wZ = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi12_wZ");
-	TH2D* h_t_REC_2d_wRES_cut_pi16_wZ = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi16_wZ");
-	TH2D* h_t_REC_2d_wRES_cut_pi20_wZ = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi20_wZ");
-	TH2D* h_t_REC_2d_wRES_cut_pi24_wZ = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi24_wZ");
-	// t reco 2d with resolution and angle cut with E absorbed into qx
-	TH2D* h_t_REC_2d_wRES_cut_pi2_wE = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi2_wE");
-	TH2D* h_t_REC_2d_wRES_cut_pi3_wE = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi3_wE");
-	TH2D* h_t_REC_2d_wRES_cut_pi4_wE = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi4_wE");
-	TH2D* h_t_REC_2d_wRES_cut_pi6_wE = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi6_wE");
-	TH2D* h_t_REC_2d_wRES_cut_pi9_wE = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi9_wE");
-	TH2D* h_t_REC_2d_wRES_cut_pi12_wE = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi12_wE");
-	TH2D* h_t_REC_2d_wRES_cut_pi16_wE = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi16_wE");
-	TH2D* h_t_REC_2d_wRES_cut_pi20_wE = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi20_wE");
-	TH2D* h_t_REC_2d_wRES_cut_pi24_wE = (TH2D*) file->Get("h_t_REC_2d_wRES_cut_pi24_wE");
 	//t reco 2d with resolution only
 	TH2D* h_t_REC_2d_wRES = (TH2D*) file->Get("h_t_REC_2d_wRES");
-	TH2D* h_t_REC_2d_wRES_wZ = (TH2D*) file->Get("h_t_REC_2d_wRES_wZ");
-	TH2D* h_t_REC_2d_wRES_wE = (TH2D*) file->Get("h_t_REC_2d_wRES_wE");
 	//t reco 2d with angle cut only
 	TH2D* h_t_REC_2d_wCUT_pi2 = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi2");
 	TH2D* h_t_REC_2d_wCUT_pi3 = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi3");
@@ -121,26 +71,6 @@ void generate_all_plots(TString filename)
 	TH2D* h_t_REC_2d_wCUT_pi16 = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi16");
 	TH2D* h_t_REC_2d_wCUT_pi20 = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi20");
 	TH2D* h_t_REC_2d_wCUT_pi24 = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi24");
-	//t reco 2d with angle cut only with qz absorbed into qx
-	TH2D* h_t_REC_2d_wCUT_pi2_wZ = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi2_wZ");
-	TH2D* h_t_REC_2d_wCUT_pi3_wZ = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi3_wZ");
-	TH2D* h_t_REC_2d_wCUT_pi4_wZ = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi4_wZ");
-	TH2D* h_t_REC_2d_wCUT_pi6_wZ = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi6_wZ");
-	TH2D* h_t_REC_2d_wCUT_pi9_wZ = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi9_wZ");
-	TH2D* h_t_REC_2d_wCUT_pi12_wZ = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi12_wZ");
-	TH2D* h_t_REC_2d_wCUT_pi16_wZ = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi16_wZ");
-	TH2D* h_t_REC_2d_wCUT_pi20_wZ = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi20_wZ");
-	TH2D* h_t_REC_2d_wCUT_pi24_wZ = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi24_wZ");
-	//t reco 2d with angle cut only with E absorbed into qx
-	TH2D* h_t_REC_2d_wCUT_pi2_wE = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi2_wE");
-	TH2D* h_t_REC_2d_wCUT_pi3_wE = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi3_wE");
-	TH2D* h_t_REC_2d_wCUT_pi4_wE = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi4_wE");
-	TH2D* h_t_REC_2d_wCUT_pi6_wE = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi6_wE");
-	TH2D* h_t_REC_2d_wCUT_pi9_wE = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi9_wE");
-	TH2D* h_t_REC_2d_wCUT_pi12_wE = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi12_wE");
-	TH2D* h_t_REC_2d_wCUT_pi16_wE = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi16_wE");
-	TH2D* h_t_REC_2d_wCUT_pi20_wE = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi20_wE");
-	TH2D* h_t_REC_2d_wCUT_pi24_wE = (TH2D*) file->Get("h_t_REC_2d_wCUT_pi24_wE");
 
 	//create canvas for each angle
 	const int numCanvas = 9; 
@@ -168,30 +98,6 @@ void generate_all_plots(TString filename)
 		h_t_REC_wRES_cut_pi20,
 		h_t_REC_wRES_cut_pi24
 	};
-	TH1D* h_t_REC_wRES_cut_wZ[numCanvas] = 
-	{
-		h_t_REC_wRES_cut_pi2_wZ,
-		h_t_REC_wRES_cut_pi3_wZ,
-		h_t_REC_wRES_cut_pi4_wZ,
-		h_t_REC_wRES_cut_pi6_wZ,
-		h_t_REC_wRES_cut_pi9_wZ,
-		h_t_REC_wRES_cut_pi12_wZ,
-		h_t_REC_wRES_cut_pi16_wZ,
-		h_t_REC_wRES_cut_pi20_wZ,
-		h_t_REC_wRES_cut_pi24_wZ
-	};
-	TH1D* h_t_REC_wRES_cut_wE[numCanvas] = 
-	{
-		h_t_REC_wRES_cut_pi2_wE,
-		h_t_REC_wRES_cut_pi3_wE,
-		h_t_REC_wRES_cut_pi4_wE,
-		h_t_REC_wRES_cut_pi6_wE,
-		h_t_REC_wRES_cut_pi9_wE,
-		h_t_REC_wRES_cut_pi12_wE,
-		h_t_REC_wRES_cut_pi16_wE,
-		h_t_REC_wRES_cut_pi20_wE,
-		h_t_REC_wRES_cut_pi24_wE
-	};
 	TH2D* h_t_REC_2d_wRES_cut[numCanvas] = 
 	{
 		h_t_REC_2d_wRES_cut_pi2,
@@ -204,30 +110,6 @@ void generate_all_plots(TString filename)
 		h_t_REC_2d_wRES_cut_pi20,
 		h_t_REC_2d_wRES_cut_pi24
 	};
-	TH2D* h_t_REC_2d_wRES_cut_wZ[numCanvas] = 
-	{
-		h_t_REC_2d_wRES_cut_pi2_wZ,
-		h_t_REC_2d_wRES_cut_pi3_wZ,
-		h_t_REC_2d_wRES_cut_pi4_wZ,
-		h_t_REC_2d_wRES_cut_pi6_wZ,
-		h_t_REC_2d_wRES_cut_pi9_wZ,
-		h_t_REC_2d_wRES_cut_pi12_wZ,
-		h_t_REC_2d_wRES_cut_pi16_wZ,
-		h_t_REC_2d_wRES_cut_pi20_wZ,
-		h_t_REC_2d_wRES_cut_pi24_wZ
-	};
-	TH2D* h_t_REC_2d_wRES_cut_wE[numCanvas] = 
-	{
-		h_t_REC_2d_wRES_cut_pi2_wE,
-		h_t_REC_2d_wRES_cut_pi3_wE,
-		h_t_REC_2d_wRES_cut_pi4_wE,
-		h_t_REC_2d_wRES_cut_pi6_wE,
-		h_t_REC_2d_wRES_cut_pi9_wE,
-		h_t_REC_2d_wRES_cut_pi12_wE,
-		h_t_REC_2d_wRES_cut_pi16_wE,
-		h_t_REC_2d_wRES_cut_pi20_wE,
-		h_t_REC_2d_wRES_cut_pi24_wE
-	};
 	TH2D* h_t_REC_2d_wCUT[numCanvas] = 
 	{
 		h_t_REC_2d_wCUT_pi2,
@@ -239,30 +121,6 @@ void generate_all_plots(TString filename)
 		h_t_REC_2d_wCUT_pi16,
 		h_t_REC_2d_wCUT_pi20,
 		h_t_REC_2d_wCUT_pi24
-	};
-	TH2D* h_t_REC_2d_wCUT_wZ[numCanvas] = 
-	{
-		h_t_REC_2d_wCUT_pi2_wZ,
-		h_t_REC_2d_wCUT_pi3_wZ,
-		h_t_REC_2d_wCUT_pi4_wZ,
-		h_t_REC_2d_wCUT_pi6_wZ,
-		h_t_REC_2d_wCUT_pi9_wZ,
-		h_t_REC_2d_wCUT_pi12_wZ,
-		h_t_REC_2d_wCUT_pi16_wZ,
-		h_t_REC_2d_wCUT_pi20_wZ,
-		h_t_REC_2d_wCUT_pi24_wZ
-	};
-	TH2D* h_t_REC_2d_wCUT_wE[numCanvas] = 
-	{
-		h_t_REC_2d_wCUT_pi2_wE,
-		h_t_REC_2d_wCUT_pi3_wE,
-		h_t_REC_2d_wCUT_pi4_wE,
-		h_t_REC_2d_wCUT_pi6_wE,
-		h_t_REC_2d_wCUT_pi9_wE,
-		h_t_REC_2d_wCUT_pi12_wE,
-		h_t_REC_2d_wCUT_pi16_wE,
-		h_t_REC_2d_wCUT_pi20_wE,
-		h_t_REC_2d_wCUT_pi24_wE
 	};
 
 /*	//reproduce truth plot with our decomposition, no norm
@@ -293,8 +151,6 @@ void generate_all_plots(TString filename)
 		double integral_MC = h_t_MC->Integral();
 		double integral_REC = h_t_REC->Integral();
 		double integral_REC_new_method = h_t_REC_new_method->Integral();
-		double integral_REC_new_method_wZ = h_t_REC_new_method_wZ->Integral();
-		double integral_REC_new_method_wE = h_t_REC_new_method_wE->Integral();
 		// Draw histograms 
 		h_t_MC->Draw("same");
 
@@ -304,14 +160,6 @@ void generate_all_plots(TString filename)
 		h_t_REC_new_method->SetMarkerStyle(30);
 		h_t_REC_new_method->SetMarkerColor(kRed);
 		h_t_REC_new_method->Draw("P same");
-
-		h_t_REC_new_method_wZ->SetMarkerStyle(25);
-		h_t_REC_new_method_wZ->SetMarkerColor(kGreen+1);
-		//h_t_REC_new_method_wZ->Draw("P same");
-
-		h_t_REC_wRES_cut_wE[i]->SetMarkerStyle(5);
-		h_t_REC_wRES_cut_wE[i]->SetMarkerColor(kOrange-3);
-		//h_t_REC_wRES_cut_wE[i]->Draw("P same");
 
 		// Add labels
 		TLatex* r42 = new TLatex(0.18, 0.91, "eAu 18x110 GeV");
@@ -355,8 +203,6 @@ void generate_all_plots(TString filename)
 		w7->AddEntry(h_t_MC, Form("Sartre %s MC %.f evts", vm_label.Data(),integral_MC), "L");
 		w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
 		w7->AddEntry(h_t_REC_new_method, Form("Sartre %s RECO' new meth. %.f evts", vm_label.Data(),integral_REC_new_method), "P");
-		//w7->AddEntry(h_t_REC_new_method_wZ, Form("Sartre %s RECO' new meth. w. z %.f evts", vm_label.Data(),integral_REC_new_method_wZ), "P");
-		//w7->AddEntry(h_t_REC_new_method_wE, Form("Sartre %s RECO' new meth. w. E %.f evts", vm_label.Data(),integral_REC_new_method_wE), "P");
 		w7->Draw("same");
 		// Save figure
 		newMethod_canvases[i]->Print("./figures/noNorm_new_method.pdf");
@@ -391,33 +237,21 @@ void generate_all_plots(TString filename)
 		double integral_MC = h_t_MC->Integral();
 		double integral_REC = h_t_REC->Integral();
 		double integral_REC_new_method = h_t_REC_new_method->Integral();
-		double integral_REC_new_method_wZ = h_t_REC_new_method_wZ->Integral();
-		double integral_REC_new_method_wE = h_t_REC_new_method_wE->Integral();
 		// normalize to total events
-		if(integral_MC>0 && integral_REC_new_method>0 && integral_REC_new_method_wZ>0 && integral_REC_new_method_wE>0) 
+		if(integral_MC>0 && integral_REC_new_method>0) 
 		{
     		h_t_REC_new_method->Scale(integral_MC/integral_REC_new_method);
-			h_t_REC_new_method_wZ->Scale(integral_MC/integral_REC_new_method_wZ);
-			h_t_REC_new_method_wE->Scale(integral_MC/integral_REC_new_method_wE);
 		}
 
 		// Draw histograms 
 		h_t_MC->Draw("same");
 
 		h_t_REC->SetMarkerStyle(20);
-		h_t_REC->Draw("PEsame");
+		//h_t_REC->Draw("PEsame");
 
 		h_t_REC_new_method->SetMarkerStyle(30);
 		h_t_REC_new_method->SetMarkerColor(kRed);
 		h_t_REC_new_method->Draw("P same");
-
-		h_t_REC_new_method_wZ->SetMarkerStyle(25);
-		h_t_REC_new_method_wZ->SetMarkerColor(kGreen+1);
-		//h_t_REC_new_method_wZ->Draw("P same");
-
-		h_t_REC_wRES_cut_wE[i]->SetMarkerStyle(5);
-		h_t_REC_wRES_cut_wE[i]->SetMarkerColor(kOrange-3);
-		//h_t_REC_wRES_cut_wE[i]->Draw("P same");
 
 		// Add labels
 		TLatex* r42 = new TLatex(0.18, 0.91, "eAu 18x110 GeV");
@@ -459,10 +293,8 @@ void generate_all_plots(TString filename)
 		w7->SetTextSize(17);
 		w7->SetTextFont(45);
 		w7->AddEntry(h_t_MC, Form("Sartre %s MC %.f evts", vm_label.Data(),integral_MC), "L");
-		w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
+		//w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
 		w7->AddEntry(h_t_REC_new_method, Form("Sartre %s RECO' new meth. %.f evts", vm_label.Data(),integral_REC_new_method), "P");
-		//w7->AddEntry(h_t_REC_new_method_wZ, Form("Sartre %s RECO' new meth. w. z %.f evts", vm_label.Data(),integral_REC_new_method_wZ), "P");
-		//w7->AddEntry(h_t_REC_new_method_wE, Form("Sartre %s RECO' new meth. w. E %.f evts", vm_label.Data(),integral_REC_new_method_wE), "P");
 		w7->Draw("same");
 
 		TLegend *w8 = new TLegend(0.48,0.61,0.93,0.56);
@@ -471,13 +303,10 @@ void generate_all_plots(TString filename)
 		w8->SetTextSize(17);
 		w8->SetTextFont(45);
 		w8->AddEntry(h_t_REC_new_method,"normalization: #int|#it{t}|_{MC}/#int|#it{t}|_{RECO'}","P");
-		//w8->AddEntry(h_t_REC_new_method_wZ,"","P");
-		//w8->AddEntry(h_t_REC_new_method_wE,"","P");
 		w8->Draw("same");
 		// Save figure
 		totalNorm_newMethod_canvases[i]->Print("./figures/totalNorm_new_method.pdf");
 	}
-
 
 /*  //reproduce truth plot with our decomposition, L norm
 	TCanvas* Lnorm_newMethod_canvases[numCanvas];
@@ -507,30 +336,19 @@ void generate_all_plots(TString filename)
 		double integral_MC = h_t_MC->Integral();
 		double integral_REC = h_t_REC->Integral();
 		double integral_REC_new_method = h_t_REC_new_method->Integral();
-		double integral_REC_new_method_wZ = h_t_REC_new_method_wZ->Integral();
-		double integral_REC_new_method_wE = h_t_REC_new_method_wE->Integral();
+	
 		//normalize
 		h_t_REC_new_method->Scale((M_PI/2)/(M_PI/2));
-		h_t_REC_new_method_wZ->Scale((M_PI/2)/(M_PI/2));
-		h_t_REC_new_method_wE->Scale((M_PI/2)/(M_PI/2));
 
 		// Draw histograms 
 		h_t_MC->Draw("same");
 
 		h_t_REC->SetMarkerStyle(20);
-		h_t_REC->Draw("PEsame");
+		//h_t_REC->Draw("PEsame");
 
 		h_t_REC_new_method->SetMarkerStyle(30);
 		h_t_REC_new_method->SetMarkerColor(kRed);
 		h_t_REC_new_method->Draw("P same");
-
-		h_t_REC_new_method_wZ->SetMarkerStyle(25);
-		h_t_REC_new_method_wZ->SetMarkerColor(kGreen+1);
-		//h_t_REC_new_method_wZ->Draw("P same");
-
-		h_t_REC_wRES_cut_wE[i]->SetMarkerStyle(5);
-		h_t_REC_wRES_cut_wE[i]->SetMarkerColor(kOrange-3);
-		//h_t_REC_wRES_cut_wE[i]->Draw("P same");
 
 		// Add labels
 		TLatex* r42 = new TLatex(0.18, 0.91, "eAu 18x110 GeV");
@@ -572,10 +390,8 @@ void generate_all_plots(TString filename)
 		w7->SetTextSize(17);
 		w7->SetTextFont(45);
 		w7->AddEntry(h_t_MC, Form("Sartre %s MC %.f evts", vm_label.Data(),integral_MC), "L");
-		w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
+		//w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
 		w7->AddEntry(h_t_REC_new_method, Form("Sartre %s RECO' new meth. %.f evts", vm_label.Data(),integral_REC_new_method), "P");
-		//w7->AddEntry(h_t_REC_new_method_wZ, Form("Sartre %s RECO' new meth. w. z %.f evts", vm_label.Data(),integral_REC_new_method_wZ), "P");
-		//w7->AddEntry(h_t_REC_new_method_wE, Form("Sartre %s RECO' new meth. w. E %.f evts", vm_label.Data(),integral_REC_new_method_wE), "P");
 		w7->Draw("same");
 
 		TLegend *w8 = new TLegend(0.48,0.61,0.93,0.56);
@@ -584,8 +400,6 @@ void generate_all_plots(TString filename)
 		w8->SetTextSize(17);
 		w8->SetTextFont(45);
 		w8->AddEntry(h_t_REC_new_method,"normalization: #frac{#pi}{2} / #frac{#pi}{2}","P");
-		//w8->AddEntry(h_t_REC_new_method_wZ,"","P");
-		//w8->AddEntry(h_t_REC_new_method_wE,"","P");
 		w8->Draw("same");
 		// Save figure
 		Lnorm_newMethod_canvases[i]->Print("./figures/Lnorm_new_method.pdf");
@@ -621,32 +435,18 @@ void generate_all_plots(TString filename)
 		double integral_REC = h_t_REC->Integral();
 		double integral_REC_wRES_cut[numCanvas];
 		integral_REC_wRES_cut[i] = h_t_REC_wRES_cut[i]->Integral();
-		double integral_REC_wRES_cut_wZ[numCanvas];
-		integral_REC_wRES_cut_wZ[i] = h_t_REC_wRES_cut_wZ[i]->Integral();
-		double integral_REC_wRES_cut_wE[numCanvas];
-		integral_REC_wRES_cut_wE[i] = h_t_REC_wRES_cut_wE[i]->Integral();
 		// normalize
 		h_t_REC_wRES_cut[i]->Scale((M_PI/2)/(angles[i]));
-		h_t_REC_wRES_cut_wZ[i]->Scale((M_PI/2)/(angles[i]));
-		h_t_REC_wRES_cut_wE[i]->Scale((M_PI/2)/(angles[i]));
 		
 		// Draw histograms with different angle cuts
 		h_t_MC->Draw("same");
 
 		h_t_REC->SetMarkerStyle(20);
-		h_t_REC->Draw("PEsame");
+		//h_t_REC->Draw("PEsame");
 
 		h_t_REC_wRES_cut[i]->SetMarkerStyle(30);
 		h_t_REC_wRES_cut[i]->SetMarkerColor(kRed);
 		h_t_REC_wRES_cut[i]->Draw("P same");
-
-		h_t_REC_wRES_cut_wZ[i]->SetMarkerStyle(25);
-		h_t_REC_wRES_cut_wZ[i]->SetMarkerColor(kGreen+1);
-		//h_t_REC_wRES_cut_wZ[i]->Draw("P same");
-
-		h_t_REC_wRES_cut_wE[i]->SetMarkerStyle(5);
-		h_t_REC_wRES_cut_wE[i]->SetMarkerColor(kOrange-3);
-		//h_t_REC_wRES_cut_wE[i]->Draw("P same");
 
 		// Add labels
 		TLatex* r42 = new TLatex(0.18, 0.91, "eAu 18x110 GeV");
@@ -689,10 +489,8 @@ void generate_all_plots(TString filename)
 		w7->SetTextSize(17);
 		w7->SetTextFont(45);
 		w7->AddEntry(h_t_MC, Form("Sartre %s MC %.f evts", vm_label.Data(),integral_MC), "L");
-		w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
-		w7->AddEntry(h_t_REC_wRES_cut[i], Form("Sartre %s RECO' #theta = %s %.f evts", vm_label.Data(), angleLabels[i].Data(),integral_REC_wRES_cut[i]), "P");
-		//w7->AddEntry(h_t_REC_wRES_cut_wZ[i], Form("Sartre %s RECO' w. z #theta = %s: %.f evts", vm_label.Data(), angleLabels[i].Data(),integral_REC_wRES_cut_wZ[i]), "P");
-		//w7->AddEntry(h_t_REC_wRES_cut_wE[i], Form("Sartre %s RECO' w. E #theta = %s: %.f evts", vm_label.Data(), angleLabels[i].Data(),integral_REC_wRES_cut_wE[i]), "P");
+		//w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
+		w7->AddEntry(h_t_REC_wRES_cut[i], Form("Sartre %s E RECO' #theta = %s %.f evts", vm_label.Data(), angleLabels[i].Data(),integral_REC_wRES_cut[i]), "P");
 		w7->Draw("same");
 
 		TLegend *w8 = new TLegend(0.48,0.61,0.93,0.56);
@@ -701,8 +499,6 @@ void generate_all_plots(TString filename)
 		w8->SetTextSize(17);
 		w8->SetTextFont(45);
 		w8->AddEntry(h_t_REC_wRES_cut[i],"normalization: #frac{#pi}{2} / #theta","P");
-		//w8->AddEntry(h_t_REC_wRES_cut_wZ[i],"","P");
-		//w8->AddEntry(h_t_REC_wRES_cut_wE[i],"","P");
 		w8->Draw("same");
 	
 		// Save figure
@@ -742,35 +538,21 @@ void generate_all_plots(TString filename)
 		double integral_REC = h_t_REC->Integral();
 		double integral_REC_wRES_cut[numCanvas];
 		integral_REC_wRES_cut[i] = h_t_REC_wRES_cut[i]->Integral();
-		double integral_REC_wRES_cut_wZ[numCanvas];
-		integral_REC_wRES_cut_wZ[i] = h_t_REC_wRES_cut_wZ[i]->Integral();
-		double integral_REC_wRES_cut_wE[numCanvas];
-		integral_REC_wRES_cut_wE[i] = h_t_REC_wRES_cut_wE[i]->Integral();
 		// normalize
-		if(integral_MC>0 && integral_REC_wRES_cut[i]>0 && integral_REC_wRES_cut_wZ[i]>0 && integral_REC_wRES_cut_wE[i]>0) 
+		if(integral_MC>0 && integral_REC_wRES_cut[i]>0) 
 		{
     		h_t_REC_wRES_cut[i]->Scale(integral_MC/integral_REC_wRES_cut[i]);
-			h_t_REC_wRES_cut_wZ[i]->Scale(integral_MC/integral_REC_wRES_cut_wZ[i]);
-			h_t_REC_wRES_cut_wE[i]->Scale(integral_MC/integral_REC_wRES_cut_wE[i]);
 		}
 			
 		// Draw histograms with different angle cuts
 		h_t_MC->Draw("same");
 
 		h_t_REC->SetMarkerStyle(20);
-		h_t_REC->Draw("PEsame");
+		//h_t_REC->Draw("PEsame");
 
 		h_t_REC_wRES_cut[i]->SetMarkerStyle(30);
 		h_t_REC_wRES_cut[i]->SetMarkerColor(kRed);
 		h_t_REC_wRES_cut[i]->Draw("P same");
-
-		h_t_REC_wRES_cut_wZ[i]->SetMarkerStyle(25);
-		h_t_REC_wRES_cut_wZ[i]->SetMarkerColor(kGreen+1);
-		//h_t_REC_wRES_cut_wZ[i]->Draw("P same");
-
-		h_t_REC_wRES_cut_wE[i]->SetMarkerStyle(5);
-		h_t_REC_wRES_cut_wE[i]->SetMarkerColor(kOrange-3);
-		//h_t_REC_wRES_cut_wE[i]->Draw("P same");
 
 		// Add labels
 		TLatex* r42 = new TLatex(0.18, 0.91, "eAu 18x110 GeV");
@@ -813,10 +595,8 @@ void generate_all_plots(TString filename)
 		w7->SetTextSize(17);
 		w7->SetTextFont(45);
 		w7->AddEntry(h_t_MC, Form("Sartre %s MC %.f evts", vm_label.Data(),integral_MC), "L");
-		w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
-		w7->AddEntry(h_t_REC_wRES_cut[i], Form("Sartre %s RECO' #theta = %s %.f evts", vm_label.Data(), angleLabels[i].Data(),integral_REC_wRES_cut[i]), "P");
-		//w7->AddEntry(h_t_REC_wRES_cut_wZ[i], Form("Sartre %s RECO' w. z #theta = %s %.f evts", vm_label.Data(), angleLabels[i].Data(),integral_REC_wRES_cut_wZ[i]), "P");
-		//w7->AddEntry(h_t_REC_wRES_cut_wE[i], Form("Sartre %s RECO' w. E #theta = %s %.f evts", vm_label.Data(), angleLabels[i].Data(),integral_REC_wRES_cut_wE[i]), "P");
+		//w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
+		w7->AddEntry(h_t_REC_wRES_cut[i], Form("Sartre %s E RECO' #theta = %s %.f evts", vm_label.Data(), angleLabels[i].Data(),integral_REC_wRES_cut[i]), "P");
 		w7->Draw("same");
 
 		TLegend *w8 = new TLegend(0.48,0.61,0.93,0.56);
@@ -825,8 +605,6 @@ void generate_all_plots(TString filename)
 		w8->SetTextSize(17);
 		w8->SetTextFont(45);
 		w8->AddEntry(h_t_REC_wRES_cut[i],"normalization: #int|#it{t}|_{MC}/#int|#it{t}|_{RECO'}","P");
-		//w8->AddEntry(h_t_REC_wRES_cut_wZ[i],"","P");
-		//w8->AddEntry(h_t_REC_wRES_cut_wE[i],"","P");
 		w8->Draw("same");
 	
 		// Save figure
@@ -866,11 +644,7 @@ void generate_all_plots(TString filename)
 		double integral_REC = h_t_REC->Integral();
 		double integral_REC_wRES_cut[numCanvas];
 		integral_REC_wRES_cut[i] = h_t_REC_wRES_cut[i]->Integral();
-		double integral_REC_wRES_cut_wZ[numCanvas];
-		integral_REC_wRES_cut_wZ[i] = h_t_REC_wRES_cut_wZ[i]->Integral();
-		double integral_REC_wRES_cut_wE[numCanvas];
-		integral_REC_wRES_cut_wE[i] = h_t_REC_wRES_cut_wE[i]->Integral();
-
+		
 		// Draw histograms with different angle cuts
 		h_t_MC->Draw("same");
 
@@ -880,14 +654,6 @@ void generate_all_plots(TString filename)
 		h_t_REC_wRES_cut[i]->SetMarkerStyle(30);
 		h_t_REC_wRES_cut[i]->SetMarkerColor(kRed);
 		h_t_REC_wRES_cut[i]->Draw("P same");
-
-		h_t_REC_wRES_cut_wZ[i]->SetMarkerStyle(25);
-		h_t_REC_wRES_cut_wZ[i]->SetMarkerColor(kGreen+1);
-		//h_t_REC_wRES_cut_wZ[i]->Draw("P same");
-
-		h_t_REC_wRES_cut_wE[i]->SetMarkerStyle(5);
-		h_t_REC_wRES_cut_wE[i]->SetMarkerColor(kOrange-3);
-		//h_t_REC_wRES_cut_wE[i]->Draw("P same");
 
 		// Add labels
 		TLatex* r42 = new TLatex(0.18, 0.91, "eAu 18x110 GeV");
@@ -932,8 +698,6 @@ void generate_all_plots(TString filename)
 		w7->AddEntry(h_t_MC, Form("Sartre %s MC %.f evts", vm_label.Data(),integral_MC), "L");
 		w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
 		w7->AddEntry(h_t_REC_wRES_cut[i], Form("Sartre %s RECO' #theta = %s, %.f evts", vm_label.Data(), angleLabels[i].Data(),integral_REC_wRES_cut[i]), "P");
-		//w7->AddEntry(h_t_REC_wRES_cut_wZ[i], Form("Sartre %s RECO' w. z #theta = %s, %.f evts", vm_label.Data(), angleLabels[i].Data(),integral_REC_wRES_cut_wZ[i]), "P");
-		//w7->AddEntry(h_t_REC_wRES_cut_wE[i], Form("Sartre %s RECO' w. E #theta = %s, %.f evts", vm_label.Data(), angleLabels[i].Data(),integral_REC_wRES_cut_wE[i]), "P");
 		w7->Draw("same");
 		// Save figure
 		TString cleanLabel = angleLabels[i];
@@ -971,30 +735,19 @@ void generate_all_plots(TString filename)
 		double integral_MC = h_t_MC->Integral();
 		double integral_REC = h_t_REC->Integral();
 		double integral_REC_wRES = h_t_REC_wRES->Integral();
-		double integral_REC_wRES_wZ = h_t_REC_wRES_wZ->Integral();
-		double integral_REC_wRES_wE = h_t_REC_wRES_wE->Integral();
+
 		// normalize 
 		h_t_REC_wRES->Scale((M_PI/2)/(M_PI/2));
-		h_t_REC_wRES_wZ->Scale((M_PI/2)/(M_PI/2));
-		h_t_REC_wRES_wE->Scale((M_PI/2)/(M_PI/2));
-
+		
 		// Draw histograms
 		h_t_MC->Draw("same");
 
 		h_t_REC->SetMarkerStyle(20);
-		h_t_REC->Draw("PEsame");
+		//h_t_REC->Draw("PEsame");
 
 		h_t_REC_wRES->SetMarkerStyle(30);
 		h_t_REC_wRES->SetMarkerColor(kRed);
 		h_t_REC_wRES->Draw("P same");
-
-		h_t_REC_wRES_wZ->SetMarkerStyle(25);
-		h_t_REC_wRES_wZ->SetMarkerColor(kGreen+1);
-		//h_t_REC_wRES_wZ->Draw("P same");
-
-		h_t_REC_wRES_wE->SetMarkerStyle(5);
-		h_t_REC_wRES_wE->SetMarkerColor(kOrange-3);
-		//h_t_REC_wRES_wE->Draw("P same");
 
 		// Add labels
 		TLatex* r42 = new TLatex(0.18, 0.91, "eAu 18x110 GeV");
@@ -1037,10 +790,8 @@ void generate_all_plots(TString filename)
 		w7->SetTextSize(17);
 		w7->SetTextFont(45);
 		w7->AddEntry(h_t_MC, Form("Sartre %s MC %.f evts", vm_label.Data(),integral_MC), "L");
-		w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
-		w7->AddEntry(h_t_REC_wRES, Form("Sartre %s RECO' new meth. %.f evts", vm_label.Data(),integral_REC_wRES), "P");
-		//w7->AddEntry(h_t_REC_wRES_wZ, Form("Sartre %s RECO' new meth. w. z %.f evts", vm_label.Data(),integral_REC_wRES_wZ), "P");
-		//w7->AddEntry(h_t_REC_wRES_wE, Form("Sartre %s RECO' new meth. w. E %.f evts", vm_label.Data(),integral_REC_wRES_wE), "P");
+		//w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
+		w7->AddEntry(h_t_REC_wRES, Form("Sartre %s E RECO' new meth. %.f evts", vm_label.Data(),integral_REC_wRES), "P");
 		w7->Draw("same");
 
 		TLegend *w8 = new TLegend(0.48,0.61,0.93,0.56);
@@ -1049,8 +800,6 @@ void generate_all_plots(TString filename)
 		w8->SetTextSize(17);
 		w8->SetTextFont(45);
 		w8->AddEntry(h_t_REC_wRES,"normalization: #frac{#pi}{2} / #frac{#pi}{2}","P");
-		//w8->AddEntry(h_t_REC_wRES_wZ,"","P");
-		//w8->AddEntry(h_t_REC_wRES_wE,"","P");
 		w8->Draw("same");
 
 		//save figure
@@ -1086,33 +835,21 @@ void generate_all_plots(TString filename)
 		double integral_MC = h_t_MC->Integral();
 		double integral_REC = h_t_REC->Integral();
 		double integral_REC_wRES = h_t_REC_wRES->Integral();
-		double integral_REC_wRES_wZ = h_t_REC_wRES_wZ->Integral();
-		double integral_REC_wRES_wE = h_t_REC_wRES_wE->Integral();
 		// normalize
-		if(integral_MC>0 && integral_REC_wRES>0 && integral_REC_wRES_wZ>0 && integral_REC_wRES_wE>0) 
+		if(integral_MC>0 && integral_REC_wRES>0) 
 		{
     		h_t_REC_wRES->Scale(integral_MC/integral_REC_wRES);
-			h_t_REC_wRES_wZ->Scale(integral_MC/integral_REC_wRES_wZ);
-			h_t_REC_wRES_wE->Scale(integral_MC/integral_REC_wRES_wE);
 		}
 
 		// Draw histograms 
 		h_t_MC->Draw("same");
 
 		h_t_REC->SetMarkerStyle(20);
-		h_t_REC->Draw("PEsame");
+		//h_t_REC->Draw("PEsame");
 
 		h_t_REC_wRES->SetMarkerStyle(30);
 		h_t_REC_wRES->SetMarkerColor(kRed);
 		h_t_REC_wRES->Draw("P same");
-
-		h_t_REC_wRES_wZ->SetMarkerStyle(25);
-		h_t_REC_wRES_wZ->SetMarkerColor(kGreen+1);
-		//h_t_REC_wRES_wZ->Draw("P same");
-
-		h_t_REC_wRES_wE->SetMarkerStyle(5);
-		h_t_REC_wRES_wE->SetMarkerColor(kOrange-3);
-		//h_t_REC_wRES_wE->Draw("P same");
 
 		// Add labels
 		TLatex* r42 = new TLatex(0.18, 0.91, "eAu 18x110 GeV");
@@ -1155,10 +892,8 @@ void generate_all_plots(TString filename)
 		w7->SetTextSize(17);
 		w7->SetTextFont(45);
 		w7->AddEntry(h_t_MC, Form("Sartre %s MC %.f evts", vm_label.Data(),integral_MC), "L");
-		w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
-		w7->AddEntry(h_t_REC_wRES, Form("Sartre %s RECO' new meth. %.f evts", vm_label.Data(),integral_REC_wRES), "P");
-		//w7->AddEntry(h_t_REC_wRES_wZ, Form("Sartre %s RECO' new meth. w. z %.f evts", vm_label.Data(),integral_REC_wRES_wZ), "P");
-		//w7->AddEntry(h_t_REC_wRES_wE, Form("Sartre %s RECO' new meth. w. E %.f evts", vm_label.Data(),integral_REC_wRES_wE), "P");
+		//w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
+		w7->AddEntry(h_t_REC_wRES, Form("Sartre %s E RECO' new meth. %.f evts", vm_label.Data(),integral_REC_wRES), "P");
 		w7->Draw("same");
 
 		TLegend *w8 = new TLegend(0.48,0.61,0.93,0.56);
@@ -1167,8 +902,6 @@ void generate_all_plots(TString filename)
 		w8->SetTextSize(17);
 		w8->SetTextFont(45);
 		w8->AddEntry(h_t_REC_wRES,"normalization: #int|#it{t}|_{MC}/#int|#it{t}|_{RECO'}","P");
-		//w8->AddEntry(h_t_REC_wRES_wZ,"","P");
-		//w8->AddEntry(h_t_REC_wRES_wE,"","P");
 		w8->Draw("same");
 	
 		// Save figure
@@ -1204,8 +937,6 @@ void generate_all_plots(TString filename)
 		double integral_MC = h_t_MC->Integral();
 		double integral_REC = h_t_REC->Integral();
 		double integral_REC_wRES = h_t_REC_wRES->Integral();
-		double integral_REC_wRES_wZ = h_t_REC_wRES_wZ->Integral();
-		double integral_REC_wRES_wE = h_t_REC_wRES_wE->Integral();
 		
 		// Draw histograms 
 		h_t_MC->Draw("same");
@@ -1216,15 +947,7 @@ void generate_all_plots(TString filename)
 		h_t_REC_wRES->SetMarkerStyle(30);
 		h_t_REC_wRES->SetMarkerColor(kRed);
 		h_t_REC_wRES->Draw("P same");
-
-		h_t_REC_wRES_wZ->SetMarkerStyle(25);
-		h_t_REC_wRES_wZ->SetMarkerColor(kGreen+1);
-		//h_t_REC_wRES_wZ->Draw("P same");
-
-		h_t_REC_wRES_wE->SetMarkerStyle(5);
-		h_t_REC_wRES_wE->SetMarkerColor(kOrange-3);
-		//h_t_REC_wRES_wE->Draw("P same");
-
+		
 		// Add labels
 		TLatex* r42 = new TLatex(0.18, 0.91, "eAu 18x110 GeV");
 		r42->SetNDC();
@@ -1268,8 +991,6 @@ void generate_all_plots(TString filename)
 		w7->AddEntry(h_t_MC, Form("Sartre %s MC: %.f evts", vm_label.Data(),integral_MC), "L");
 		w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC: %.f evts", vm_label.Data(),integral_REC), "P");
 		w7->AddEntry(h_t_REC_wRES, Form("Sartre %s RECO' new method: %.f evts", vm_label.Data(),integral_REC_wRES), "P");
-		//w7->AddEntry(h_t_REC_wRES_wZ, Form("Sartre %s RECO' new method w. z: %.f evts", vm_label.Data(),integral_REC_wRES_wZ), "P");
-		//w7->AddEntry(h_t_REC_wRES_wE, Form("Sartre %s RECO' new method w. E: %.f evts", vm_label.Data(),integral_REC_wRES_wE), "P");
 		w7->Draw("same");
 
 		// Save figure
@@ -1305,33 +1026,22 @@ void generate_all_plots(TString filename)
 		double integral_MC = h_t_MC->Integral();
 		double integral_REC = h_t_REC->Integral();
 		double integral_REC_wCut = h_t_REC_wCUT->Integral();
-		double integral_REC_wCut_wZ = h_t_REC_wCUT_wZ->Integral();
-		double integral_REC_wCut_wE = h_t_REC_wCUT_wZ->Integral();
+	
 		// normalize
-		if(integral_MC>0 && integral_REC_wCut>0 && integral_REC_wCut_wZ>0 && integral_REC_wCut_wE>0) 
+		if(integral_MC>0 && integral_REC_wCut>0) 
 		{
     		h_t_REC_wCUT->Scale(integral_MC/integral_REC_wCut);
-			h_t_REC_wCUT_wZ->Scale(integral_MC/integral_REC_wCut_wZ);
-			h_t_REC_wCUT_wE->Scale(integral_MC/integral_REC_wCut_wE);
 		}
 
 		// Draw histograms with different angle cuts
 		h_t_MC->Draw("same");
 
 		h_t_REC->SetMarkerStyle(20);
-		h_t_REC->Draw("PEsame");
+		//h_t_REC->Draw("PEsame");
 
 		h_t_REC_wCUT->SetMarkerStyle(30);
 		h_t_REC_wCUT->SetMarkerColor(kRed);
 		h_t_REC_wCUT->Draw("P same");
-
-		h_t_REC_wCUT_wZ->SetMarkerStyle(25);
-		h_t_REC_wCUT_wZ->SetMarkerColor(kGreen+1);
-		//h_t_REC_wCUT_wZ->Draw("P same");
-
-		h_t_REC_wCUT_wE->SetMarkerStyle(5);
-		h_t_REC_wCUT_wE->SetMarkerColor(kOrange-3);
-		//h_t_REC_wCUT_wE->Draw("P same");
 
 		// Add labels
 		TLatex* r42 = new TLatex(0.18, 0.91, "eAu 18x110 GeV");
@@ -1374,10 +1084,8 @@ void generate_all_plots(TString filename)
 		w7->SetTextSize(17);
 		w7->SetTextFont(45);
 		w7->AddEntry(h_t_MC, Form("Sartre %s MC %.f evts", vm_label.Data(),integral_MC), "L");
-		w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
-		w7->AddEntry(h_t_REC_wCUT, Form("Sartre %s RECO' #theta = #pi/9 %.f evts", vm_label.Data(),integral_REC_wCut), "P");
-		//w7->AddEntry(h_t_REC_wCUT_wZ, Form("Sartre %s RECO' w. z #theta = #pi/9 %.f evts", vm_label.Data(),integral_REC_wCut_wZ), "P");
-		//w7->AddEntry(h_t_REC_wCUT_wE, Form("Sartre %s RECO' w. E #theta = #pi/9 %.f evts", vm_label.Data(),integral_REC_wCut_wE), "P");
+		//w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
+		w7->AddEntry(h_t_REC_wCUT, Form("Sartre %s E RECO' #theta = #pi/9 %.f evts", vm_label.Data(),integral_REC_wCut), "P");
 		w7->Draw("same");
 
 		TLegend *w8 = new TLegend(0.48,0.61,0.93,0.56);
@@ -1386,8 +1094,6 @@ void generate_all_plots(TString filename)
 		w8->SetTextSize(17);
 		w8->SetTextFont(45);
 		w8->AddEntry(h_t_REC_wCUT,"normalization: #int|#it{t}|_{MC}/#int|#it{t}|_{RECO'}","P");
-		//w8->AddEntry(h_t_REC_wCUT_wZ,"","P");
-		//w8->AddEntry(h_t_REC_wCUT_wE,"","P");
 		w8->Draw("same");
 
 		// Save figure
@@ -1423,30 +1129,19 @@ void generate_all_plots(TString filename)
 		double integral_MC = h_t_MC->Integral();
 		double integral_REC = h_t_REC->Integral();
 		double integral_REC_wCut = h_t_REC_wCUT->Integral();
-		double integral_REC_wCut_wZ = h_t_REC_wCUT_wZ->Integral();
-		double integral_REC_wCut_wE = h_t_REC_wCUT_wE->Integral();
+		
 		// normalize
 		h_t_REC_wCUT->Scale((M_PI/2)/(M_PI/9));
-		h_t_REC_wCUT_wZ->Scale((M_PI/2)/(M_PI/9));
-		h_t_REC_wCUT_wE->Scale((M_PI/2)/(M_PI/9));
 
 		// Draw histograms with different angle cuts
 		h_t_MC->Draw("same");
 
 		h_t_REC->SetMarkerStyle(20);
-		h_t_REC->Draw("PEsame");
+		//h_t_REC->Draw("PEsame");
 
 		h_t_REC_wCUT->SetMarkerStyle(30);
 		h_t_REC_wCUT->SetMarkerColor(kRed);
 		h_t_REC_wCUT->Draw("P same");
-
-		h_t_REC_wCUT_wZ->SetMarkerStyle(25);
-		h_t_REC_wCUT_wZ->SetMarkerColor(kGreen+1);
-		//h_t_REC_wCUT_wZ->Draw("P same");
-
-		h_t_REC_wCUT_wE->SetMarkerStyle(5);
-		h_t_REC_wCUT_wE->SetMarkerColor(kOrange-3);
-		//h_t_REC_wCUT_wE->Draw("P same");
 
 		// Add labels
 		TLatex* r42 = new TLatex(0.18, 0.91, "eAu 18x110 GeV");
@@ -1489,10 +1184,8 @@ void generate_all_plots(TString filename)
 		w7->SetTextSize(17);
 		w7->SetTextFont(45);
 		w7->AddEntry(h_t_MC, Form("Sartre %s MC %.f evts", vm_label.Data(),integral_MC), "L");
-		w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
+		//w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
 		w7->AddEntry(h_t_REC_wCUT, Form("Sartre %s RECO' #theta = #pi/9 %.f evts", vm_label.Data(),integral_REC_wCut), "P");
-		//w7->AddEntry(h_t_REC_wCUT_wZ, Form("Sartre %s RECO' w. z #theta = #pi/9 %.f evts", vm_label.Data(),integral_REC_wCut_wZ), "P");
-		//w7->AddEntry(h_t_REC_wCUT_wE, Form("Sartre %s RECO' w. E #theta = #pi/9 %.f evts", vm_label.Data(),integral_REC_wCut_wE), "P");
 		w7->Draw("same");
 
 		TLegend *w8 = new TLegend(0.48,0.61,0.93,0.56);
@@ -1501,8 +1194,6 @@ void generate_all_plots(TString filename)
 		w8->SetTextSize(17);
 		w8->SetTextFont(45);
 		w8->AddEntry(h_t_REC_wCUT,"normalization: #frac{#pi}{2} / #theta_{max}","P");
-		//w8->AddEntry(h_t_REC_wCUT_wZ,"","P");
-		//w8->AddEntry(h_t_REC_wCUT_wE,"","P");
 		w8->Draw("same");
 
 		// Save figure
@@ -1538,9 +1229,7 @@ void generate_all_plots(TString filename)
 		double integral_MC = h_t_MC->Integral();
 		double integral_REC = h_t_REC->Integral();
 		double integral_REC_wCut = h_t_REC_wCUT->Integral();
-		double integral_REC_wCut_wZ = h_t_REC_wCUT_wZ->Integral();
-		double integral_REC_wCut_wE = h_t_REC_wCUT_wE->Integral();
-
+		
 		// Draw histograms with different angle cuts
 		h_t_MC->Draw("same");
 
@@ -1550,14 +1239,6 @@ void generate_all_plots(TString filename)
 		h_t_REC_wCUT->SetMarkerStyle(30);
 		h_t_REC_wCUT->SetMarkerColor(kRed);
 		h_t_REC_wCUT->Draw("P same");
-
-		h_t_REC_wCUT_wZ->SetMarkerStyle(25);
-		h_t_REC_wCUT_wZ->SetMarkerColor(kGreen+1);
-		//h_t_REC_wCUT_wZ->Draw("P same");
-
-		h_t_REC_wCUT_wE->SetMarkerStyle(5);
-		h_t_REC_wCUT_wE->SetMarkerColor(kOrange-3);
-		//h_t_REC_wCUT_wE->Draw("P same");
 
 		// Add labels
 		TLatex* r42 = new TLatex(0.18, 0.91, "eAu 18x110 GeV");
@@ -1602,8 +1283,6 @@ void generate_all_plots(TString filename)
 		w7->AddEntry(h_t_MC, Form("Sartre %s MC %.f evts", vm_label.Data(),integral_MC), "L");
 		w7->AddEntry(h_t_REC, Form("Sartre %s RECO w. EEMC %.f evts", vm_label.Data(),integral_REC), "P");
 		w7->AddEntry(h_t_REC_wCUT, Form("Sartre %s RECO' #theta = #pi/9 %.f evts", vm_label.Data(),integral_REC_wCut), "P");
-		//w7->AddEntry(h_t_REC_wCUT_wZ, Form("Sartre %s RECO' w. z #theta = #pi/9 %.f evts", vm_label.Data(),integral_REC_wCut_wZ), "P");
-		//w7->AddEntry(h_t_REC_wCUT_wE, Form("Sartre %s RECO' w. E #theta = #pi/9 %.f evts", vm_label.Data(),integral_REC_wCut_wE), "P");
 		w7->Draw("same");
 
 		// Save figure
@@ -1611,7 +1290,8 @@ void generate_all_plots(TString filename)
 	}
 */
 
-/*	//2d plot truth
+/*
+	//2d plot truth
 	TCanvas* canvases_2d[numCanvas];
 	for (int i=0; i<1; i++) 
 	{
@@ -1624,37 +1304,10 @@ void generate_all_plots(TString filename)
 		// Save figure
 		canvases_2d[i]->Print("./figures/2d.pdf");
 	}
+*/
 
-	//2d plot truth with z component in qx
-	TCanvas* canvases_2d_wZ[numCanvas];
-	for (int i=0; i<1; i++) 
-	{
-    	TString canvasName = Form("2d_wZ_c%d", i+1);
-    	canvases_2d_wZ[i] = new TCanvas(canvasName, canvasName, 1, 1, 600, 600);
-    	gPad->SetLogz(1);
-		gPad->SetLeftMargin(0.15);
-		// Draw histograms with resolution
-		h_t_REC_2d_wZ->Draw();
-		// Save figure
-		canvases_2d_wZ[i]->Print("./figures/2d_wZ.pdf");
-	}
-
-	//2d plot truth with E component in qx
-	TCanvas* canvases_2d_wE[numCanvas];
-	for (int i=0; i<1; i++) 
-	{
-    	TString canvasName = Form("2d_wE_c%d", i+1);
-    	canvases_2d_wE[i] = new TCanvas(canvasName, canvasName, 1, 1, 600, 600);
-    	gPad->SetLogz(1);
-		gPad->SetLeftMargin(0.15);
-		// Draw histograms with resolution
-		h_t_REC_2d_wE->Draw();
-		// Save figure
-		canvases_2d_wE[i]->Print("./figures/2d_wE.pdf");
-	}
-
-
-	//2d plots with resolution and cut
+/*
+	//2d plots with resolution and cut (E rec)
 	TCanvas* canvases_2dresCut[numCanvas];
 	for (int i=0; i<numCanvas; i++) 
 	{
@@ -1665,7 +1318,7 @@ void generate_all_plots(TString filename)
 		// Draw histograms with different angle cuts
 		h_t_REC_2d_wRES_cut[i]->Draw();
 		// Add labels
-		TLatex* r46 = new TLatex(0.45, 0.92, Form("#theta_{max}= %s",angleLabels[i].Data()));
+		TLatex* r46 = new TLatex(0.45, 0.92, Form("E rec #theta_{max}= %s",angleLabels[i].Data()));
 		r46->SetNDC();
 		r46->SetTextSize(15);
 		r46->SetTextFont(43);
@@ -1677,56 +1330,10 @@ void generate_all_plots(TString filename)
 		cleanLabel.ReplaceAll("/", "");
 		canvases_2dresCut[i]->Print(Form("./figures/2d_angle%s_wRES_cut.pdf",cleanLabel.Data()));
 	}
+*/
 
-	//2d plots with resolution and cut with z absorbed into qx
-	TCanvas* canvases_2dresCut_wZ[numCanvas];
-	for (int i=0; i<numCanvas; i++) 
-	{
-    	TString canvasName = Form("2dresCut_wZ_c%d", i+1);
-    	canvases_2dresCut_wZ[i] = new TCanvas(canvasName, canvasName, 1, 1, 600, 600);
-    	gPad->SetLogz(1);
-		gPad->SetLeftMargin(0.15);
-		// Draw histograms with different angle cuts
-		h_t_REC_2d_wRES_cut_wZ[i]->Draw();
-		// Add labels
-		TLatex* r46 = new TLatex(0.45, 0.92, Form("#theta_{max}= %s",angleLabels[i].Data()));
-		r46->SetNDC();
-		r46->SetTextSize(15);
-		r46->SetTextFont(43);
-		r46->SetTextColor(kBlack);
-		r46->Draw("same");
-		// Save figure
-		TString cleanLabel = angleLabels[i];
-		cleanLabel.ReplaceAll("#", "");
-		cleanLabel.ReplaceAll("/", "");
-		canvases_2dresCut_wZ[i]->Print(Form("./figures/2d_angle%s_wZ_wRES_cut.pdf",cleanLabel.Data()));
-	}
-
-	//2d plots with resolution and cut with E absorbed into qx
-	TCanvas* canvases_2dresCut_wE[numCanvas];
-	for (int i=0; i<numCanvas; i++) 
-	{
-    	TString canvasName = Form("2dresCut_wE_c%d", i+1);
-    	canvases_2dresCut_wE[i] = new TCanvas(canvasName, canvasName, 1, 1, 600, 600);
-    	gPad->SetLogz(1);
-		gPad->SetLeftMargin(0.15);
-		// Draw histograms with different angle cuts
-		h_t_REC_2d_wRES_cut_wE[i]->Draw();
-		// Add labels
-		TLatex* r46 = new TLatex(0.45, 0.92, Form("#theta_{max}= %s",angleLabels[i].Data()));
-		r46->SetNDC();
-		r46->SetTextSize(15);
-		r46->SetTextFont(43);
-		r46->SetTextColor(kBlack);
-		r46->Draw("same");
-		// Save figure
-		TString cleanLabel = angleLabels[i];
-		cleanLabel.ReplaceAll("#", "");
-		cleanLabel.ReplaceAll("/", "");
-		canvases_2dresCut_wE[i]->Print(Form("./figures/2d_angle%s_wE_wRES_cut.pdf",cleanLabel.Data()));
-	}
-
-	//2d plot with resolution 
+/*
+	//2d plot with resolution (E rec)
 	TCanvas* canvases_2dres[numCanvas];
 	for (int i=0; i<1; i++) 
 	{
@@ -1736,38 +1343,18 @@ void generate_all_plots(TString filename)
 		gPad->SetLeftMargin(0.15);
 		// Draw histograms with resolution
 		h_t_REC_2d_wRES->Draw();
+		TLatex* r46 = new TLatex(0.45, 0.92, Form("E rec");
+		r46->SetNDC();
+		r46->SetTextSize(15);
+		r46->SetTextFont(43);
+		r46->SetTextColor(kBlack);
+		r46->Draw("same");
 		// Save figure
 		canvases_2dres[i]->Print("./figures/2d_wRES.pdf");
 	}
-	
-	//2d plot with resolution with z absorbed into qx
-	TCanvas* canvases_2dres_wZ[numCanvas];
-	for (int i=0; i<1; i++) 
-	{
-    	TString canvasName = Form("2dres_wZ_c%d", i+1);
-    	canvases_2dres_wZ[i] = new TCanvas(canvasName, canvasName, 1, 1, 600, 600);
-    	gPad->SetLogz(1);
-		gPad->SetLeftMargin(0.15);
-		// Draw histograms with resolution
-		h_t_REC_2d_wRES_wZ->Draw();
-		// Save figure
-		canvases_2dres_wZ[i]->Print("./figures/2d_wZ_wRES.pdf");
-	}
+*/
 
-	//2d plot with resolution with E absorbed into qx
-	TCanvas* canvases_2dres_wE[numCanvas];
-	for (int i=0; i<1; i++) 
-	{
-    	TString canvasName = Form("2dres_wE_c%d", i+1);
-    	canvases_2dres_wE[i] = new TCanvas(canvasName, canvasName, 1, 1, 600, 600);
-    	gPad->SetLogz(1);
-		gPad->SetLeftMargin(0.15);
-		// Draw histograms with resolution
-		h_t_REC_2d_wRES_wE->Draw();
-		// Save figure
-		canvases_2dres_wE[i]->Print("./figures/2d_wE_wRES.pdf");
-	}
-
+/*
 	//2d plots with cut
 	TCanvas* canvases_2dCut[numCanvas];
 	for (int i=0; i<numCanvas; i++) 
@@ -1792,55 +1379,6 @@ void generate_all_plots(TString filename)
 		cleanLabel.ReplaceAll("/", "");
 		canvases_2dCut[i]->Print(Form("./figures/2d_angle%s_wCUT.pdf",cleanLabel.Data()));
 	}
-
-	//2d plots with cut with z absorbed into qx
-	TCanvas* canvases_2dCut_wZ[numCanvas];
-	for (int i=0; i<numCanvas; i++) 
-	{
-    	TString canvasName = Form("2dCut_wZ_c%d", i+1);
-    	canvases_2dCut_wZ[i] = new TCanvas(canvasName, canvasName, 1, 1, 600, 600);
-    	gPad->SetLogz(1);
-		gPad->SetLeftMargin(0.15);
-		// Draw histograms with different angle cuts
-		h_t_REC_2d_wCUT_wZ[i]->Draw();
-
-		// Add labels
-		TLatex* r46 = new TLatex(0.45, 0.92, Form("#theta_{max}= %s",angleLabels[i].Data()));
-		r46->SetNDC();
-		r46->SetTextSize(15);
-		r46->SetTextFont(43);
-		r46->SetTextColor(kBlack);
-		r46->Draw("same");
-		// Save figure
-		TString cleanLabel = angleLabels[i];
-		cleanLabel.ReplaceAll("#", "");
-		cleanLabel.ReplaceAll("/", "");
-		canvases_2dCut_wZ[i]->Print(Form("./figures/2d_angle%s_wZ_wCUT.pdf",cleanLabel.Data()));
-	}
-
-	//2d plots with cut with E absorbed into qx
-	TCanvas* canvases_2dCut_wE[numCanvas];
-	for (int i=0; i<numCanvas; i++) 
-	{
-    	TString canvasName = Form("2dCut_wE_c%d", i+1);
-    	canvases_2dCut_wE[i] = new TCanvas(canvasName, canvasName, 1, 1, 600, 600);
-    	gPad->SetLogz(1);
-		gPad->SetLeftMargin(0.15);
-		// Draw histograms with different angle cuts
-		h_t_REC_2d_wCUT_wE[i]->Draw();
-
-		// Add labels
-		TLatex* r46 = new TLatex(0.45, 0.92, Form("#theta_{max}= %s",angleLabels[i].Data()));
-		r46->SetNDC();
-		r46->SetTextSize(15);
-		r46->SetTextFont(43);
-		r46->SetTextColor(kBlack);
-		r46->Draw("same");
-		// Save figure
-		TString cleanLabel = angleLabels[i];
-		cleanLabel.ReplaceAll("#", "");
-		cleanLabel.ReplaceAll("/", "");
-		canvases_2dCut_wE[i]->Print(Form("./figures/2d_angle%s_wE_wCUT.pdf",cleanLabel.Data()));
-	}
 */
+
 }

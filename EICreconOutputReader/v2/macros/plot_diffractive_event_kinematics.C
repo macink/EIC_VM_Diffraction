@@ -21,7 +21,7 @@ void plot_diffractive_event_kinematics(TString filename)
     TH1D* h_energy_REC = (TH1D*) file->Get("h_energy_REC");
     //Epz
     TH1D* h_Epz_REC = (TH1D*) file->Get("h_Epz_REC");
-    TH1D* h_trk_Epz_REC = (TH1D*) file->Get("h_trk_Epz_REC");
+    TH1D* h_Epz_MC = (TH1D*) file->Get("h_Epz_MC");
  	//cluster
     TH1D* h_EoverP_REC = (TH1D*) file->Get("h_EoverP_REC");  
     TH2D* h_emHits_position_REC = (TH2D*) file->Get("h_emHits_position_REC");//default cluster positio
@@ -90,15 +90,17 @@ void plot_diffractive_event_kinematics(TString filename)
     gPad->SetLogy(1);
     gPad->SetLeftMargin(0.13);
 	gPad->SetBottomMargin(0.15);
-	h_Epz_REC->GetXaxis()->SetTitleSize(0.8*h_Epz_REC->GetXaxis()->GetTitleSize());
-	h_Epz_REC->GetXaxis()->SetLabelSize(0.8*h_Epz_REC->GetXaxis()->GetLabelSize());
-	h_Epz_REC->GetYaxis()->SetTitleSize(0.8*h_Epz_REC->GetYaxis()->GetTitleSize());
-	h_Epz_REC->GetYaxis()->SetLabelSize(0.8*h_Epz_REC->GetYaxis()->GetLabelSize());
-	h_Epz_REC->GetXaxis()->SetTitleOffset(1.6*h_Epz_REC->GetXaxis()->GetTitleOffset());
-	h_Epz_REC->GetYaxis()->SetTitleOffset(2.5*h_Epz_REC->GetYaxis()->GetTitleOffset());
-	h_Epz_REC->GetYaxis()->SetTitle("counts");
+	h_Epz_MC->GetXaxis()->SetTitleSize(0.8*h_Epz_MC->GetXaxis()->GetTitleSize());
+	h_Epz_MC->GetXaxis()->SetLabelSize(0.8*h_Epz_MC->GetXaxis()->GetLabelSize());
+	h_Epz_MC->GetYaxis()->SetTitleSize(0.8*h_Epz_MC->GetYaxis()->GetTitleSize());
+	h_Epz_MC->GetYaxis()->SetLabelSize(0.8*h_Epz_MC->GetYaxis()->GetLabelSize());
+	h_Epz_MC->GetXaxis()->SetTitleOffset(1.6*h_Epz_MC->GetXaxis()->GetTitleOffset());
+	h_Epz_MC->GetYaxis()->SetTitleOffset(2.5*h_Epz_MC->GetYaxis()->GetTitleOffset());
+	h_Epz_MC->GetYaxis()->SetTitle("counts");
+	h_Epz_MC->Draw();
     h_Epz_REC->SetMarkerStyle(24);
     h_Epz_REC->Draw("PEsame");
+	w7->Draw("same");
 
     c1->cd(5);
     gPad->SetLogy(1);
@@ -111,7 +113,7 @@ void plot_diffractive_event_kinematics(TString filename)
 	h_energy_calibration_REC->GetXaxis()->SetTitleOffset(1.6*h_energy_calibration_REC->GetXaxis()->GetTitleOffset());
 	h_energy_calibration_REC->GetYaxis()->SetTitleOffset(2.5*h_energy_calibration_REC->GetYaxis()->GetTitleOffset());
 	h_energy_calibration_REC->GetYaxis()->SetTitle("counts");
-	h_energy_calibration_REC->GetXaxis()->SetTitle("E_{reco} / E_{mc}");
+	h_energy_calibration_REC->GetXaxis()->SetTitle("E_{RECO} / E_{MC}");
     h_energy_calibration_REC->SetMarkerStyle(24);
     h_energy_calibration_REC->Draw("PEsame");
 
@@ -154,7 +156,7 @@ void plot_diffractive_event_kinematics(TString filename)
 	h_emHits_position_REC->GetXaxis()->SetTitleOffset(1.6*h_emHits_position_REC->GetXaxis()->GetTitleOffset());
 	h_emHits_position_REC->GetYaxis()->SetTitleOffset(2.*h_emHits_position_REC->GetYaxis()->GetTitleOffset());
 	h_emHits_position_REC->GetYaxis()->CenterTitle();
-	h_emHits_position_REC->GetYaxis()->SetTitle("y(mm)");
+	h_emHits_position_REC->GetYaxis()->SetTitle("y [mm]");
     h_emHits_position_REC->Draw("colzsame");
 
 	c1->Print("./figures/benchmark-phi-kinematics.pdf");
