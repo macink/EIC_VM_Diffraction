@@ -189,13 +189,6 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
     TTreeReaderArray<float> omd_y_array = {tree_reader, "ForwardOffMTrackerRecHits.position.y"};
     TTreeReaderArray<float> omd_z_array = {tree_reader, "ForwardOffMTrackerRecHits.position.z"};
 
-    //Reconstructed all central + B0 tracks
-    //not sure if i want these or not??
-    /*TTreeReaderArray<float> reco_px_array = {tree_reader, "ReconstructedTruthSeededChargedParticles.momentum.x"};
-    TTreeReaderArray<float> reco_py_array = {tree_reader, "ReconstructedTruthSeededChargedParticles.momentum.y"};
-    TTreeReaderArray<float> reco_pz_array = {tree_reader, "ReconstructedTruthSeededChargedParticles.momentum.z"};
-    TTreeReaderArray<float> reco_charge_array = {tree_reader, "ReconstructedTruthSeededChargedParticles.charge"};*/
-
     TString output_name_dir = outputfile+"_output.root";
     cout << "Output file = " << output_name_dir << endl;
     TFile* output = new TFile(output_name_dir,"RECREATE");
@@ -204,138 +197,352 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
     Event* event = nullptr;
     outputTree->Branch("event", &event);
 
+    /*
+        Below are all of the histograms for analysis,
+        they are labelled accordingly
+        "_MC_after" refers the histogram being generated after the
+            MC event cut
+        "_cut" refers to the histogram being generated after the event 
+            has been accepted by the position threshold
+        "_cut2" refers to the histogram being generated for events
+            that were rejected from the position theshold
+    */
+
     // MC events
-    TH1D* h_t_MC = new TH1D("h_t_MC",";|t|_{MC} [GeV/c]^{2}; counts",100,0,0.2);
     TH1D* h_Q2_e = new TH1D("h_Q2_e",";Q^{2}_{MC} [GeV/c]^{2}",100,1,10);
 	TH1D* h_y_e = new TH1D("h_y_e",";y_{MC}",100,0.01,0.85);
 	TH1D* h_energy_MC = new TH1D("h_energy_MC",";E_{MC} [GeV]",100,0,20);
-	TH1D* h_eta_MC = new TH1D("h_eta_MC",";#eta_{MC}",100,-3.14,3.14);
+    TH1D* h_energy_MC_after = new TH1D("h_energy_MC_after",";E_{MC} [GeV]",100,0,20);
 	TH1D* h_e_pt_MC = new TH1D("h_e_pt_MC",";p_{T,e,MC} [GeV/c]",200,0,2);
+    TH1D* h_e_pt_MC_after = new TH1D("h_e_pt_MC_after",";p_{T,e,MC} [GeV/c]",200,0,2);
 	TH1D* h_e_pz_MC = new TH1D("h_e_pz_MC",";p_{z,e,MC} [GeV/c]",200,0,2);
+    TH1D* h_e_pz_MC_after = new TH1D("h_e_pz_MC_after",";p_{z,e,MC} [GeV/c]",200,0,2);
 	TH1D* h_e_p_MC = new TH1D("h_e_p_MC",";p_{e,MC} [GeV/c]",200,0,2);
+    TH1D* h_e_p_MC_after = new TH1D("h_e_p_MC_after",";p_{e,MC} [GeV/c]",200,0,2);
+    TH1D* h_eta_MC = new TH1D("h_eta_MC",";#eta_{MC}",100,-3.14,3.14);
+    TH1D* h_eta_MC_after = new TH1D("h_eta_MC_after",";#eta_{MC}",100,-3.14,3.14);
 	TH1D* h_phi_MC = new TH1D("h_phi_MC",";#phi_{MC}",100,-3.14,3.14);
+    TH1D* h_phi_MC_after = new TH1D("h_phi_MC_after",";#phi_{MC}",100,-3.14,3.14);
 	TH1D* h_theta_MC = new TH1D("h_theta_MC",";#theta_{MC}",100,-3.14,3.14);
-	// RECO EEMC
-    TH1D* h_Q2REC_e_EEMC = new TH1D("h_Q2REC_e_EEMC",";Q^{2}_{EEMC} [GeV/c]^{2}",100,1,10);
-	TH1D* h_yREC_e_EEMC = new TH1D("h_yREC_e_EEMC",";y_{EEMC}",100,0.01,0.85);
-	TH1D* h_energy_REC_EEMC = new TH1D("h_energy_REC_EEMC",";E_{EEMC} [GeV]",100,0,20);
-	TH1D* h_eta_REC_EEMC = new TH1D("h_eta_REC_EEMC",";#eta_{EEMC}",100,-3.14,3.14);
-	TH1D* h_e_pt_REC_EEMC = new TH1D("h_e_pt_REC_EEMC",";p_{T,e,EEMC} [GeV/c]",200,0,2);
-	TH1D* h_e_pz_REC_EEMC = new TH1D("h_e_pz_REC_EEMC",";p_{z,e,EEMC} [GeV/c]",200,0,2);
-	TH1D* h_e_p_REC_EEMC = new TH1D("h_e_p_REC_EEMC",";p_{e,EEMC} [GeV/c]",200,0,2);
-	TH1D* h_phi_REC_EEMC = new TH1D("h_phi_REC_EEMC",";#phi_{EEMC}",100,-3.14,3.14);
-    TH1D* h_theta_REC_EEMC = new TH1D("h_theta_REC_EEMC",";#theta_{EEMC}",100,-3.14,3.14);
-	// RECO track
-    TH1D* h_Q2REC_e_trk = new TH1D("h_Q2REC_e_trk",";Q^{2}_{trk} [GeV/c]^{2}",100,1,10);
-    TH1D* h_yREC_e_trk = new TH1D("h_yREC_e_trk",";y_{trk}",100,0.01,0.85);
-	TH1D* h_energy_REC_trk = new TH1D("h_energy_REC_trk",";E_{trk} [GeV]",100,0,20);
-	TH1D* h_eta_REC_trk = new TH1D("h_eta_REC_trk",";#eta_{trk}",100,-3.14,3.14);
-	TH1D* h_e_pt_REC_trk = new TH1D("h_e_pt_REC_trk",";p_{T,e,trk} [GeV/c]",200,0,2);
-	TH1D* h_e_pz_REC_trk = new TH1D("h_e_pz_REC_trk",";p_{z,e,trk} [GeV/c]",200,0,2);
-	TH1D* h_e_p_REC_trk = new TH1D("h_e_p_REC_trk",";p_{e,trk} [GeV/c]",200,0,2);
-    // VM 
+    TH1D* h_theta_MC_after = new TH1D("h_theta_MC_after",";#theta_{MC}",100,-3.14,3.14);
     TH1D* h_VM_mass_MC = new TH1D("h_VM_mass_MC",";VM_{MC} mass [GeV/c^{2}]",200,0,4);
     TH1D* h_VM_pt_MC = new TH1D("h_VM_pt_MC",";p_{T,VM,MC} [GeV/c]",200,0,2);
 	TH1D* h_VM_pz_MC = new TH1D("h_VM_pz_MC",";p_{z,VM,MC} [GeV/c]",200,0,2);
 	TH1D* h_VM_p_MC = new TH1D("h_VM_p_MC",";p_{VM,MC} [GeV/c]",200,0,2);
-    TH1D* h_VM_mass_REC = new TH1D("h_VM_mass_REC",";VM_{RECO} mass [GeV/c^{2}]",200,0,4);
-    TH1D* h_VM_pt_REC = new TH1D("h_VM_pt_REC",";p_{T,VM,RECO} [GeV/c]",200,0,2);
-    TH2D* h_VM_pt_response = new TH2D("h_VM_pt_response","; p_{T,VM,RECO} [GeV/c];p_{T,VM,MC} [GeV/c]",200,0,2,200,0,2);
-	TH1D* h_VM_pz_REC = new TH1D("h_VM_pz_REC",";p_{z,VM,RECO} [GeV/c]",200,0,2);
-    TH2D* h_VM_Epz_response = new TH2D("h_VM_Epz_response","; (E_{VM,RECO}-p_{z,VM,RECO}) [GeV];(E_{VM,MC}-p_{z,VM,MC} [GeV])",100,0,20,100,0,20);
     TH1D* h_VM_Epz_MC = new TH1D("h_VM_Epz_MC",";(E_{VM,MC}-p_{z,VM,MC}) [GeV]",100,0,20);
-    TH1D* h_VM_Epz_REC = new TH1D("h_VM_Epz_REC",";(E_{VM,REC}-p_{z,VM,REC}) [GeV]",100,0,20);
-	TH1D* h_VM_p_REC = new TH1D("h_VM_p_REC",";p_{VM,RECO} [GeV/c]",200,0,2);
-    // Position
-	TH1D* h_emHits_position_x_REC = new TH1D("h_emHits_position_x_REC","x [mm]",80,-800,800);
-	TH1D* h_emHits_position_y_REC = new TH1D("h_emHits_position_y_REC","y [mm]",80,-800,800);
-	TH1D* h_emClus_position_x_REC = new TH1D("h_emClus_position_x_REC","x [mm]",80,-800,800);
-	TH1D* h_emClus_position_y_REC = new TH1D("h_emClus_position_y_REC","y [mm]",80,-800,800);
-	// Analysis hists
-    TH2D* h_Q2_res = new TH2D("h_Q2_res",";Q^{2}_{MC} [GeV/c]^{2}; (Q^{2}_{MC}-Q^{2}_{EEMC})/Q^{2}_{MC}",100,1,10,1000,-1,1);
-    TH2D* h_Q2_response = new TH2D("h_Q2_response","; Q^{2}_{EEMC} [GeV/c]^{2};Q^{2}_{MC} [GeV/c]^{2}",100,1,10,1000,1,10);
-	TH1D* h_dQ2overQ2_REC = new TH1D("h_dQ2overQ2_REC",";dQ^{2}_{REC}/Q^{2}_REC",100,1,10);
-    TH2D* h_y_res = new TH2D("h_y_res",";y_{e,MC} ;(y_{e,MC}-y_{e,EEMC})/y_{e,MC}",100,0.01,0.85,1000,-1,1);
-    TH2D* h_y_response = new TH2D("h_y_response"," ; y_{EEMC};y_{MC}",100,0.01,0.85,1000,0.01,0.85);
-    TH1D* h_dyOvery_REC = new TH1D("h_dyOvery_REC",";dy/y",100,0.01,0.85);
-	TH2D* h_energy_res_EEMC = new TH2D("h_energy_res_EEMC",";E_{MC} [GeV]; (E_{MC}-E_{EEMC})/E_{MC}",100,0,20,1000,-1,1);
-    TH2D* h_energy_res_trk = new TH2D("h_energy_res_trk",";E_{MC} [GeV]; (E_{MC}-E_{trk})/E_{MC}",100,-3.14,3.14,1000,-3.14,3.14);
-    TH2D* h_energy_response_EEMC = new TH2D("h_energy_response_EEMC","; E_{EEMC} [GeV];E_{MC} [GeV]",100,0,20,1000,0,20);
-    TH2D* h_e_pt_res = new TH2D("h_e_pt_res",";p_{T,e,MC} [GeV/c]; (p_{T,e,EEMC}-p_{T,e,MC})/p_{T,e,MC}",200,0,2,200,0,2);
-	TH2D* h_e_pz_res = new TH2D("h_e_pz_res",";p_{z,e,MC} [GeV/c]; (p_z,e,EEMC}-p_{z,e,MC})/p_{z,e,MC}",200,0,2,200,0,2);
-    TH2D* h_e_pz_response = new TH2D("h_e_pz_response","; p_{z,e,EEMC} [GeV/c];p_{z,e,MC} [GeV/c]",200,0,2,200,0,2);
-	TH2D* h_e_p_res = new TH2D("h_e_p_res",";p_{e,MC} [GeV/c]; (p_{e,EEMC}-p_{e,MC})/p_{e,MC}",200,0,2,200,0,2);
-    TH2D* h_XvsY_hits = new TH2D("h_XvsY_hits",";x [mm]; y [mm]",80,-800,800,80,-800,800);
-    TH2D* h_XvsY_clus = new TH2D("h_XvsY_clus",";x [mm]; y [mm]",80,-800,800,80,-800,800);
-    TH2D* h_XvsY_trk = new TH2D("h_XvsY_trk",";x [mm]; y [mm]",80,-800,800,80,-800,800);
-    TH1D* h_Xclus_minus_Xtrk = new TH1D("h_Xclus_minus_Xtrk",";x_{clus}-x_{trk} [mm]",80,-80,80);
-    TH1D* h_Yclus_minus_Ytrk = new TH1D("h_Yclus_minus_Ytrk",";y_{clus}-y_{trk} [mm]",80,-80,80);
-    TH1D* h_Xhits_minus_Xtrk = new TH1D("h_Xhits_minus_Xtrk",";x_{hits}-x_{trk} [mm]",80,-80,80);
-    TH1D* h_Yhits_minus_Ytrk = new TH1D("h_Yhits_minus_Ytrk",";y_{hits}-y_{trk} [mm]",80,-80,80);
-    TH1D* h_trk_position_x_REC = new TH1D("h_trk_position_x_REC",";x_{trk} [mm]",80,-800,800);
-    TH1D* h_trk_position_y_REC = new TH1D("h_trk_position_y_REC",";y_{trk} [mm]",80,-800,800);
-    TH2D* h_EvsP_REC = new TH2D("h_EvsP_REC",";p_{trk} [GeV]; E_{EEMC} [GeV]",100,0,20,100,0,20);
-    TH2D* h_EvsP_MC = new TH2D("h_EvsP_MC",";p_{MC} [GeV]; E_{MC} [GeV]",100,0,20,100,0,20);
-    TH1D* h_Epz_REC = new TH1D("h_Epz_REC", ";(E_{EEMC} - p_{z,EEMC}) [GeV]",100,0,20);
-    TH1D* h_Epz_REC_trk = new TH1D("h_Epz_REC_trk", ";(E_{trk} - p_{z,trk}) [GeV]",100,0,20);
-    TH1D* h_Epz_MC = new TH1D("h_Epz_MC", ";(E_{MC} - p_{z,MC}) [GeV]",100,0,20);
-    TH2D* h_Epz_response = new TH2D("h_Epz_response", ";(E_{EEMC} - p_{z,EEMC}) [GeV];(E_{MC}-p_{z,MC}) [GeV]",100,0,20,100,0,20);
-    TH1D* h_EoverP_MC = new TH1D("h_EoverP_MC",";E_{MC}/|p|_{MC}",100,0,20);
-    TH1D* h_EcalOverPtrk = new TH1D("h_EcalOverPtrk",";E_{EEMC}/|p|_{trk}",100,0,20);
-    TH1D* h_EtrkOverPcal = new TH1D("h_EtrkOverPcal",";E_{trk}/|p|_{EEMC}",100,0,20);
-    TH2D* h_EoverP_response = new TH2D("h_EoverP_response","; E_{EEMC}/|p|_{trk};E_{MC}/|p|_{MC}",100,0,20,100,0,20);
-    TH2D* h_theta_response_EEMC = new TH2D("h_theta_response_EEMC","; theta_{EEMC} [GeV];theta_{MC} [GeV]",100,-3.14,3.14,100,-3.14,3.14);
-    TH1D* h_theta_diff = new TH1D("h_theta_diff",";#theta_{EEMC}-#theta_{MC}",100,-3.14,3.14);
-    TH1D* h_phi_diff = new TH1D("h_phi_diff",";#phi_{EEMC}-#phi_{MC}",100,-3.14,3.14);
-    TH1D* h_eta_diff = new TH1D("h_eta_diff",";#eta_{EEMC}-#eta_{MC}",100,-3.14,3.14);
-    // t
-    TH1D* h_t_REC_EEMC = new TH1D("h_t_REC_EEMC",";|t|_{EEMC} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_VM_Epz_MC_cut2 = new TH1D("h_VM_Epz_MC_cut2",";(E_{VM,MC}-p_{z,VM,MC}) [GeV]",100,0,20);
+    TH1D* h_Epz_MC = new TH1D("h_Epz_MC", ";(E_{MC} - p_{z,MC}) [GeV]",100,0,45);
+    TH1D* h_Epz_MC_cut = new TH1D("h_Epz_MC_cut", ";(E_{MC} - p_{z,MC}) [GeV]",100,0,45);
+    TH1D* h_Epz_MC_cut2 = new TH1D("h_Epz_MC_cut2", ";(E_{MC} - p_{z,MC}) [GeV]",100,0,45);
+    TH2D* h_EvsP_MC = new TH2D("h_EvsP_MC",";|p|_{MC} [GeV]; E_{MC} [GeV]",100,0,20,100,0,20);
+    TH2D* h_EvsP_MC_cut = new TH2D("h_EvsP_MC_cut",";p_{MC} [GeV]; E_{MC} [GeV]",100,0,20,100,0,20);
+    TH2D* h_EvsP_MC_cut2 = new TH2D("h_EvsP_MC_cut2",";p_{MC} [GeV]; E_{MC} [GeV]",100,0,20,100,0,20);
+    TH1D* h_EoverP_MC = new TH1D("h_EoverP_MC",";E_{MC}/|p|_{MC}",100,0,2);
+    TH1D* h_EoverP_MC_after = new TH1D("h_EoverP_MC_after",";E_{MC}/|p|_{MC}",100,0,2);
+    TH1D* h_t_MC = new TH1D("h_t_MC",";|t|_{MC} [GeV/c]^{2}; counts",100,0,0.2);
+
+    // RECO track
+    TH1D* h_Q2REC_e_trk = new TH1D("h_Q2REC_e_trk",";Q^{2}_{trk} [GeV/c]^{2}",100,1,10);
+    TH1D* h_Q2REC_e_trk_cut = new TH1D("h_Q2REC_e_trk_cut",";Q^{2}_{trk} [GeV/c]^{2}",100,1,10);
+    TH1D* h_Q2REC_e_trk_cut2 = new TH1D("h_Q2REC_e_trk_cut2",";Q^{2}_{trk} [GeV/c]^{2}",100,1,10);
+    TH1D* h_yREC_e_trk = new TH1D("h_yREC_e_trk",";y_{trk}",100,0.01,0.85);
+    TH1D* h_yREC_e_trk_cut = new TH1D("h_yREC_e_trk_cut",";y_{trk}",100,0.01,0.85);
+    TH1D* h_yREC_e_trk_cut2 = new TH1D("h_yREC_e_trk_cut2",";y_{trk}",100,0.01,0.85);
+	TH1D* h_energy_REC_trk = new TH1D("h_energy_REC_trk",";E_{trk} [GeV]",100,0,20);
+    TH1D* h_energy_REC_trk_cut = new TH1D("h_energy_REC_trk_cut",";E_{trk} [GeV]",100,0,20);
+    TH1D* h_energy_REC_trk_cut2 = new TH1D("h_energy_REC_trk_cut2",";E_{trk} [GeV]",100,0,20);
+    TH2D* h_energy_res_trk = new TH2D("h_energy_res_trk",";E_{MC} [GeV]; (E_{MC}-E_{trk})/E_{MC}",100,0,20,1000,-1,1);
+    TH2D* h_energy_res_trk_cut = new TH2D("h_energy_res_trk_cut",";E_{MC} [GeV]; (E_{MC}-E_{trk})/E_{MC}",100,0,20,1000,-1,1);
+    TH2D* h_energy_res_trk_cut2 = new TH2D("h_energy_res_trk_cut2",";E_{MC} [GeV]; (E_{MC}-E_{trk})/E_{MC}",100,0,20,1000,-1,1);
+	TH1D* h_eta_REC_trk = new TH1D("h_eta_REC_trk",";#eta_{trk}",100,-3.14,3.14);
+    TH1D* h_eta_REC_trk_cut = new TH1D("h_eta_REC_trk_cut",";#eta_{trk}",100,-3.14,3.14);
+    TH1D* h_eta_REC_trk_cut2 = new TH1D("h_eta_REC_trk_cut2",";#eta_{trk}",100,-3.14,3.14);
+	TH1D* h_e_pt_REC_trk = new TH1D("h_e_pt_REC_trk",";p_{T,e,trk} [GeV/c]",200,0,2);
+    TH1D* h_e_pt_REC_trk_cut = new TH1D("h_e_pt_REC_trk_cut",";p_{T,e,trk} [GeV/c]",200,0,2);
+    TH1D* h_e_pt_REC_trk_cut2 = new TH1D("h_e_pt_REC_trk_cut2",";p_{T,e,trk} [GeV/c]",200,0,2);
+	TH1D* h_e_pz_REC_trk = new TH1D("h_e_pz_REC_trk",";p_{z,e,trk} [GeV/c]",200,0,2);
+    TH1D* h_e_pz_REC_trk_cut = new TH1D("h_e_pz_REC_trk_cut",";p_{z,e,trk} [GeV/c]",200,0,2);
+    TH1D* h_e_pz_REC_trk_cut2 = new TH1D("h_e_pz_REC_trk_cut2",";p_{z,e,trk} [GeV/c]",200,0,2);
+	TH1D* h_e_p_REC_trk = new TH1D("h_e_p_REC_trk",";p_{e,trk} [GeV/c]",200,0,2);
+    TH1D* h_e_p_REC_trk_cut = new TH1D("h_e_p_REC_trk_cut",";p_{e,trk} [GeV/c]",200,0,2);
+    TH1D* h_e_p_REC_trk_cut2 = new TH1D("h_e_p_REC_trk_cut2",";p_{e,trk} [GeV/c]",200,0,2);
+    TH1D* h_Epz_REC_trk = new TH1D("h_Epz_REC_trk", ";(E_{trk} - p_{z,trk}) [GeV]",100,0,45);
+    TH1D* h_Epz_REC_trk_cut = new TH1D("h_Epz_REC_trk_cut", ";(E_{trk} - p_{z,trk}) [GeV]",100,0,45);
+    TH1D* h_Epz_REC_trk_cut2 = new TH1D("h_Epz_REC_trk_cut2", ";(E_{trk} - p_{z,trk}) [GeV]",100,0,45);
     TH1D* h_t_REC_trk = new TH1D("h_t_REC_trk",";|t|_{trk} [GeV/c]^{2}; counts",100,0,0.2);
-    TH2D* h_t_res_EEMC = new TH2D("h_t_res_EEMC",";|t|_{MC} [GeV/c]^{2}; (|t|_{MC}-|t|_{EEMC})/|t|_{MC}",100,0,0.2,1000,-10,10);
+    TH1D* h_t_REC_trk_cut = new TH1D("h_t_REC_trk_cut",";|t|_{trk} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_trk_cut2 = new TH1D("h_t_REC_trk_cut2",";|t|_{trk} [GeV/c]^{2}; counts",100,0,0.2);
     TH2D* h_t_res_trk = new TH2D("h_t_res_trk",";|t|_{MC} [GeV/c]^{2}; (|t|_{MC}-|t|_{trk})/|t|_{MC}",100,0,0.2,1000,-10,10);
-    TH2D* h_t_response_EEMC = new TH2D("h_t_response_EEMC","; |t|_{EEMC} [GeV/c]^{2};|t|_{MC} [GeV/c]^{2}",100,0,0.2,1000,0,0.2);
-	TH2D* h_t_response_trk = new TH2D("h_t_response_trk","; |t|_{trk} [GeV/c]^{2};|t|_{MC} [GeV/c]^{2}",100,0,0.2,1000,0,0.2);
-	TH2D* h_t_response_trk_EEMC = new TH2D("h_t_response_trk_EEMC","; |t|_{trk} [GeV/c]^{2};|t|_{EEMC} [GeV/c]^{2}",100,0,0.2,1000,0,0.2);
-    // t distribution new method reco
+    TH2D* h_t_res_trk_cut = new TH2D("h_t_res_trk_cut",";|t|_{MC} [GeV/c]^{2}; (|t|_{MC}-|t|_{trk})/|t|_{MC}",100,0,0.2,1000,-10,10);
+    TH2D* h_t_res_trk_cut2 = new TH2D("h_t_res_trk_cut2",";|t|_{MC} [GeV/c]^{2}; (|t|_{MC}-|t|_{trk})/|t|_{MC}",100,0,0.2,1000,-1,1);
+    TH2D* h_t_response_trk = new TH2D("h_t_response_trk","; |t|_{trk} [GeV/c]^{2};|t|_{MC} [GeV/c]^{2}",100,0,0.2,100,0,0.2);
+    TH2D* h_t_response_trk_cut = new TH2D("h_t_response_trk_cut","; |t|_{trk} [GeV/c]^{2};|t|_{MC} [GeV/c]^{2}",100,0,0.2,100,0,0.2);
+    TH2D* h_t_response_trk_cut2 = new TH2D("h_t_response_trk_cut2","; |t|_{trk} [GeV/c]^{2};|t|_{MC} [GeV/c]^{2}",100,0,0.2,100,0,0.2);
+    TH1D* h_trk_position_x_REC = new TH1D("h_trk_position_x_REC",";x_{trk} [mm]",80,-800,800);
+    TH1D* h_trk_position_x_REC_cut = new TH1D("h_trk_position_x_REC_cut",";x_{trk} [mm]",80,-800,800);
+    TH1D* h_trk_position_x_REC_cut2 = new TH1D("h_trk_position_x_REC_cut2",";x_{trk} [mm]",80,-800,800);
+    TH1D* h_trk_position_y_REC = new TH1D("h_trk_position_y_REC",";y_{trk} [mm]",80,-800,800);
+    TH1D* h_trk_position_y_REC_cut = new TH1D("h_trk_position_y_REC_cut",";y_{trk} [mm]",80,-800,800);
+    TH1D* h_trk_position_y_REC_cut2 = new TH1D("h_trk_position_y_REC_cut2",";y_{trk} [mm]",80,-800,800);
+    TH2D* h_XvsY_trk = new TH2D("h_XvsY_trk",";x [mm]; y [mm]",80,-800,800,80,-800,800);
+    TH2D* h_XvsY_trk_cut = new TH2D("h_XvsY_trk_cut",";x [mm]; y [mm]",80,-800,800,80,-800,800);
+    TH2D* h_XvsY_trk_cut2 = new TH2D("h_XvsY_trk_cut2",";x [mm]; y [mm]",80,-800,800,80,-800,800);
+
+	// RECO Q2
+    TH1D* h_Q2REC_e_EEMC = new TH1D("h_Q2REC_e_EEMC",";Q^{2}_{EEMC} [GeV/c]^{2}",100,1,10);
+    TH1D* h_Q2REC_e_EEMC_cut = new TH1D("h_Q2REC_e_EEMC_cut",";Q^{2}_{EEMC} [GeV/c]^{2}",100,1,10);
+    TH1D* h_Q2REC_e_EEMC_cut2 = new TH1D("h_Q2REC_e_EEMC_cut2",";Q^{2}_{EEMC} [GeV/c]^{2}",100,1,10);
+    TH2D* h_Q2_res_cut2 = new TH2D("h_Q2_res_cut2",";Q^{2}_{MC} [GeV/c]^{2}; (Q^{2}_{MC}-Q^{2}_{EEMC})/Q^{2}_{MC}",100,1,10,1000,-1,1);
+    TH2D* h_Q2_res = new TH2D("h_Q2_res",";Q^{2}_{MC} [GeV/c]^{2}; (Q^{2}_{MC}-Q^{2}_{EEMC})/Q^{2}_{MC}",100,1,10,1000,-1,1);
+    TH2D* h_Q2_res_cut = new TH2D("h_Q2_res_cut",";Q^{2}_{MC} [GeV/c]^{2}; (Q^{2}_{MC}-Q^{2}_{EEMC})/Q^{2}_{MC}",100,1,10,1000,-1,1);
+    TH2D* h_Q2_response = new TH2D("h_Q2_response","; Q^{2}_{EEMC} [GeV/c]^{2};Q^{2}_{MC} [GeV/c]^{2}",100,1,10,100,1,10);
+    TH2D* h_Q2_response_cut = new TH2D("h_Q2_response_cut","; Q^{2}_{EEMC} [GeV/c]^{2};Q^{2}_{MC} [GeV/c]^{2}",100,1,10,100,1,10);
+    TH2D* h_Q2_response_cut2 = new TH2D("h_Q2_response_cut2","; Q^{2}_{EEMC} [GeV/c]^{2};Q^{2}_{MC} [GeV/c]^{2}",100,1,10,100,1,10);
+	TH1D* h_dQ2overQ2_REC = new TH1D("h_dQ2overQ2_REC",";dQ^{2}_{REC}/Q^{2}_REC",100,-2,2);
+	TH1D* h_dQ2overQ2_REC_cut = new TH1D("h_dQ2overQ2_REC_cut",";dQ^{2}_{REC}/Q^{2}_REC",100,-2,2);
+    TH1D* h_dQ2overQ2_REC_cut2 = new TH1D("h_dQ2overQ2_REC_cut2",";dQ^{2}_{REC}/Q^{2}_REC",100,-2,2);
+
+    // RECO y
+	TH1D* h_yREC_e_EEMC = new TH1D("h_yREC_e_EEMC",";y_{EEMC}",100,0.01,0.85);
+    TH1D* h_yREC_e_EEMC_cut = new TH1D("h_yREC_e_EEMC_cut",";y_{EEMC}",100,0.01,0.85);
+    TH1D* h_yREC_e_EEMC_cut2 = new TH1D("h_yREC_e_EEMC_cut2",";y_{EEMC}",100,0.01,0.85);
+    TH2D* h_y_res = new TH2D("h_y_res",";y_{e,MC} ;(y_{e,MC}-y_{e,EEMC})/y_{e,MC}",100,0.01,0.85,1000,-1,1);
+    TH2D* h_y_res_cut = new TH2D("h_y_res_cut",";y_{e,MC} ;(y_{e,MC}-y_{e,EEMC})/y_{e,MC}",100,0.01,0.85,1000,-1,1);
+    TH2D* h_y_res_cut2 = new TH2D("h_y_res_cut2",";y_{e,MC} ;(y_{e,MC}-y_{e,EEMC})/y_{e,MC}",100,0.01,0.85,1000,-1,1);
+    TH2D* h_y_response = new TH2D("h_y_response"," ; y_{EEMC};y_{MC}",100,0.01,0.85,100,0.01,0.85);
+    TH2D* h_y_response_cut = new TH2D("h_y_response_cut"," ; y_{EEMC};y_{MC}",100,0.01,0.85,100,0.01,0.85);
+    TH2D* h_y_response_cut2 = new TH2D("h_y_response_cut2","; y_{EEMC};y_{MC}",100,0.01,0.85,100,0.01,0.85);
+    TH1D* h_dyOvery_REC = new TH1D("h_dyOvery_REC",";dy/y",100,-2,2);
+    TH1D* h_dyOvery_REC_cut = new TH1D("h_dyOvery_REC_cut",";dy/y",100,-2,2);
+    TH1D* h_dyOvery_REC_cut2 = new TH1D("h_dyOvery_REC_cut2",";dy/y",100,-2,2);
+
+    // RECO energy
+	TH1D* h_energy_REC_EEMC = new TH1D("h_energy_REC_EEMC",";E_{EEMC} [GeV]",100,0,20);
+    TH1D* h_energy_REC_EEMC_cut = new TH1D("h_energy_REC_EEMC_cut",";E_{EEMC} [GeV]",100,0,20);
+    TH1D* h_energy_REC_EEMC_cut2 = new TH1D("h_energy_REC_EEMC_cut2",";E_{EEMC} [GeV]",100,0,20);
+    TH2D* h_energy_res_EEMC = new TH2D("h_energy_res_EEMC",";E_{MC} [GeV]; (E_{MC}-E_{EEMC})/E_{MC}",100,0,20,1000,-1,1);
+    TH2D* h_energy_res_EEMC_cut = new TH2D("h_energy_res_EEMC_cut",";E_{MC} [GeV]; (E_{MC}-E_{EEMC})/E_{MC}",100,0,20,1000,-1,1);
+    TH2D* h_energy_res_EEMC_cut2 = new TH2D("h_energy_res_EEMC_cut2",";E_{MC} [GeV]; (E_{MC}-E_{EEMC})/E_{MC}",100,0,20,1000,-1,1);
+    TH2D* h_energy_response_EEMC = new TH2D("h_energy_response_EEMC","; E_{EEMC} [GeV];E_{MC} [GeV]",100,0,20,100,0,20);
+    TH2D* h_energy_response_EEMC_cut = new TH2D("h_energy_response_EEMC_cut","; E_{EEMC} [GeV];E_{MC} [GeV]",100,0,20,100,0,20);
+    TH2D* h_energy_response_EEMC_cut2 = new TH2D("h_energy_response_EEMC_cut2","; E_{EEMC} [GeV];E_{MC} [GeV]",100,0,20,100,0,20);
+
+    // RECO eta
+	TH1D* h_eta_REC_EEMC = new TH1D("h_eta_REC_EEMC",";#eta_{EEMC}",100,-3.14,3.14);
+    TH1D* h_eta_REC_EEMC_cut = new TH1D("h_eta_REC_EEMC_cut",";#eta_{EEMC}",100,-3.14,3.14);
+    TH1D* h_eta_REC_EEMC_cut2 = new TH1D("h_eta_REC_EEMC_cut2",";#eta_{EEMC}",100,-3.14,3.14);
+    TH1D* h_eta_REC_EEMC_after = new TH1D("h_eta_REC_EEMC_after",";#eta_{EEMC}",100,-3.14,3.14);
+    TH1D* h_eta_diff = new TH1D("h_eta_diff",";#eta_{EEMC}-#eta_{MC}",100,-3.14,3.14);
+    TH1D* h_eta_diff_cut = new TH1D("h_eta_diff_cut",";#eta_{EEMC}-#eta_{MC}",100,-3.14,3.14);
+    TH1D* h_eta_diff_cut2 = new TH1D("h_eta_diff_cut2",";#eta_{EEMC}-#eta_{MC}",100,-3.14,3.14);
+    TH1D* h_eta_diff_after = new TH1D("h_eta_diff_after",";#eta_{EEMC}-#eta_{MC}",100,-3.14,3.14);
+
+    // RECO angles
+    TH1D* h_phi_REC_EEMC = new TH1D("h_phi_REC_EEMC",";#phi_{EEMC}",100,-3.14,3.14);
+    TH1D* h_phi_REC_EEMC_cut = new TH1D("h_phi_REC_EEMC_cut",";#phi_{EEMC}",100,-3.14,3.14);
+    TH1D* h_phi_REC_EEMC_cut2 = new TH1D("h_phi_REC_EEMC_cut2",";#phi_{EEMC}",100,-3.14,3.14);
+    TH1D* h_phi_REC_EEMC_after = new TH1D("h_phi_REC_EEMC_after",";#phi_{EEMC}",100,-3.14,3.14);
+    TH1D* h_phi_diff = new TH1D("h_phi_diff",";#phi_{EEMC}-#phi_{MC}",100,-3.14,3.14);
+    TH1D* h_phi_diff_cut = new TH1D("h_phi_diff_cut",";#phi_{EEMC}-#phi_{MC}",100,-3.14,3.14);
+    TH1D* h_phi_diff_cut2 = new TH1D("h_phi_diff_cut2",";#phi_{EEMC}-#phi_{MC}",100,-3.14,3.14);
+    TH1D* h_phi_diff_after = new TH1D("h_phi_diff_after",";#phi_{EEMC}-#phi_{MC}",100,-3.14,3.14);
+    TH1D* h_theta_REC_EEMC = new TH1D("h_theta_REC_EEMC",";#theta_{EEMC}",100,-3.14,3.14);
+    TH1D* h_theta_REC_EEMC_cut = new TH1D("h_theta_REC_EEMC_cut",";#theta_{EEMC}",100,-3.14,3.14);
+    TH1D* h_theta_REC_EEMC_cut2 = new TH1D("h_theta_REC_EEMC_cut2",";#theta_{EEMC}",100,-3.14,3.14);
+    TH1D* h_theta_REC_EEMC_after = new TH1D("h_theta_REC_EEMC_after",";#theta_{EEMC}",100,-3.14,3.14);
+    TH2D* h_theta_response_EEMC = new TH2D("h_theta_response_EEMC","; theta_{EEMC} [GeV];theta_{MC} [GeV]",100,0,3.14,100,0,3.14);
+     TH2D* h_theta_response_EEMC_cut = new TH2D("h_theta_response_EEMC_cut","; theta_{EEMC} [GeV];theta_{MC} [GeV]",100,0,3.14,100,0,3.14);
+    TH2D* h_theta_response_EEMC_cut2 = new TH2D("h_theta_response_EEMC_cut2","; theta_{EEMC} [GeV];theta_{MC} [GeV]",100,-3.14,3.14,100,-3.14,3.14);
+    TH2D* h_theta_response_EEMC_after = new TH2D("h_theta_response_EEMC_after","; theta_{EEMC} [GeV];theta_{MC} [GeV]",100,0,3.14,100,0,3.14);
+    TH1D* h_theta_diff = new TH1D("h_theta_diff",";#theta_{EEMC}-#theta_{MC}",100,-3.14,3.14);
+    TH1D* h_theta_diff_cut = new TH1D("h_theta_diff_cut",";#theta_{EEMC}-#theta_{MC}",100,-3.14,3.14);
+    TH1D* h_theta_diff_cut2 = new TH1D("h_theta_diff_cut2",";#theta_{EEMC}-#theta_{MC}",100,-3.14,3.14);
+    TH1D* h_theta_diff_after = new TH1D("h_theta_diff_after",";#theta_{EEMC}-#theta_{MC}",100,-3.14,3.14);
+
+    // RECO e' P
+	TH1D* h_e_pt_REC_EEMC = new TH1D("h_e_pt_REC_EEMC",";p_{T,e,EEMC} [GeV/c]",200,0,2);
+    TH1D* h_e_pt_REC_EEMC_cut = new TH1D("h_e_pt_REC_EEMC_cut",";p_{T,e,EEMC} [GeV/c]",200,0,2);
+    TH1D* h_e_pt_REC_EEMC_cut2 = new TH1D("h_e_pt_REC_EEMC_cut2",";p_{T,e,EEMC} [GeV/c]",200,0,2);
+    TH2D* h_e_pt_res = new TH2D("h_e_pt_res",";p_{T,e,MC} [GeV/c]; (p_{T,e,EEMC}-p_{T,e,MC})/p_{T,e,MC}",200,0,2,2000,-1,1);
+    TH2D* h_e_pt_res_cut = new TH2D("h_e_pt_res_cut",";p_{T,e,MC} [GeV/c]; (p_{T,e,EEMC}-p_{T,e,MC})/p_{T,e,MC}",200,0,2,2000,-1,1);
+    TH2D* h_e_pt_res_cut2 = new TH2D("h_e_pt_res_cut2",";p_{T,e,MC} [GeV/c]; (p_{T,e,EEMC}-p_{T,e,MC})/p_{T,e,MC}",200,0,2,2000,-1,1);
+	TH1D* h_e_pz_REC_EEMC = new TH1D("h_e_pz_REC_EEMC",";p_{z,e,EEMC} [GeV/c]",200,0,2);
+    TH1D* h_e_pz_REC_EEMC_cut = new TH1D("h_e_pz_REC_EEMC_cut",";p_{z,e,EEMC} [GeV/c]",200,0,2);
+    TH1D* h_e_pz_REC_EEMC_cut2 = new TH1D("h_e_pz_REC_EEMC_cut2",";p_{z,e,EEMC} [GeV/c]",200,0,2);
+    TH2D* h_e_pz_res = new TH2D("h_e_pz_res",";p_{z,e,MC} [GeV/c]; (p_z,e,EEMC}-p_{z,e,MC})/p_{z,e,MC}",200,0,2,2000,-1,1);
+    TH2D* h_e_pz_res_cut = new TH2D("h_e_pz_res_cut",";p_{z,e,MC} [GeV/c]; (p_z,e,EEMC}-p_{z,e,MC})/p_{z,e,MC}",200,0,2,2000,-1,1);
+    TH2D* h_e_pz_res_cut2 = new TH2D("h_e_pz_res_cut2",";p_{z,e,MC} [GeV/c]; (p_z,e,EEMC}-p_{z,e,MC})/p_{z,e,MC}",200,0,2,2000,-1,1);
+    TH2D* h_e_pz_response = new TH2D("h_e_pz_response","; p_{z,e,EEMC} [GeV/c];p_{z,e,MC} [GeV/c]",200,0,2,200,0,2);
+    TH2D* h_e_pz_response_cut = new TH2D("h_e_pz_response_cut","; p_{z,e,EEMC} [GeV/c];p_{z,e,MC} [GeV/c]",200,0,2,200,0,2);
+    TH2D* h_e_pz_response_cut2 = new TH2D("h_e_pz_response_cut2",";p_{z,e,EEMC} [GeV/c];p_{z,e,MC} [GeV/c]",200,0,2,200,0,2);
+	TH1D* h_e_p_REC_EEMC = new TH1D("h_e_p_REC_EEMC",";p_{e,EEMC} [GeV/c]",200,0,2);
+    TH1D* h_e_p_REC_EEMC_cut = new TH1D("h_e_p_REC_EEMC_cut",";p_{e,EEMC} [GeV/c]",200,0,2);
+    TH1D* h_e_p_REC_EEMC_cut2 = new TH1D("h_e_p_REC_EEMC_cut2",";p_{e,EEMC} [GeV/c]",200,0,2);
+	TH2D* h_e_p_res = new TH2D("h_e_p_res",";p_{e,MC} [GeV/c]; (p_{e,EEMC}-p_{e,MC})/p_{e,MC}",200,0,2,2000,-1,1);
+	TH2D* h_e_p_res_cut = new TH2D("h_e_p_res_cut",";p_{e,MC} [GeV/c]; (p_{e,EEMC}-p_{e,MC})/p_{e,MC}",200,0,2,2000,-1,1);
+    TH2D* h_e_p_res_cut2 = new TH2D("h_e_p_res_cut2",";p_{e,MC} [GeV/c]; (p_{e,EEMC}-p_{e,MC})/p_{e,MC}",200,0,2,2000,-1,1);
+    
+    // RECO VM 
+    TH1D* h_VM_mass_REC = new TH1D("h_VM_mass_REC",";VM_{RECO} mass [GeV/c^{2}]",200,0,4);
+    TH1D* h_VM_mass_REC_cut = new TH1D("h_VM_mass_REC_cut",";VM_{RECO} mass [GeV/c^{2}]",200,0,4);
+    TH1D* h_VM_mass_REC_cut2 = new TH1D("h_VM_mass_REC_cut2",";VM_{RECO} mass [GeV/c^{2}]",200,0,4);
+    TH1D* h_VM_p_REC = new TH1D("h_VM_p_REC",";p_{VM,RECO} [GeV/c]",200,0,2);
+    TH1D* h_VM_p_REC_cut = new TH1D("h_VM_p_REC_cut",";p_{VM,RECO} [GeV/c]",200,0,2);
+    TH1D* h_VM_p_REC_cut2 = new TH1D("h_VM_p_REC_cut2",";p_{VM,RECO} [GeV/c]",200,0,2);
+    TH1D* h_VM_pt_REC = new TH1D("h_VM_pt_REC",";p_{T,VM,RECO} [GeV/c]",200,0,2);
+    TH1D* h_VM_pt_REC_cut = new TH1D("h_VM_pt_REC_cut",";p_{T,VM,RECO} [GeV/c]",200,0,2);
+    TH1D* h_VM_pt_REC_cut2 = new TH1D("h_VM_pt_REC_cut2",";p_{T,VM,RECO} [GeV/c]",200,0,2);
+    TH2D* h_VM_pt_response = new TH2D("h_VM_pt_response","; p_{T,VM,RECO} [GeV/c];p_{T,VM,MC} [GeV/c]",200,0,2,200,0,2);
+    TH2D* h_VM_pt_response_cut = new TH2D("h_VM_pt_response_cut","; p_{T,VM,RECO} [GeV/c];p_{T,VM,MC} [GeV/c]",200,0,2,200,0,2);
+    TH2D* h_VM_pt_response_cut2 = new TH2D("h_VM_pt_response_cut2","; p_{T,VM,RECO} [GeV/c];p_{T,VM,MC} [GeV/c]",200,0,2,200,0,2);
+	TH1D* h_VM_pz_REC = new TH1D("h_VM_pz_REC",";p_{z,VM,RECO} [GeV/c]",200,0,2);
+    TH1D* h_VM_pz_REC_cut = new TH1D("h_VM_pz_REC_cut",";p_{z,VM,RECO} [GeV/c]",200,0,2);
+    TH1D* h_VM_pz_REC_cut2 = new TH1D("h_VM_pz_REC_cut2",";p_{z,VM,RECO} [GeV/c]",200,0,2);
+    TH2D* h_VM_Epz_response = new TH2D("h_VM_Epz_response","; (E_{VM,RECO}-p_{z,VM,RECO}) [GeV];(E_{VM,MC}-p_{z,VM,MC} [GeV])",100,0,20,100,0,20);
+    TH2D* h_VM_Epz_response_cut = new TH2D("h_VM_Epz_response_cut","; (E_{VM,RECO}-p_{z,VM,RECO}) [GeV];(E_{VM,MC}-p_{z,VM,MC} [GeV])",100,0,20,100,0,20);
+    TH2D* h_VM_Epz_response_cut2 = new TH2D("h_VM_Epz_response_cut2","; (E_{VM,RECO}-p_{z,VM,RECO}) [GeV];(E_{VM,MC}-p_{z,VM,MC} [GeV])",100,0,20,100,0,20);
+    TH1D* h_VM_Epz_REC = new TH1D("h_VM_Epz_REC",";(E_{VM,REC}-p_{z,VM,REC}) [GeV]",100,0,20);
+    TH1D* h_VM_Epz_REC_cut = new TH1D("h_VM_Epz_REC_cut",";(E_{VM,REC}-p_{z,VM,REC}) [GeV]",100,0,20);
+    TH1D* h_VM_Epz_REC_cut2 = new TH1D("h_VM_Epz_REC_cut2",";(E_{VM,REC}-p_{z,VM,REC}) [GeV]",100,0,20);
+    
+    // RECO position
+	TH1D* h_emHits_position_x_REC = new TH1D("h_emHits_position_x_REC","x [mm]",80,-800,800);
+    TH1D* h_emHits_position_x_REC_cut = new TH1D("h_emHits_position_x_REC_cut","x [mm]",80,-800,800);
+    TH1D* h_emHits_position_x_REC_cut2 = new TH1D("h_emHits_position_x_REC_cut2","x [mm]",800,-800,800);
+	TH1D* h_emHits_position_y_REC = new TH1D("h_emHits_position_y_REC","y [mm]",80,-800,800);
+    TH1D* h_emHits_position_y_REC_cut = new TH1D("h_emHits_position_y_REC_cut","y [mm]",80,-800,800);
+    TH1D* h_emHits_position_y_REC_cut2 = new TH1D("h_emHits_position_y_REC_cut2","y [mm]",800,-800,800);
+	TH1D* h_emClus_position_x_REC = new TH1D("h_emClus_position_x_REC","x [mm]",80,-800,800);
+    TH1D* h_emClus_position_x_REC_cut = new TH1D("h_emClus_position_x_REC_cut","x [mm]",80,-800,800);
+    TH1D* h_emClus_position_x_REC_cut2 = new TH1D("h_emClus_position_x_REC_cut2","x [mm]",800,-800,800);
+	TH1D* h_emClus_position_y_REC = new TH1D("h_emClus_position_y_REC","y [mm]",80,-800,800);
+    TH1D* h_emClus_position_y_REC_cut = new TH1D("h_emClus_position_y_REC_cut","y [mm]",80,-800,800);
+    TH1D* h_emClus_position_y_REC_cut2 = new TH1D("h_emClus_position_y_REC_cut2","y [mm]",800,-800,800);
+    TH2D* h_emClus_position_REC = new TH2D("h_emClus_position_REC",";x (mm);y (mm)",80,-800,800,80,-800,800);
+    TH2D* h_emClus_position_REC_cut = new TH2D("h_emClus_position_REC_cut",";x (mm);y (mm)",80,-800,800,80,-800,800);
+    TH2D* h_XvsY_hits = new TH2D("h_XvsY_hits",";x [mm]; y [mm]",80,-800,800,80,-800,800);
+    TH2D* h_XvsY_hits_cut = new TH2D("h_XvsY_hits_cut",";x [mm]; y [mm]",80,-800,800,80,-800,800);
+    TH2D* h_XvsY_hits_cut2 = new TH2D("h_XvsY_hits_cut2",";x [mm]; y [mm]",80,-800,800,80,-800,800);
+    TH2D* h_XvsY_clus = new TH2D("h_XvsY_clus",";x [mm]; y [mm]",80,-800,800,80,-800,800);
+    TH2D* h_XvsY_clus_cut = new TH2D("h_XvsY_clus_cut",";x [mm]; y [mm]",80,-800,800,80,-800,800);
+    TH2D* h_XvsY_clus_cut2 = new TH2D("h_XvsY_clus_cut2",";x [mm]; y [mm]",80,-800,800,80,-800,800);
+    TH1D* h_Xclus_minus_Xtrk = new TH1D("h_Xclus_minus_Xtrk",";x_{clus}-x_{trk} [mm]",80,-800,800);
+    TH1D* h_Xclus_minus_Xtrk_cut = new TH1D("h_Xclus_minus_Xtrk_cut",";x_{clus}-x_{trk} [mm]",80,-800,800);
+    TH1D* h_Xclus_minus_Xtrk_cut2 = new TH1D("h_Xclus_minus_Xtrk_cut2",";x_{clus}-x_{trk} [mm]",80,-800,800);
+    TH1D* h_Yclus_minus_Ytrk = new TH1D("h_Yclus_minus_Ytrk",";y_{clus}-y_{trk} [mm]",80,-800,800);
+    TH1D* h_Yclus_minus_Ytrk_cut = new TH1D("h_Yclus_minus_Ytrk_cut",";y_{clus}-y_{trk} [mm]",80,-800,800);
+    TH1D* h_Yclus_minus_Ytrk_cut2 = new TH1D("h_Yclus_minus_Ytrk_cut2",";y_{clus}-y_{trk} [mm]",80,-800,800);
+    TH1D* h_Xhits_minus_Xtrk = new TH1D("h_Xhits_minus_Xtrk",";x_{hits}-x_{trk} [mm]",80,-800,800);
+    TH1D* h_Xhits_minus_Xtrk_cut = new TH1D("h_Xhits_minus_Xtrk_cut",";x_{hits}-x_{trk} [mm]",80,-800,800);
+    TH1D* h_Xhits_minus_Xtrk_cut2 = new TH1D("h_Xhits_minus_Xtrk_cut2",";x_{hits}-x_{trk} [mm]",80,-800,800);
+    TH1D* h_Yhits_minus_Ytrk = new TH1D("h_Yhits_minus_Ytrk",";y_{hits}-y_{trk} [mm]",80,-800,800);
+    TH1D* h_Yhits_minus_Ytrk_cut = new TH1D("h_Yhits_minus_Ytrk_cut",";y_{hits}-y_{trk} [mm]",80,-800,800);
+    TH1D* h_Yhits_minus_Ytrk_cut2 = new TH1D("h_Yhits_minus_Ytrk_cut2",";y_{hits}-y_{trk} [mm]",80,-800,800);
+    
+	// RECO E vs P
+    TH2D* h_EvsP_REC = new TH2D("h_EvsP_REC",";|p|_{trk} [GeV]; E_{EEMC} [GeV]",100,0,20,100,0,20);
+    TH2D* h_EvsP_REC_cut = new TH2D("h_EvsP_REC_cut",";p_{trk} [GeV]; E_{EEMC} [GeV]",100,0,20,100,0,20);
+    TH2D* h_EvsP_REC_cut2 = new TH2D("h_EvsP_REC_cut2",";p_{trk} [GeV]; E_{EEMC} [GeV]",100,0,20,100,0,20);
+    
+    // RECO E-pz
+    TH1D* h_Epz_REC = new TH1D("h_Epz_REC", ";(E_{EEMC} - p_{z,EEMC}) [GeV]",100,0,45);
+    TH1D* h_Epz_REC_cut = new TH1D("h_Epz_REC_cut", ";(E_{EEMC} - p_{z,EEMC}) [GeV]",100,0,45);
+    TH1D* h_Epz_REC_cut2 = new TH1D("h_Epz_REC_cut2", ";(E_{EEMC} - p_{z,EEMC}) [GeV]",100,0,45);
+    TH2D* h_Epz_response = new TH2D("h_Epz_response", ";(E_{EEMC} - p_{z,EEMC}) [GeV];(E_{MC}-p_{z,MC}) [GeV]",100,0,45,100,0,45);
+    TH2D* h_Epz_response_cut = new TH2D("h_Epz_response_cut", ";(E_{EEMC} - p_{z,EEMC}) [GeV];(E_{MC}-p_{z,MC}) [GeV]",100,0,45,100,0,45);
+    TH2D* h_Epz_response_cut2 = new TH2D("h_Epz_response_cut2", ";(E_{EEMC} - p_{z,EEMC}) [GeV];(E_{MC}-p_{z,MC}) [GeV]",100,0,45,100,0,45);
+    
+    // RECO E/P
+    TH1D* h_EcalOverPtrk = new TH1D("h_EcalOverPtrk",";E_{EEMC}/|p|_{trk}",100,0,2);
+    TH1D* h_EcalOverPtrk_cut = new TH1D("h_EcalOverPtrk_cut",";E_{EEMC}/|p|_{trk}",100,0,2);
+    TH1D* h_EcalOverPtrk_cut2 = new TH1D("h_EcalOverPtrk_cut2",";E_{EEMC}/|p|_{trk}",100,0,2);
+    TH1D* h_EtrkOverPcal = new TH1D("h_EtrkOverPcal",";E_{trk}/|p|_{EEMC}",100,0,2);
+    TH1D* h_EtrkOverPcal_cut = new TH1D("h_EtrkOverPcal_cut",";E_{trk}/|p|_{EEMC}",100,0,2);
+    TH1D* h_EtrkOverPcal_cut2 = new TH1D("h_EtrkOverPcal_cut2",";E_{trk}/|p|_{EEMC}",100,0,2);
+    TH2D* h_EoverP_response = new TH2D("h_EoverP_response","; E_{EEMC}/|p|_{trk};E_{MC}/|p|_{MC}",100,0,2,100,0,2);
+    TH2D* h_EoverP_response_cut = new TH2D("h_EoverP_response_cut","; E_{EEMC}/|p|_{trk};E_{MC}/|p|_{MC}",100,0,2,100,0,2);
+    TH2D* h_EoverP_response_cut2 = new TH2D("h_EoverP_response_cut2",";E_{EEMC}/|p|_{trk};E_{MC}/|p|_{MC}",100,0,2,100,0,2);
+
+    // RECO t
+    TH1D* h_t_REC_EEMC = new TH1D("h_t_REC_EEMC",";|t|_{EEMC} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_EEMC_cut = new TH1D("h_t_REC_EEMC_cut",";|t|_{EEMC} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_EEMC_cut2 = new TH1D("h_t_REC_EEMC_cut2",";|t|_{EEMC} [GeV/c]^{2}; counts",100,0,0.2);
+    TH2D* h_t_res_EEMC_percent = new TH2D("h_t_res_EEMC_percent",";|t|_{MC} [GeV/c]^{2}; (|t|_{MC}-|t|_{EEMC})/|t|_{MC}",100,0,0.2,1000,-10,10);
+    TH2D* h_t_res_EEMC_cut_percent = new TH2D("h_t_res_EEMC_cut_percent",";|t|_{MC} [GeV/c]^{2}; (|t|_{MC}-|t|_{EEMC})/|t|_{MC}",100,0,0.2,1000,-10,10);
+    TH2D* h_t_res_EEMC_cut2_percent = new TH2D("h_t_res_EEMC_cut2_percent",";|t|_{MC} [GeV/c]^{2}; (|t|_{MC}-|t|_{EEMC})/|t|_{MC}",100,0,0.2,1000,-10,10);
+    TH2D* h_t_res_EEMC = new TH2D("h_t_res_EEMC",";|t|_{MC} [GeV/c]^{2}; (|t|_{MC}-|t|_{EEMC}) [GeV/c]^{2}",100,0,0.2,1000,-10,10);
+    TH2D* h_t_res_EEMC_cut = new TH2D("h_t_res_EEMC_cut",";|t|_{MC} [GeV/c]^{2}; (|t|_{MC}-|t|_{EEMC}) [GeV/c]^{2}",100,0,0.2,1000,-10,10);
+    TH2D* h_t_res_EEMC_cut2 = new TH2D("h_t_res_EEMC_cut2",";|t|_{MC} [GeV/c]^{2}; (|t|_{MC}-|t|_{EEMC}) [GeV/c]^{2}",100,0,0.2,1000,-10,10);
+    TH2D* h_t_response_EEMC = new TH2D("h_t_response_EEMC","; |t|_{EEMC} [GeV/c]^{2};|t|_{MC} [GeV/c]^{2}",100,0,0.2,100,0,0.2);
+    TH2D* h_t_response_EEMC_cut = new TH2D("h_t_response_EEMC_cut","; |t|_{EEMC} [GeV/c]^{2};|t|_{MC} [GeV/c]^{2}",100,0,0.2,100,0,0.2);
+    TH2D* h_t_response_EEMC_cut2 = new TH2D("h_t_response_EEMC_cut2","; |t|_{EEMC} [GeV/c]^{2};|t|_{MC} [GeV/c]^{2}",100,0,0.2,100,0,0.2);
+	TH2D* h_t_response_trk_EEMC = new TH2D("h_t_response_trk_EEMC","; |t|_{trk} [GeV/c]^{2};|t|_{EEMC} [GeV/c]^{2}",100,0,0.2,100,0,0.2);
+    TH2D* h_t_response_trk_EEMC_cut = new TH2D("h_t_response_trk_EEMC_cut","; |t|_{trk} [GeV/c]^{2};|t|_{EEMC} [GeV/c]^{2}",100,0,0.2,100,0,0.2);
+    TH2D* h_t_response_trk_EEMC_cut2 = new TH2D("h_t_response_trk_EEMC_cut2","; |t|_{trk} [GeV/c]^{2};|t|_{EEMC} [GeV/c]^{2}",100,0,0.2,100,0,0.2);
     TH1D* h_t_REC_new_method = new TH1D("h_t_REC_new_method",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    // t distribution with resolution only
     TH1D* h_t_REC_wRES = new TH1D("h_t_REC_wRES",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    // t distribution with cut only (for testing)
-        // distributions should all look the same since no resolution has been added
-    TH1D* h_t_REC_wCUT_pi2 = new TH1D("h_t_REC_wCUT_pi2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wCUT_pi3 = new TH1D("h_t_REC_wCUT_pi3",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wCUT_pi4 = new TH1D("h_t_REC_wCUT_pi4",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wCUT_pi6 = new TH1D("h_t_REC_wCUT_pi6",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wCUT_pi9 = new TH1D("h_t_REC_wCUT_pi9",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wCUT_pi12 = new TH1D("h_t_REC_wCUT_pi12",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wCUT_pi16 = new TH1D("h_t_REC_wCUT_pi16",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wCUT_pi20 = new TH1D("h_t_REC_wCUT_pi20",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wCUT_pi24 = new TH1D("h_t_REC_wCUT_pi24",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    // t distribution with resolution and angle cut (EEMC RECO)
+    TH1D* h_t_REC_wRES_cut = new TH1D("h_t_REC_wRES_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut2 = new TH1D("h_t_REC_wRES_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
     TH1D* h_t_REC_wRES_cut_pi2 = new TH1D("h_t_REC_wRES_cut_pi2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi2_cut = new TH1D("h_t_REC_wRES_cut_pi2_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi2_cut2 = new TH1D("h_t_REC_wRES_cut_pi2_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
     TH1D* h_t_REC_wRES_cut_pi3 = new TH1D("h_t_REC_wRES_cut_pi3",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi3_cut = new TH1D("h_t_REC_wRES_cut_pi3_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi3_cut2 = new TH1D("h_t_REC_wRES_cut_pi3_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
     TH1D* h_t_REC_wRES_cut_pi4 = new TH1D("h_t_REC_wRES_cut_pi4",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi4_cut = new TH1D("h_t_REC_wRES_cut_pi4_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi4_cut2 = new TH1D("h_t_REC_wRES_cut_pi4_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
     TH1D* h_t_REC_wRES_cut_pi6 = new TH1D("h_t_REC_wRES_cut_pi6",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi6_cut = new TH1D("h_t_REC_wRES_cut_pi6_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi6_cut2 = new TH1D("h_t_REC_wRES_cut_pi6_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
     TH1D* h_t_REC_wRES_cut_pi9 = new TH1D("h_t_REC_wRES_cut_pi9",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi9_cut = new TH1D("h_t_REC_wRES_cut_pi9_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+        TH1D* h_t_REC_wRES_cut_pi9_cut2 = new TH1D("h_t_REC_wRES_cut_pi9_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
     TH1D* h_t_REC_wRES_cut_pi12 = new TH1D("h_t_REC_wRES_cut_pi12",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi12_cut = new TH1D("h_t_REC_wRES_cut_pi12_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi12_cut2 = new TH1D("h_t_REC_wRES_cut_pi12_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
     TH1D* h_t_REC_wRES_cut_pi16 = new TH1D("h_t_REC_wRES_cut_pi16",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi16_cut = new TH1D("h_t_REC_wRES_cut_pi16_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi16_cut2 = new TH1D("h_t_REC_wRES_cut_pi16_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
     TH1D* h_t_REC_wRES_cut_pi20 = new TH1D("h_t_REC_wRES_cut_pi20",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi20_cut = new TH1D("h_t_REC_wRES_cut_pi20_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi20_cut2 = new TH1D("h_t_REC_wRES_cut_pi20_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
     TH1D* h_t_REC_wRES_cut_pi24 = new TH1D("h_t_REC_wRES_cut_pi24",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    // t distribution 2d
+    TH1D* h_t_REC_wRES_cut_pi24_cut = new TH1D("h_t_REC_wRES_cut_pi24_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi24_cut2 = new TH1D("h_t_REC_wRES_cut_pi24_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
     TH2D* h_t_REC_2d = new TH2D("h_t_REC_2d",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    // t distribution 2d with resolution only 
+    TH2D* h_t_REC_2d_cut = new TH2D("h_t_REC_2d_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_cut2 = new TH2D("h_t_REC_2d_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
     TH2D* h_t_REC_2d_wRES = new TH2D("h_t_REC_2d_wRES",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    // t distribution 2d with resolution and angle cut (EEMC RECO)
+    TH2D* h_t_REC_2d_wRES_cut = new TH2D("h_t_REC_2d_wRES_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut2 = new TH2D("h_t_REC_2d_wRES_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
     TH2D* h_t_REC_2d_wRES_cut_pi2 = new TH2D("h_t_REC_2d_wRES_cut_pi2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi2_cut = new TH2D("h_t_REC_2d_wRES_cut_pi2_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi2_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi2_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
     TH2D* h_t_REC_2d_wRES_cut_pi3 = new TH2D("h_t_REC_2d_wRES_cut_pi3",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi3_cut = new TH2D("h_t_REC_2d_wRES_cut_pi3_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi3_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi3_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
     TH2D* h_t_REC_2d_wRES_cut_pi4 = new TH2D("h_t_REC_2d_wRES_cut_pi4",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi4_cut = new TH2D("h_t_REC_2d_wRES_cut_pi4_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi4_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi4_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
     TH2D* h_t_REC_2d_wRES_cut_pi6 = new TH2D("h_t_REC_2d_wRES_cut_pi6",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi6_cut = new TH2D("h_t_REC_2d_wRES_cut_pi6_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi6_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi6_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
     TH2D* h_t_REC_2d_wRES_cut_pi9 = new TH2D("h_t_REC_2d_wRES_cut_pi9",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi9_cut = new TH2D("h_t_REC_2d_wRES_cut_pi9_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi9_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi9_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
     TH2D* h_t_REC_2d_wRES_cut_pi12 = new TH2D("h_t_REC_2d_wRES_cut_pi12",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi12_cut = new TH2D("h_t_REC_2d_wRES_cut_pi12_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi12_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi12_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
     TH2D* h_t_REC_2d_wRES_cut_pi16 = new TH2D("h_t_REC_2d_wRES_cut_pi16",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi16_cut = new TH2D("h_t_REC_2d_wRES_cut_pi16_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi16_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi16_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
     TH2D* h_t_REC_2d_wRES_cut_pi20 = new TH2D("h_t_REC_2d_wRES_cut_pi20",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi20_cut = new TH2D("h_t_REC_2d_wRES_cut_pi20_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi20_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi20_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
     TH2D* h_t_REC_2d_wRES_cut_pi24 = new TH2D("h_t_REC_2d_wRES_cut_pi24",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    // t distribution 2d with angle cut only
+    TH2D* h_t_REC_2d_wRES_cut_pi24_cut = new TH2D("h_t_REC_2d_wRES_cut_pi24_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+    TH2D* h_t_REC_2d_wRES_cut_pi24_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi24_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
     TH2D* h_t_REC_2d_wCUT = new TH2D("h_t_REC_2d_wCUT",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
     TH2D* h_t_REC_2d_wCUT_pi2 = new TH2D("h_t_REC_2d_wCUT_pi2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
     TH2D* h_t_REC_2d_wCUT_pi3 = new TH2D("h_t_REC_2d_wCUT_pi3",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
@@ -346,218 +553,26 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
     TH2D* h_t_REC_2d_wCUT_pi16 = new TH2D("h_t_REC_2d_wCUT_pi16",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
     TH2D* h_t_REC_2d_wCUT_pi20 = new TH2D("h_t_REC_2d_wCUT_pi20",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
     TH2D* h_t_REC_2d_wCUT_pi24 = new TH2D("h_t_REC_2d_wCUT_pi24",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
+        // t distribution with cut only (for testing)
+        // distributions should all look the same since no resolution has been added
+    TH1D* h_t_REC_wCUT_pi2 = new TH1D("h_t_REC_wCUT_pi2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wCUT_pi3 = new TH1D("h_t_REC_wCUT_pi3",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wCUT_pi4 = new TH1D("h_t_REC_wCUT_pi4",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wCUT_pi6 = new TH1D("h_t_REC_wCUT_pi6",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wCUT_pi9 = new TH1D("h_t_REC_wCUT_pi9",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wCUT_pi12 = new TH1D("h_t_REC_wCUT_pi12",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wCUT_pi16 = new TH1D("h_t_REC_wCUT_pi16",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wCUT_pi20 = new TH1D("h_t_REC_wCUT_pi20",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wCUT_pi24 = new TH1D("h_t_REC_wCUT_pi24",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    
     // Compare cuts
-    TH1D* h_Epz_afterCut = new TH1D("h_Epz_afterCut", ";(E_{EEMC} - p_{z,trk}) [GeV]",100,0,20);
-    TH1D* h_EoverP_afterCut = new TH1D("h_EoverP_afterCut",";E_{EEMC}/|p|_{trk}",100,0,20);
-    TH1D* h_Q2_afterCut = new TH1D("h_Q2_afterCut",";Q^{2}_{RECO} [GeV/c]^{2}",100,1,10);
-    TH1D* h_yREC_afterCut = new TH1D("h_yREC_afterCut",";y_{RECO}",100,0.01,0.85);
-
-    // RECO inside of position threshold of 20 mm for comparisons
-    // RECO EEMC
-    TH1D* h_Q2REC_e_EEMC_cut = new TH1D("h_Q2REC_e_EEMC_cut",";Q^{2}_{EEMC} [GeV/c]^{2}",100,1,10);
-	TH1D* h_yREC_e_EEMC_cut = new TH1D("h_yREC_e_EEMC_cut",";y_{EEMC}",100,0.01,0.85);
-	TH1D* h_energy_REC_EEMC_cut = new TH1D("h_energy_REC_EEMC_cut",";E_{EEMC} [GeV]",100,0,20);
-	TH1D* h_eta_REC_EEMC_cut = new TH1D("h_eta_REC_EEMC_cut",";#eta_{EEMC}",100,-3.14,3.14);
-	TH1D* h_e_pt_REC_EEMC_cut = new TH1D("h_e_pt_REC_EEMC_cut",";p_{T,e,EEMC} [GeV/c]",200,0,2);
-	TH1D* h_e_pz_REC_EEMC_cut = new TH1D("h_e_pz_REC_EEMC_cut",";p_{z,e,EEMC} [GeV/c]",200,0,2);
-	TH1D* h_e_p_REC_EEMC_cut = new TH1D("h_e_p_REC_EEMC_cut",";p_{e,EEMC} [GeV/c]",200,0,2);
-	TH1D* h_phi_REC_EEMC_cut = new TH1D("h_phi_REC_EEMC_cut",";#phi_{EEMC}",100,-3.14,3.14);
-    TH1D* h_theta_REC_EEMC_cut = new TH1D("h_theta_REC_EEMC_cut",";#theta_{EEMC}",100,-3.14,3.14);
-	// RECO track
-    TH1D* h_Q2REC_e_trk_cut = new TH1D("h_Q2REC_e_trk_cut",";Q^{2}_{trk} [GeV/c]^{2}",100,1,10);
-    TH1D* h_yREC_e_trk_cut = new TH1D("h_yREC_e_trk_cut",";y_{trk}",100,0.01,0.85);
-	TH1D* h_energy_REC_trk_cut = new TH1D("h_energy_REC_trk_cut",";E_{trk} [GeV]",100,0,20);
-	TH1D* h_eta_REC_trk_cut = new TH1D("h_eta_REC_trk_cut",";#eta_{trk}",100,-3.14,3.14);
-	TH1D* h_e_pt_REC_trk_cut = new TH1D("h_e_pt_REC_trk_cut",";p_{T,e,trk} [GeV/c]",200,0,2);
-	TH1D* h_e_pz_REC_trk_cut = new TH1D("h_e_pz_REC_trk_cut",";p_{z,e,trk} [GeV/c]",200,0,2);
-	TH1D* h_e_p_REC_trk_cut = new TH1D("h_e_p_REC_trk_cut",";p_{e,trk} [GeV/c]",200,0,2);
-    // VM
-    TH1D* h_VM_mass_REC_cut = new TH1D("h_VM_mass_REC_cut",";VM_{RECO} mass [GeV/c^{2}]",200,0,4);
-    TH1D* h_VM_pt_REC_cut = new TH1D("h_VM_pt_REC_cut",";p_{T,VM,RECO} [GeV/c]",200,0,2);
-    TH2D* h_VM_pt_response_cut = new TH2D("h_VM_pt_response_cut","; p_{T,VM,RECO} [GeV/c];p_{T,VM,MC} [GeV/c]",200,0,2,200,0,2);
-	TH1D* h_VM_pz_REC_cut = new TH1D("h_VM_pz_REC_cut",";p_{z,VM,RECO} [GeV/c]",200,0,2);
-    TH2D* h_VM_Epz_response_cut = new TH2D("h_VM_Epz_response_cut","; (E_{VM,RECO}-p_{z,VM,RECO}) [GeV];(E_{VM,MC}-p_{z,VM,MC} [GeV])",100,0,20,100,0,20);
+    TH1D* h_Epz_afterCut = new TH1D("h_Epz_afterCut", ";(E_{EEMC} - p_{z,trk}) [GeV]",100,0,45);
+    TH1D* h_EoverP_afterCut = new TH1D("h_EoverP_afterCut",";E_{EEMC}/|p|_{trk}",100,0,2);
+    TH1D* h_Q2_beforeCut = new TH1D("h_Q2_beforeCut",";Q^{2} [GeV/c]^{2}",100,0,100);
+    TH1D* h_Q2_afterCut = new TH1D("h_Q2_afterCut",";Q^{2} [GeV/c]^{2}",100,1,10);
+    TH1D* h_y_beforeCut = new TH1D("h_y_beforeCut",";y",100,0,1.5);
+    TH1D* h_y_afterCut = new TH1D("h_y_afterCut",";y",100,0.01,0.85);
     TH1D* h_VM_Epz_MC_cut = new TH1D("h_VM_Epz_MC_cut",";(E_{VM,MC}-p_{z,VM,MC}) [GeV]",100,0,20);
-    TH1D* h_VM_Epz_REC_cut = new TH1D("h_VM_Epz_REC_cut",";(E_{VM,REC}-p_{z,VM,REC}) [GeV]",100,0,20);
-	TH1D* h_VM_p_REC_cut = new TH1D("h_VM_p_REC_cut",";p_{VM,RECO} [GeV/c]",200,0,2);
-    // energy clus
-	TH1D* h_emHits_position_x_REC_cut = new TH1D("h_emHits_position_x_REC_cut","x [mm]",80,-800,800);
-	TH1D* h_emHits_position_y_REC_cut = new TH1D("h_emHits_position_y_REC_cut","y [mm]",80,-800,800);
-	TH1D* h_emClus_position_x_REC_cut = new TH1D("h_emClus_position_x_REC_cut","x [mm]",80,-800,800);
-	TH1D* h_emClus_position_y_REC_cut = new TH1D("h_emClus_position_y_REC_cut","y [mm]",80,-800,800);
-	// Analysis hists
-    TH2D* h_Q2_res_cut = new TH2D("h_Q2_res_cut",";Q^{2}_{MC} [GeV/c]^{2}; (Q^{2}_{MC}-Q^{2}_{EEMC})/Q^{2}_{MC}",100,1,10,1000,-1,1);
-    TH2D* h_Q2_response_cut = new TH2D("h_Q2_response_cut","; Q^{2}_{EEMC} [GeV/c]^{2};Q^{2}_{MC} [GeV/c]^{2}",100,1,10,1000,1,10);
-	TH1D* h_dQ2overQ2_REC_cut = new TH1D("h_dQ2overQ2_REC_cut",";dQ^{2}_{REC}/Q^{2}_REC",100,1,10);
-    TH2D* h_y_res_cut = new TH2D("h_y_res_cut",";y_{e,MC} ;(y_{e,MC}-y_{e,EEMC})/y_{e,MC}",100,0.01,0.85,1000,-1,1);
-    TH2D* h_y_response_cut = new TH2D("h_y_response_cut"," ; y_{EEMC};y_{MC}",100,0.01,0.85,1000,0.01,0.85);
-    TH1D* h_dyOvery_REC_cut = new TH1D("h_dyOvery_REC_cut",";dy/y",100,0.01,0.85);
-	TH2D* h_energy_res_EEMC_cut = new TH2D("h_energy_res_EEMC_cut",";E_{MC} [GeV]; (E_{MC}-E_{EEMC})/E_{MC}",100,0,20,1000,-1,1);
-    TH2D* h_energy_response_EEMC_cut = new TH2D("h_energy_response_EEMC_cut","; E_{EEMC} [GeV];E_{MC} [GeV]",100,0,20,1000,0,20);
-    TH2D* h_theta_response_EEMC_cut = new TH2D("h_theta_response_EEMC_cut","; theta_{EEMC} [GeV];theta_{MC} [GeV]",100,-3.14,3.14,100,-3.14,3.14);
-    TH2D* h_energy_res_trk_cut = new TH2D("h_energy_res_trk_cut",";E_{MC} [GeV]; (E_{MC}-E_{trk})/E_{MC}",100,-3.14,3.14,1000,-3.14,3.14);
-    TH2D* h_e_pt_res_cut = new TH2D("h_e_pt_res_cut",";p_{T,e,MC} [GeV/c]; (p_{T,e,EEMC}-p_{T,e,MC})/p_{T,e,MC}",200,0,2,200,0,2);
-	TH2D* h_e_pz_res_cut = new TH2D("h_e_pz_res_cut",";p_{z,e,MC} [GeV/c]; (p_z,e,EEMC}-p_{z,e,MC})/p_{z,e,MC}",200,0,2,200,0,2);
-    TH2D* h_e_pz_response_cut = new TH2D("h_e_pz_response_cut","; p_{z,e,EEMC} [GeV/c];p_{z,e,MC} [GeV/c]",200,0,2,200,0,2);
-	TH2D* h_e_p_res_cut = new TH2D("h_e_p_res_cut",";p_{e,MC} [GeV/c]; (p_{e,EEMC}-p_{e,MC})/p_{e,MC}",200,0,2,200,0,2);
-    TH2D* h_XvsY_hits_cut = new TH2D("h_XvsY_hits_cut",";x [mm]; y [mm]",80,-800,800,80,-800,800);
-    TH2D* h_XvsY_clus_cut = new TH2D("h_XvsY_clus_cut",";x [mm]; y [mm]",80,-800,800,80,-800,800);
-    TH2D* h_XvsY_trk_cut = new TH2D("h_XvsY_trk_cut",";x [mm]; y [mm]",80,-800,800,80,-800,800);
-    TH1D* h_Xclus_minus_Xtrk_cut = new TH1D("h_Xclus_minus_Xtrk_cut",";x_{clus}-x_{trk} [mm]",80,-800,800);
-    TH1D* h_Yclus_minus_Ytrk_cut = new TH1D("h_Yclus_minus_Ytrk_cut",";y_{clus}-y_{trk} [mm]",80,-800,800);
-    TH1D* h_Xhits_minus_Xtrk_cut = new TH1D("h_Xhits_minus_Xtrk_cut",";x_{hits}-x_{trk} [mm]",80,-800,800);
-    TH1D* h_Yhits_minus_Ytrk_cut = new TH1D("h_Yhits_minus_Ytrk_cut",";y_{hits}-y_{trk} [mm]",80,-800,800);
-    TH1D* h_trk_position_x_REC_cut = new TH1D("h_trk_position_x_REC_cut",";x_{trk} [mm]",80,-800,800);
-    TH1D* h_trk_position_y_REC_cut = new TH1D("h_trk_position_y_REC_cut",";y_{trk} [mm]",80,-800,800);
-    TH2D* h_EvsP_REC_cut = new TH2D("h_EvsP_REC_cut",";p_{trk} [GeV]; E_{EEMC} [GeV]",100,0,20,100,0,20);
-    TH2D* h_EvsP_MC_cut = new TH2D("h_EvsP_MC_cut",";p_{MC} [GeV]; E_{MC} [GeV]",100,0,20,100,0,20);
-    TH1D* h_Epz_REC_cut = new TH1D("h_Epz_REC_cut", ";(E_{EEMC} - p_{z,EEMC}) [GeV]",100,0,20);
-    TH1D* h_Epz_REC_trk_cut = new TH1D("h_Epz_REC_trk_cut", ";(E_{trk} - p_{z,trk}) [GeV]",100,0,20);
-    TH1D* h_Epz_MC_cut = new TH1D("h_Epz_MC_cut", ";(E_{MC} - p_{z,MC}) [GeV]",100,0,20);
-    TH2D* h_Epz_response_cut = new TH2D("h_Epz_response_cut", ";(E_{EEMC} - p_{z,EEMC}) [GeV];(E_{MC}-p_{z,MC}) [GeV]",100,0,20,100,0,20);
-    TH1D* h_EcalOverPtrk_cut = new TH1D("h_EcalOverPtrk_cut",";E_{EEMC}/|p|_{trk}",100,0,20);
-    TH1D* h_EtrkOverPcal_cut = new TH1D("h_EtrkOverPcal_cut",";E_{trk}/|p|_{EEMC}",100,0,20);
-    TH2D* h_EoverP_response_cut = new TH2D("h_EoverP_response_cut","; E_{EEMC}/|p|_{trk};E_{MC}/|p|_{MC}",100,0,20,100,0,20);
-    TH1D* h_theta_diff_cut = new TH1D("h_theta_diff_cut",";#theta_{EEMC}-#theta_{MC}",100,-3.14,3.14);
-    TH1D* h_phi_diff_cut = new TH1D("h_phi_diff_cut",";#phi_{EEMC}-#phi_{MC}",100,-3.14,3.14);
-    TH1D* h_eta_diff_cut = new TH1D("h_eta_diff_cut",";#eta_{EEMC}-#eta_{MC}",100,-3.14,3.14);
-    // t distributions
-    TH1D* h_t_REC_EEMC_cut = new TH1D("h_t_REC_EEMC_cut",";|t|_{EEMC} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_trk_cut = new TH1D("h_t_REC_trk_cut",";|t|_{trk} [GeV/c]^{2}; counts",100,0,0.2);
-    TH2D* h_t_res_EEMC_cut = new TH2D("h_t_res_EEMC_cut",";|t|_{MC} [GeV/c]^{2}; (|t|_{MC}-|t|_{EEMC})/|t|_{MC}",100,0,0.2,1000,-10,10);
-    TH2D* h_t_res_trk_cut = new TH2D("h_t_res_trk_cut",";|t|_{MC} [GeV/c]^{2}; (|t|_{MC}-|t|_{trk})/|t|_{MC}",100,0,0.2,1000,-10,10);
-    TH2D* h_t_response_EEMC_cut = new TH2D("h_t_response_EEMC_cut","; |t|_{EEMC} [GeV/c]^{2};|t|_{MC} [GeV/c]^{2}",100,0,0.2,1000,0,0.2);
-	TH2D* h_t_response_trk_cut = new TH2D("h_t_response_trk_cut","; |t|_{trk} [GeV/c]^{2};|t|_{MC} [GeV/c]^{2}",100,0,0.2,1000,0,0.2);
-	TH2D* h_t_response_trk_EEMC_cut = new TH2D("h_t_response_trk_EEMC_cut","; |t|_{trk} [GeV/c]^{2};|t|_{EEMC} [GeV/c]^{2}",100,0,0.2,1000,0,0.2);
-    // t distribution with resolution only
-    TH1D* h_t_REC_wRES_cut = new TH1D("h_t_REC_wRES_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    // t distribution with resolution and angle cut (EEMC RECO)
-    TH1D* h_t_REC_wRES_cut_pi2_cut = new TH1D("h_t_REC_wRES_cut_pi2_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi3_cut = new TH1D("h_t_REC_wRES_cut_pi3_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi4_cut = new TH1D("h_t_REC_wRES_cut_pi4_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi6_cut = new TH1D("h_t_REC_wRES_cut_pi6_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi9_cut = new TH1D("h_t_REC_wRES_cut_pi9_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi12_cut = new TH1D("h_t_REC_wRES_cut_pi12_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi16_cut = new TH1D("h_t_REC_wRES_cut_pi16_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi20_cut = new TH1D("h_t_REC_wRES_cut_pi20_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi24_cut = new TH1D("h_t_REC_wRES_cut_pi24_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    // t distribution 2d
-    TH2D* h_t_REC_2d_cut = new TH2D("h_t_REC_2d_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    // t distribution 2d with resolution only 
-    TH2D* h_t_REC_2d_wRES_cut = new TH2D("h_t_REC_2d_wRES_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    // t distribution 2d with resolution and angle cut (EEMC RECO)
-    TH2D* h_t_REC_2d_wRES_cut_pi2_cut = new TH2D("h_t_REC_2d_wRES_cut_pi2_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi3_cut = new TH2D("h_t_REC_2d_wRES_cut_pi3_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi4_cut = new TH2D("h_t_REC_2d_wRES_cut_pi4_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi6_cut = new TH2D("h_t_REC_2d_wRES_cut_pi6_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi9_cut = new TH2D("h_t_REC_2d_wRES_cut_pi9_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi12_cut = new TH2D("h_t_REC_2d_wRES_cut_pi12_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi16_cut = new TH2D("h_t_REC_2d_wRES_cut_pi16_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi20_cut = new TH2D("h_t_REC_2d_wRES_cut_pi20_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi24_cut = new TH2D("h_t_REC_2d_wRES_cut_pi24_cut",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    // RECO inside of position threshold of 20 mm for comparisons
-    // RECO EEMC
-    TH1D* h_Q2REC_e_EEMC_cut2 = new TH1D("h_Q2REC_e_EEMC_cut2",";Q^{2}_{EEMC} [GeV/c]^{2}",100,1,10);
-	TH1D* h_yREC_e_EEMC_cut2 = new TH1D("h_yREC_e_EEMC_cut2",";y_{EEMC}",100,0.01,0.85);
-	TH1D* h_energy_REC_EEMC_cut2 = new TH1D("h_energy_REC_EEMC_cut2",";E_{EEMC} [GeV]",100,0,20);
-	TH1D* h_eta_REC_EEMC_cut2 = new TH1D("h_eta_REC_EEMC_cut2",";#eta_{EEMC}",100,-3.14,3.14);
-	TH1D* h_e_pt_REC_EEMC_cut2 = new TH1D("h_e_pt_REC_EEMC_cut2",";p_{T,e,EEMC} [GeV/c]",200,0,2);
-	TH1D* h_e_pz_REC_EEMC_cut2 = new TH1D("h_e_pz_REC_EEMC_cut2",";p_{z,e,EEMC} [GeV/c]",200,0,2);
-	TH1D* h_e_p_REC_EEMC_cut2 = new TH1D("h_e_p_REC_EEMC_cut2",";p_{e,EEMC} [GeV/c]",200,0,2);
-	TH1D* h_phi_REC_EEMC_cut2 = new TH1D("h_phi_REC_EEMC_cut2",";#phi_{EEMC}",100,-3.14,3.14);
-    TH1D* h_theta_REC_EEMC_cut2 = new TH1D("h_theta_REC_EEMC_cut2",";#theta_{EEMC}",100,-3.14,3.14);
-	// RECO track
-    TH1D* h_Q2REC_e_trk_cut2 = new TH1D("h_Q2REC_e_trk_cut2",";Q^{2}_{trk} [GeV/c]^{2}",100,1,10);
-    TH1D* h_yREC_e_trk_cut2 = new TH1D("h_yREC_e_trk_cut2",";y_{trk}",100,0.01,0.85);
-	TH1D* h_energy_REC_trk_cut2 = new TH1D("h_energy_REC_trk_cut2",";E_{trk} [GeV]",100,0,20);
-	TH1D* h_eta_REC_trk_cut2 = new TH1D("h_eta_REC_trk_cut2",";#eta_{trk}",100,-3.14,3.14);
-	TH1D* h_e_pt_REC_trk_cut2 = new TH1D("h_e_pt_REC_trk_cut2",";p_{T,e,trk} [GeV/c]",200,0,2);
-	TH1D* h_e_pz_REC_trk_cut2 = new TH1D("h_e_pz_REC_trk_cut2",";p_{z,e,trk} [GeV/c]",200,0,2);
-	TH1D* h_e_p_REC_trk_cut2 = new TH1D("h_e_p_REC_trk_cut2",";p_{e,trk} [GeV/c]",200,0,2);
-    // VM
-    TH1D* h_VM_mass_REC_cut2 = new TH1D("h_VM_mass_REC_cut2",";VM_{RECO} mass [GeV/c^{2}]",200,0,4);
-    TH1D* h_VM_pt_REC_cut2 = new TH1D("h_VM_pt_REC_cut2",";p_{T,VM,RECO} [GeV/c]",200,0,2);
-    TH2D* h_VM_pt_response_cut2 = new TH2D("h_VM_pt_response_cut2","; p_{T,VM,RECO} [GeV/c];p_{T,VM,MC} [GeV/c]",200,0,2,200,0,2);
-	TH1D* h_VM_pz_REC_cut2 = new TH1D("h_VM_pz_REC_cut2",";p_{z,VM,RECO} [GeV/c]",200,0,2);
-    TH2D* h_VM_Epz_response_cut2 = new TH2D("h_VM_Epz_response_cut2","; (E_{VM,RECO}-p_{z,VM,RECO}) [GeV];(E_{VM,MC}-p_{z,VM,MC} [GeV])",100,0,20,100,0,20);
-    TH1D* h_VM_Epz_MC_cut2 = new TH1D("h_VM_Epz_MC_cut2",";(E_{VM,MC}-p_{z,VM,MC}) [GeV]",100,0,20);
-    TH1D* h_VM_Epz_REC_cut2 = new TH1D("h_VM_Epz_REC_cut2",";(E_{VM,REC}-p_{z,VM,REC}) [GeV]",100,0,20);
-	TH1D* h_VM_p_REC_cut2 = new TH1D("h_VM_p_REC_cut2",";p_{VM,RECO} [GeV/c]",200,0,2);
-    // energy clus
-	TH1D* h_emHits_position_x_REC_cut2 = new TH1D("h_emHits_position_x_REC_cut2","x [mm]",800,-800,800);
-	TH1D* h_emHits_position_y_REC_cut2 = new TH1D("h_emHits_position_y_REC_cut2","y [mm]",800,-800,800);
-	TH1D* h_emClus_position_x_REC_cut2 = new TH1D("h_emClus_position_x_REC_cut2","x [mm]",800,-800,800);
-	TH1D* h_emClus_position_y_REC_cut2 = new TH1D("h_emClus_position_y_REC_cut2","y [mm]",800,-800,800);
-	// Analysis hists
-    TH2D* h_Q2_res_cut2 = new TH2D("h_Q2_res_cut2",";Q^{2}_{MC} [GeV/c]^{2}; (Q^{2}_{MC}-Q^{2}_{EEMC})/Q^{2}_{MC}",100,1,10,1000,-1,1);
-    TH2D* h_Q2_response_cut2 = new TH2D("h_Q2_response_cut2","; Q^{2}_{EEMC} [GeV/c]^{2};Q^{2}_{MC} [GeV/c]^{2}",100,1,10,1000,1,10);
-	TH1D* h_dQ2overQ2_REC_cut2 = new TH1D("h_dQ2overQ2_REC_cut2",";dQ^{2}_{REC}/Q^{2}_REC",100,1,10);
-    TH2D* h_y_res_cut2 = new TH2D("h_y_res_cut2",";y_{e,MC} ;(y_{e,MC}-y_{e,EEMC})/y_{e,MC}",100,0.01,0.85,1000,-1,1);
-    TH2D* h_y_response_cut2 = new TH2D("h_y_response_cut2","; y_{EEMC};y_{MC}",100,0.01,0.85,1000,0.01,0.85);
-    TH1D* h_dyOvery_REC_cut2 = new TH1D("h_dyOvery_REC_cut2",";dy/y",100,0.01,0.85);
-	TH2D* h_energy_res_EEMC_cut2 = new TH2D("h_energy_res_EEMC_cut2",";E_{MC} [GeV]; (E_{MC}-E_{EEMC})/E_{MC}",100,0,20,1000,-1,1);
-    TH2D* h_energy_response_EEMC_cut2 = new TH2D("h_energy_response_EEMC_cut2","; E_{EEMC} [GeV];E_{MC} [GeV]",100,0,20,1000,0,20);
-    TH2D* h_theta_response_EEMC_cut2 = new TH2D("h_theta_response_EEMC_cut2","; theta_{EEMC} [GeV];theta_{MC} [GeV]",100,-3.14,3.14,100,-3.14,3.14);
-    TH2D* h_energy_res_trk_cut2 = new TH2D("h_energy_res_trk_cut2",";E_{MC} [GeV]; (E_{MC}-E_{trk})/E_{MC}",100,-3.14,3.14,1000,-3.14,3.14);
-    TH2D* h_e_pt_res_cut2 = new TH2D("h_e_pt_res_cut2",";p_{T,e,MC} [GeV/c]; (p_{T,e,EEMC}-p_{T,e,MC})/p_{T,e,MC}",200,0,2,200,0,2);
-	TH2D* h_e_pz_res_cut2 = new TH2D("h_e_pz_res_cut2",";p_{z,e,MC} [GeV/c]; (p_z,e,EEMC}-p_{z,e,MC})/p_{z,e,MC}",200,0,2,200,0,2);
-    TH2D* h_e_pz_response_cut2 = new TH2D("h_e_pz_response_cut2",";p_{z,e,EEMC} [GeV/c];p_{z,e,MC} [GeV/c]",200,0,2,200,0,2);
-	TH2D* h_e_p_res_cut2 = new TH2D("h_e_p_res_cut2",";p_{e,MC} [GeV/c]; (p_{e,EEMC}-p_{e,MC})/p_{e,MC}",200,0,2,200,0,2);
-    TH2D* h_XvsY_hits_cut2 = new TH2D("h_XvsY_hits_cut2",";x [mm]; y [mm]",800,-800,800,80,-800,800);
-    TH2D* h_XvsY_clus_cut2 = new TH2D("h_XvsY_clus_cut2",";x [mm]; y [mm]",800,-800,800,80,-800,800);
-    TH2D* h_XvsY_trk_cut2 = new TH2D("h_XvsY_trk_cut2",";x [mm]; y [mm]",800,-800,800,80,-800,800);
-    TH1D* h_Xclus_minus_Xtrk_cut2 = new TH1D("h_Xclus_minus_Xtrk_cut2",";x_{clus}-x_{trk} [cm]",800,-80,80);
-    TH1D* h_Yclus_minus_Ytrk_cut2 = new TH1D("h_Yclus_minus_Ytrk_cut2",";y_{clus}-y_{trk} [cm]",800,-80,80);
-    TH1D* h_Xhits_minus_Xtrk_cut2 = new TH1D("h_Xhits_minus_Xtrk_cut2",";x_{hits}-x_{trk} [cm]",800,-80,80);
-    TH1D* h_Yhits_minus_Ytrk_cut2 = new TH1D("h_Yhits_minus_Ytrk_cut2",";y_{hits}-y_{trk} [cm]",800,-80,80);
-    TH1D* h_trk_position_x_REC_cut2 = new TH1D("h_trk_position_x_REC_cut2",";x_{trk} [mm]",800,-800,800);
-    TH1D* h_trk_position_y_REC_cut2 = new TH1D("h_trk_position_y_REC_cut2",";y_{trk} [mm]",800,-800,800);
-    TH2D* h_EvsP_REC_cut2 = new TH2D("h_EvsP_REC_cut2",";p_{trk} [GeV]; E_{EEMC} [GeV]",100,0,20,100,0,20);
-    TH2D* h_EvsP_MC_cut2 = new TH2D("h_EvsP_MC_cut2",";p_{MC} [GeV]; E_{MC} [GeV]",100,0,20,100,0,20);
-    TH1D* h_Epz_REC_cut2 = new TH1D("h_Epz_REC_cut2", ";(E_{EEMC} - p_{z,EEMC}) [GeV]",100,0,20);
-    TH1D* h_Epz_REC_trk_cut2 = new TH1D("h_Epz_REC_trk_cut2", ";(E_{trk} - p_{z,trk}) [GeV]",100,0,20);
-    TH1D* h_Epz_MC_cut2 = new TH1D("h_Epz_MC_cut2", ";(E_{MC} - p_{z,MC}) [GeV]",100,0,20);
-    TH2D* h_Epz_response_cut2 = new TH2D("h_Epz_response_cut2", ";(E_{EEMC} - p_{z,EEMC}) [GeV];(E_{MC}-p_{z,MC}) [GeV]",100,0,20,100,0,20);
-    TH1D* h_EcalOverPtrk_cut2 = new TH1D("h_EcalOverPtrk_cut2",";E_{EEMC}/|p|_{trk}",100,0,20);
-    TH1D* h_EtrkOverPcal_cut2 = new TH1D("h_EtrkOverPcal_cut2",";E_{trk}/|p|_{EEMC}",100,0,20);
-    TH2D* h_EoverP_response_cut2 = new TH2D("h_EoverP_response_cut2",";E_{EEMC}/|p|_{trk};E_{MC}/|p|_{MC}",100,0,20,100,0,20);
-    TH1D* h_theta_diff_cut2 = new TH1D("h_theta_diff_cut2",";#theta_{EEMC}-#theta_{MC}",100,-3.14,3.14);
-    TH1D* h_phi_diff_cut2 = new TH1D("h_phi_diff_cut2",";#phi_{EEMC}-#phi_{MC}",100,-3.14,3.14);
-    TH1D* h_eta_diff_cut2 = new TH1D("h_eta_diff_cut2",";#eta_{EEMC}-#eta_{MC}",100,-3.14,3.14);
-    // t
-    TH1D* h_t_REC_EEMC_cut2 = new TH1D("h_t_REC_EEMC_cut2",";|t|_{EEMC} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_trk_cut2 = new TH1D("h_t_REC_trk_cut2",";|t|_{trk} [GeV/c]^{2}; counts",100,0,0.2);
-    TH2D* h_t_res_EEMC_cut2 = new TH2D("h_t_res_EEMC_cut2",";|t|_{MC} [GeV/c]^{2}; (|t|_{MC}-|t|_{EEMC})/|t|_{MC}",100,0,0.2,1000,-10,10);
-    TH2D* h_t_res_trk_cut2 = new TH2D("h_t_res_trk_cut2",";|t|_{MC} [GeV/c]^{2}; (|t|_{MC}-|t|_{trk})/|t|_{MC}",100,0,0.2,1000,-10,10);
-    TH2D* h_t_response_EEMC_cut2 = new TH2D("h_t_response_EEMC_cut2","; |t|_{EEMC} [GeV/c]^{2};|t|_{MC} [GeV/c]^{2}",100,0,0.2,1000,0,0.2);
-	TH2D* h_t_response_trk_cut2 = new TH2D("h_t_response_trk_cut2","; |t|_{trk} [GeV/c]^{2};|t|_{MC} [GeV/c]^{2}",100,0,0.2,1000,0,0.2);
-	TH2D* h_t_response_trk_EEMC_cut2 = new TH2D("h_t_response_trk_EEMC_cut2","; |t|_{trk} [GeV/c]^{2};|t|_{EEMC} [GeV/c]^{2}",100,0,0.2,1000,0,0.2);
-    // t distribution with resolution only
-    TH1D* h_t_REC_wRES_cut2 = new TH1D("h_t_REC_wRES_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    // t distribution with resolution and angle cut (EEMC RECO)
-    TH1D* h_t_REC_wRES_cut_pi2_cut2 = new TH1D("h_t_REC_wRES_cut_pi2_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi3_cut2 = new TH1D("h_t_REC_wRES_cut_pi3_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi4_cut2 = new TH1D("h_t_REC_wRES_cut_pi4_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi6_cut2 = new TH1D("h_t_REC_wRES_cut_pi6_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi9_cut2 = new TH1D("h_t_REC_wRES_cut_pi9_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi12_cut2 = new TH1D("h_t_REC_wRES_cut_pi12_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi16_cut2 = new TH1D("h_t_REC_wRES_cut_pi16_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi20_cut2 = new TH1D("h_t_REC_wRES_cut_pi20_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    TH1D* h_t_REC_wRES_cut_pi24_cut2 = new TH1D("h_t_REC_wRES_cut_pi24_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-    // t distribution 2d
-    TH2D* h_t_REC_2d_cut2 = new TH2D("h_t_REC_2d_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    // t distribution 2d with resolution only 
-    TH2D* h_t_REC_2d_wRES_cut2 = new TH2D("h_t_REC_2d_wRES_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    // t distribution 2d with resolution and angle cut (EEMC RECO)
-    TH2D* h_t_REC_2d_wRES_cut_pi2_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi2_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi3_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi3_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi4_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi4_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi6_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi6_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi9_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi9_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi12_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi12_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi16_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi16_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi20_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi20_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
-    TH2D* h_t_REC_2d_wRES_cut_pi24_cut2 = new TH2D("h_t_REC_2d_wRES_cut_pi24_cut2",";#sqrt{|t|_{x}} [GeV/c]; #sqrt{|t|_{y}} [GeV/c]",100,0,0.2,100,0,0.2);
 
     // Uncomment this block to run single files at a time
     // and comment out "chain->GetEntries();""
@@ -580,15 +595,15 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
     	TLorentzVector kminusMC(0,0,0,0);
 
         // incoherent check
-        /*if(event->clusters_zdc.size()>0) continue;
+        if(event->clusters_zdc.size()>0) continue;
 		if(event->hit_rp.size()>0) continue;
-		if(event->hit_omd.size()>0) continue;*/
+		if(event->hit_omd.size()>0) continue;
 
     	//MC level
     	TLorentzVector scatMC(0,0,0,0);
     	int mc_elect_index=-1;
     	double maxPt=-99.;
-        //int incoherent=0;
+        int incoherent=0;
         
         // loop over all MC particles in the event
     	for(int imc=0;imc<mc_px_array.GetSize();imc++)
@@ -630,7 +645,7 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
                 && mc_genStatus_array[imc]==1) kplusMC.SetVectM(mctrk,MASS_KAON);
     		if(mc_pdg_array[imc]==-321 
                 && mc_genStatus_array[imc]==1) kminusMC.SetVectM(mctrk,MASS_KAON);
-             //if(mctrk.Eta()>3.5&&(mc_mass_array[imc]>0.9383||mc_mass_array[imc]<0.938))incoherent++;
+            if(mctrk.Eta()>3.5&&(mc_mass_array[imc]>0.9383||mc_mass_array[imc]<0.938))incoherent++;
     	}
 
          /*---------------------------
@@ -638,7 +653,7 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
         ----------------------------*/
        
 		//EEMC
-       /* for(int iclus=0;iclus<em_energy_array.GetSize();iclus++)
+        for(int iclus=0;iclus<em_energy_array.GetSize();iclus++)
         {
       		Cluster_EEMC cluster;
 			cluster.energy=em_energy_array[iclus];
@@ -662,7 +677,7 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
     	for(int ihit=0;ihit<rp_x_array.GetSize();ihit++)
         {
       		Hit_RP hit;
-			hit.x=rp_x_array[ihit];
+			hit.x=rp_x_array[ihit];h_VM_mass_MC
 			hit.y=rp_y_array[ihit];
 			hit.z=rp_z_array[ihit];
     	    event->hit_rp.push_back(hit);
@@ -678,7 +693,7 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
     	    event->hit_omd.push_back(hit);
     	}            
 
-        if(incoherent) continue;*/
+        if(incoherent) continue;
     
         h_phi_MC->Fill(scatMC.Phi());
         h_theta_MC->Fill(scatMC.Theta());
@@ -688,6 +703,8 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
 		h_e_p_MC->Fill(scatMC.P());
 		h_energy_MC->Fill(scatMC.E());
         h_EoverP_MC->Fill(scatMC.E()/scatMC.P());
+        double EpzMC = scatMC.E()-scatMC.Pz();
+        h_Epz_MC->Fill(EpzMC);
 
 		// checks
         cout<<"A energy: "<<abeam.E()<<" p Energy: "<<pbeam.E()<<" e Energy: "<<ebeam.E()<<endl;
@@ -707,6 +724,8 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
     	double Q2=-(qbeam).Mag2();  
     	double pq=abeam.Dot(qbeam); 
     	double y=pq/abeam.Dot(ebeam);
+        h_Q2_beforeCut->Fill(Q2);
+        h_y_beforeCut->Fill(y);
 
         // MC level phase space cut
     	if(Q2<1.||Q2>10.) continue;
@@ -722,7 +741,16 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
 		h_VM_pz_MC->Fill(vmMC.Pz());
 		h_VM_p_MC->Fill(vmMC.P());
         h_VM_Epz_MC->Fill(vmMC.E()-vmMC.Pz());
-        
+
+        h_phi_MC_after->Fill(scatMC.Phi());
+        h_theta_MC_after->Fill(scatMC.Theta());
+        h_eta_MC_after->Fill(scatMC.Eta());
+        h_e_pt_MC_after->Fill(scatMC.Pt());
+		h_e_pz_MC_after->Fill(scatMC.Pz());
+		h_e_p_MC_after->Fill(scatMC.P());
+		h_energy_MC_after->Fill(scatMC.E());
+        h_EoverP_MC_after->Fill(scatMC.E()/scatMC.P());
+        h_EvsP_MC->Fill(scatMC.P(),scatMC.E());
 
 		// t dist
         double t_MC = 0;
@@ -882,6 +910,8 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
     	if( radius>550. ) continue; 
     	double clusEnergy=1.044*maxHitEnergy; // 4.4% energy calibration.
     	h_energy_REC_EEMC->Fill(clusEnergy);
+    	h_emClus_position_REC->Fill(xClus,yClus); 
+        
 
         double min_distance = 1e6;
         double xtrk = -999.;
@@ -989,7 +1019,7 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
         h_energy_res_trk->Fill(scatMC.E(), res_trk);
     	h_energy_REC_trk->Fill(scatMCmatchREC.E());
 
-        //int incoherent_rec=0;
+        int incoherent_rec=0;
         // loop over track again;
         for(int itrk=0;itrk<reco_pz_array.GetSize();itrk++)
         {
@@ -1010,18 +1040,54 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
             	}
         	}
             //incoherent
-        	//if(trk.Eta()>3.5) incoherent_rec++;
+        	if(trk.Eta()>3.5) incoherent_rec++;
         }
 
         //selection
-    	//if(incoherent_rec) continue;
+    	if(incoherent_rec) continue;
         
         // 4vector of VM;
         if(kplusREC.E()!=0. && kminusREC.E()!=0.)
         {
         	vmREC=kplusREC+kminusREC;
         }
-        h_VM_mass_REC->Fill(vmREC.M());
+
+        // cluster-base DIS kine;
+        TLorentzVector qbeamREC=ebeam-scatClusEREC; // emcal e' reco
+        TLorentzVector qbeamREC_trk=ebeam-scatMCmatchREC; // track e' reco
+        double Q2REC=-(qbeamREC).Mag2();  
+        double Q2REC_trk = -(qbeamREC_trk).Mag2();
+        double pqREC=abeam.Dot(qbeamREC); 
+        double yREC=pqREC/abeam.Dot(ebeam); 
+        double pqREC_trk=abeam.Dot(qbeamREC_trk); 
+        double yREC_trk=pqREC_trk/abeam.Dot(ebeam); 
+        h_Q2REC_e_EEMC->Fill(Q2REC);
+        h_Q2REC_e_trk->Fill(Q2REC_trk);
+        h_yREC_e_EEMC->Fill(yREC);
+        h_yREC_e_trk->Fill(yREC_trk);
+        double EpzREC = scatClusEREC.E()-scatMCmatchREC.Pz();
+        double EoverP = scatClusEREC.E()/scatMCmatchREC.P();
+
+        // Event selection:
+        if( EpzREC>27||EpzREC<40 ) 
+        {
+            h_Epz_afterCut->Fill(EpzREC);
+            if( EoverP>0.8||EoverP<1.18 )
+            {
+                h_EoverP_afterCut->Fill(EoverP);
+                if(Q2REC>1.||Q2REC<10.) 
+                {
+                    h_Q2_afterCut->Fill(Q2REC);
+                    if(yREC>0.01||yREC<0.85) 
+                    {
+                        h_y_afterCut->Fill(yREC);
+                        // VM rec
+                        if(vmREC.E()!=0) 
+                            {
+                        // select phi mass and rapidity window 
+                        if( fabs(vmREC.M()-1.02)<0.02&& fabs(vmREC.Rapidity())<3.5)
+                        {
+                            h_VM_mass_REC->Fill(vmREC.M());
         h_VM_pt_REC->Fill(vmREC.Pt());
     	h_VM_pz_REC->Fill(vmREC.Pz());
     	h_VM_p_REC->Fill(vmREC.P());
@@ -1044,24 +1110,8 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
     	h_e_p_REC_trk->Fill(scatMCmatchREC.P());
 
         // E_cal vs p_trk
-        h_EvsP_REC->Fill(scatMCmatchREC.P(),scatREC.E());
-        h_EvsP_MC->Fill(scatMC.P(),scatREC.E());
-
-        // cluster-base DIS kine;
-        TLorentzVector qbeamREC=ebeam-scatClusEREC; // emcal e' reco
-        TLorentzVector qbeamREC_trk=ebeam-scatMCmatchREC; // track e' reco
-        double Q2REC=-(qbeamREC).Mag2();  
-        double Q2REC_trk = -(qbeamREC_trk).Mag2();
-        double pqREC=abeam.Dot(qbeamREC); 
-        double yREC=pqREC/abeam.Dot(ebeam); 
-        double pqREC_trk=abeam.Dot(qbeamREC_trk); 
-        double yREC_trk=pqREC_trk/abeam.Dot(ebeam); 
-        h_Q2REC_e_EEMC->Fill(Q2REC);
-        h_Q2REC_e_trk->Fill(Q2REC_trk);
-        h_yREC_e_EEMC->Fill(yREC);
-        h_yREC_e_trk->Fill(yREC_trk);
-
-        // Q2 emcal reco resolution
+        h_EvsP_REC->Fill(scatMCmatchREC.P(),scatClusEREC.E());
+                            // Q2 emcal reco resolution
     	res = (Q2 - Q2REC)/Q2;
     	h_Q2_res->Fill(Q2, res);
         h_Q2_response->Fill(Q2REC,Q2);
@@ -1078,8 +1128,6 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
         h_Epz_REC_trk->Fill(EpzREC_trk);
         double EpzREC = (scatClusEREC+hfs).E() - (scatMCmatchREC+hfs).Pz();
         h_Epz_REC->Fill(EpzREC);
-        double EpzMC = scatMC.E()-scatMC.Pz();
-        h_Epz_MC->Fill(EpzMC);
         h_Epz_response->Fill(EpzREC,EpzMC);
     
     	// E over p  
@@ -1088,25 +1136,14 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
         h_EtrkOverPcal->Fill(scatClusEREC.E()/scatMCmatchREC.P());
         h_EoverP_response->Fill(scatClusEREC.E()/scatMCmatchREC.P(),scatMC.E()/scatMC.P());
 
-        // Event selection:
-        if( EpzREC>27||EpzREC<40 ) 
-        {
-            h_Epz_afterCut->Fill(EpzREC);
-            if( EoverP>0.8||EoverP<1.18 )
-            {
-                h_EoverP_afterCut->Fill(EoverP);
-                if(Q2REC>1.||Q2REC<10.) 
-                {
-                    h_Q2_afterCut->Fill(Q2REC);
-                    if(yREC>0.01||yREC<0.85) 
-                    {
-                        h_yREC_afterCut->Fill(yREC);
-                        // VM rec
-                        if(vmREC.E()!=0) 
-                            {
-                        // select phi mass and rapidity window 
-                        if( fabs(vmREC.M()-1.02)<0.02&& fabs(vmREC.Rapidity())<3.5)
-                        {
+        h_eta_REC_EEMC_after->Fill(scatClusEREC.Eta());
+        h_phi_REC_EEMC_after->Fill(scatClusEREC.Phi());
+        h_theta_REC_EEMC_after->Fill(scatREC.Theta());
+        h_theta_response_EEMC_after->Fill(scatMC.Theta(),scatREC.Theta());
+        h_theta_diff_after->Fill(scatREC.Theta()-scatMC.Theta());
+        h_phi_diff_after->Fill(scatClusEREC.Phi()-scatMC.Phi());
+        h_eta_diff_after->Fill(scatClusEREC.Eta()-scatMC.Eta());
+                            
                             // 2 versions: track and energy cluster:
                         	double t_trk_REC = giveme_t_method_L(ebeam,scatMCmatchREC,abeam,vmREC);  // method L (track e')
                             double t_REC = giveme_t_method_L(ebeam,scatClusEREC,abeam,vmREC); // method L (EEMC e')
@@ -1150,8 +1187,10 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
                         	h_t_res_trk->Fill(t_MC, res);
 	
                             //t EEMC resolution;
-                        	res = (t_MC-t_REC)/t_MC;
-                        	h_t_res_EEMC->Fill(t_MC, res);
+                        	double res_percent = (t_MC-t_REC)/t_MC;
+                            res = (t_MC-t_REC);
+                        	h_t_res_EEMC_percent->Fill(t_MC, res_percent);
+                            h_t_res_EEMC->Fill(t_MC, res);
 
                         	// apply cut with // subtracted out of t
                         	double theta_rec = atan(fabs(qx_rec)/fabs(qy_rec));
@@ -1214,12 +1253,6 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
         double position_threshold = 20; // mm
         if(fabs(x_clus_trk_diff)<=position_threshold && fabs(y_clus_trk_diff)<=position_threshold)
         {
-            // energy resolution
-            double res= (scatMC.E()-clusEnergy)/scatMC.E();
-            h_energy_res_EEMC_cut->Fill(scatMC.E(), res);
-            h_energy_response_EEMC_cut->Fill(clusEnergy,scatMC.E());
-            h_energy_REC_EEMC_cut->Fill(clusEnergy);
-        
             // association of rec level scat' e
             int rec_elect_index=-1;
             for(int i=0;i<sim_id.GetSize();i++)
@@ -1258,6 +1291,61 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
             	}
             }
 
+            // loop over track again;
+            for(int itrk=0;itrk<reco_pz_array.GetSize();itrk++)
+            {
+            	TVector3 trk(reco_px_array[itrk],reco_py_array[itrk],reco_pz_array[itrk]);
+            	particle.SetVectM(trk,MASS_PION);
+            	if(itrk!=rec_elect_index) 
+                {
+                  	hfs += particle; 
+                	h_eta_REC_trk_cut->Fill(trk.Eta());
+                	if(fabs(trk.Eta())<3.0)
+                    {
+                		if(reco_charge_array[itrk]>0) kplusREC.SetVectM(trk,MASS_KAON);
+                		if(reco_charge_array[itrk]<0) kminusREC.SetVectM(trk,MASS_KAON);
+                	}
+            	}
+            }
+        
+            // 4vector of VM;
+            if(kplusREC.E()!=0. && kminusREC.E()!=0.)
+             {
+            	vmREC=kplusREC+kminusREC;
+            }
+
+            // cluster-base DIS kine;
+            TLorentzVector qbeamREC=ebeam-scatClusEREC; // emcal e' reco
+            TLorentzVector qbeamREC_trk=ebeam-scatMCmatchREC; // track e' reco
+            double Q2REC=-(qbeamREC).Mag2();  
+            double Q2REC_trk = -(qbeamREC_trk).Mag2();
+            double pqREC=abeam.Dot(qbeamREC); 
+            double yREC=pqREC/abeam.Dot(ebeam); 
+            double pqREC_trk=abeam.Dot(qbeamREC_trk); 
+            double yREC_trk=pqREC_trk/abeam.Dot(ebeam); 
+
+            double EpzREC = (scatClusEREC+hfs).E() - (scatMCmatchREC+hfs).Pz();
+            // Event selection:
+            if( EpzREC>27||EpzREC<40 )
+            {	
+                if( EoverP>0.8||EoverP<1.18 )
+                {
+                if(Q2REC>1.||Q2REC<10.)
+                {
+                    if(yREC>0.01||yREC<0.85)
+                    {
+
+                        // VM rec
+                        if(vmREC.E()!=0){
+                    	// select phi mass and rapidity window 
+                    	if( fabs(vmREC.M()-1.02)<0.02&& fabs(vmREC.Rapidity())<3.5)
+                    	{
+                                                                // energy resolution
+            double res= (scatMC.E()-clusEnergy)/scatMC.E();
+            h_energy_res_EEMC_cut->Fill(scatMC.E(), res);
+            h_energy_response_EEMC_cut->Fill(clusEnergy,scatMC.E());
+            h_energy_REC_EEMC_cut->Fill(clusEnergy);
+            h_emClus_position_REC_cut->Fill(xClus,yClus); 
             h_eta_REC_EEMC_cut->Fill(scatClusEREC.Eta());
             h_phi_REC_EEMC_cut->Fill(scatClusEREC.Phi());
             h_theta_REC_EEMC_cut->Fill(scatClusEREC.Theta());
@@ -1290,30 +1378,8 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
         	double res_trk= (scatMC.E()-scatMCmatchREC.E())/scatMC.E();
             h_energy_res_trk_cut->Fill(scatMC.E(), res_trk);
         	h_energy_REC_trk_cut->Fill(scatMCmatchREC.E());
-
-            // loop over track again;
-            for(int itrk=0;itrk<reco_pz_array.GetSize();itrk++)
-            {
-            	TVector3 trk(reco_px_array[itrk],reco_py_array[itrk],reco_pz_array[itrk]);
-            	particle.SetVectM(trk,MASS_PION);
-            	if(itrk!=rec_elect_index) 
-                {
-                  	hfs += particle; 
-                	h_eta_REC_trk_cut->Fill(trk.Eta());
-                	if(fabs(trk.Eta())<3.0)
-                    {
-                		if(reco_charge_array[itrk]>0) kplusREC.SetVectM(trk,MASS_KAON);
-                		if(reco_charge_array[itrk]<0) kminusREC.SetVectM(trk,MASS_KAON);
-                	}
-            	}
-            }
-        
-            // 4vector of VM;
-            if(kplusREC.E()!=0. && kminusREC.E()!=0.)
-             {
-            	vmREC=kplusREC+kminusREC;
-            }
-            h_VM_mass_REC_cut->Fill(vmREC.M());
+                            
+                             h_VM_mass_REC_cut->Fill(vmREC.M());
             h_VM_pt_REC_cut->Fill(vmREC.Pt());
         	h_VM_pz_REC_cut->Fill(vmREC.Pz());
         	h_VM_p_REC_cut->Fill(vmREC.P());
@@ -1337,19 +1403,10 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
         	h_e_p_REC_trk_cut->Fill(scatMCmatchREC.P());
 
             // E_cal vs p_trk
-            h_EvsP_REC_cut->Fill(scatMCmatchREC.P(),scatREC.E());
-            h_EvsP_MC_cut->Fill(scatMC.P(),scatREC.E());
+            h_EvsP_REC_cut->Fill(scatMCmatchREC.P(),scatClusEREC.E());
+            h_EvsP_MC_cut->Fill(scatMC.P(),scatMC.E());
 
-            // cluster-base DIS kine;
-            TLorentzVector qbeamREC=ebeam-scatClusEREC; // emcal e' reco
-            TLorentzVector qbeamREC_trk=ebeam-scatMCmatchREC; // track e' reco
-            double Q2REC=-(qbeamREC).Mag2();  
-            double Q2REC_trk = -(qbeamREC_trk).Mag2();
-            double pqREC=abeam.Dot(qbeamREC); 
-            double yREC=pqREC/abeam.Dot(ebeam); 
-            double pqREC_trk=abeam.Dot(qbeamREC_trk); 
-            double yREC_trk=pqREC_trk/abeam.Dot(ebeam); 
-            h_Q2REC_e_EEMC_cut->Fill(Q2REC);
+                        h_Q2REC_e_EEMC_cut->Fill(Q2REC);
             h_Q2REC_e_trk_cut->Fill(Q2REC_trk);
             h_yREC_e_EEMC_cut->Fill(yREC);
             h_yREC_e_trk_cut->Fill(yREC_trk);
@@ -1362,16 +1419,15 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
 
             // y emcal reco resolution
             res = (y - yREC)/y;
-            h_y_res_cut->Fill(y,res);
+            h_y_res_cut->Fill(yREC,res);
             h_y_response_cut->Fill(yREC,y);
             h_dyOvery_REC_cut->Fill(res);
     
         	// track-base Epz scat' e
             double EpzREC_trk = (scatMCmatchREC+hfs).E() - (scatMCmatchREC+hfs).Pz();
             h_Epz_REC_trk_cut->Fill(EpzREC_trk);
-            double EpzREC = (scatClusEREC+hfs).E() - (scatMCmatchREC+hfs).Pz();
             h_Epz_REC_cut->Fill(EpzREC);
-            h_Epz_response_cut->Fill(EpzREC,scatMC.E()-scatMC.Pz());
+            h_Epz_response_cut->Fill(EpzREC,EpzMC);
             h_Epz_MC_cut->Fill(EpzMC);
     
         	// E over p  
@@ -1379,21 +1435,6 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
             h_EcalOverPtrk_cut->Fill(scatClusEREC.E()/scatMCmatchREC.P());
             h_EtrkOverPcal_cut->Fill(scatMCmatchREC.E()/scatClusEREC.P());
             h_EoverP_response_cut->Fill(scatClusEREC.E()/scatMCmatchREC.P(),scatMC.E()/scatMC.P());
-
-            // Event selection:
-            if( EpzREC>27||EpzREC<40 )
-            {	
-                if( EoverP>0.8||EoverP<1.18 )
-                {
-                if(Q2REC>1.||Q2REC<10.)
-                {
-                    if(yREC>0.01||yREC<0.85)
-                    {
-                        // VM rec
-                        if(vmREC.E()!=0){
-                    	// select phi mass and rapidity window 
-                    	if( fabs(vmREC.M()-1.02)<0.02&& fabs(vmREC.Rapidity())<3.5)
-                    	{
                         	// 2 versions: track and energy cluster:
                     		double t_trk_REC = giveme_t_method_L(ebeam,scatMCmatchREC,abeam,vmREC);  // method L (track e')
                         	double t_REC = giveme_t_method_L(ebeam,scatClusEREC,abeam,vmREC); // method L (EEMC e')
@@ -1437,7 +1478,9 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
                     		h_t_res_trk_cut->Fill(t_MC, res);
 	
                         	// t EEMC resolution;
-                    		res = (t_MC-t_REC)/t_MC;
+                    		double res_percent = (t_MC-t_REC)/t_MC;
+                    		h_t_res_EEMC_cut_percent->Fill(t_MC, res_percent);
+                            res = (t_MC-t_REC);
                     		h_t_res_EEMC_cut->Fill(t_MC, res);
 
                     		// apply cut with // subtracted out of t
@@ -1496,18 +1539,12 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
         }
            
         /*---------------------------------------------------------
-            -Reject position that are inside of the threshold
+            -Reject positions that are inside of the threshold
             -Repeat the reco loop same as above
             -Just for completeness and further analysis
         ----------------------------------------------------------*/
         else
         {
-            // energy resolution
-            double res= (scatMC.E()-clusEnergy)/scatMC.E();
-            h_energy_res_EEMC_cut2->Fill(scatMC.E(), res);
-            h_energy_response_EEMC_cut2->Fill(clusEnergy,scatMC.E());
-            h_energy_REC_EEMC_cut2->Fill(clusEnergy);
-        
             // association of rec level scat' e
             int rec_elect_index=-1;
             for(int i=0;i<sim_id.GetSize();i++)
@@ -1546,6 +1583,51 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
             	}
             }
 
+            // loop over track again;
+            for(int itrk=0;itrk<reco_pz_array.GetSize();itrk++)
+            {
+            	TVector3 trk(reco_px_array[itrk],reco_py_array[itrk],reco_pz_array[itrk]);
+            	particle.SetVectM(trk,MASS_PION); 
+            	if(itrk!=rec_elect_index) 
+                {
+                	hfs += particle; 
+                	h_eta_REC_trk->Fill(trk.Eta());
+                	if(fabs(trk.Eta())<3.0)
+                    {
+                		if(reco_charge_array[itrk]>0) kplusREC.SetVectM(trk,MASS_KAON);
+                		if(reco_charge_array[itrk]<0) kminusREC.SetVectM(trk,MASS_KAON);
+                	}
+            	}
+            }
+        
+            // 4vector of VM;
+            if(kplusREC.E()!=0. && kminusREC.E()!=0.)
+            {
+            	vmREC=kplusREC+kminusREC;
+            }
+            
+        
+            double EpzREC = (scatClusEREC+hfs).E() - (scatMCmatchREC+hfs).Pz();
+            if( EpzREC>27||EpzREC<40 )
+            {
+                if( EoverP>0.8||EoverP<1.18 )
+                {	
+                    if(Q2REC>1.||Q2REC<10.)
+                    {
+                        if(yREC>0.01||yREC<0.85)
+                        {
+                            
+                            // VM rec
+                            if(vmREC.E()!=0){
+                            // select phi mass and rapidity window 
+                        	if( fabs(vmREC.M()-1.02)<0.02&& fabs(vmREC.Rapidity())<3.5)
+                        	{
+                                // energy resolution
+            double res= (scatMC.E()-clusEnergy)/scatMC.E();
+            h_energy_res_EEMC_cut2->Fill(scatMC.E(), res);
+            h_energy_response_EEMC_cut2->Fill(clusEnergy,scatMC.E());
+            h_energy_REC_EEMC_cut2->Fill(clusEnergy);
+
             h_eta_REC_EEMC_cut2->Fill(scatClusEREC.Eta());
             h_phi_REC_EEMC_cut2->Fill(scatClusEREC.Phi());
             h_theta_REC_EEMC_cut2->Fill(scatClusEREC.Theta());
@@ -1579,38 +1661,7 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
             h_energy_res_trk_cut2->Fill(scatMC.E(), res_trk);
         	h_energy_REC_trk_cut2->Fill(scatMCmatchREC.E());
 
-            // loop over track again;
-            for(int itrk=0;itrk<reco_pz_array.GetSize();itrk++)
-            {
-            	TVector3 trk(reco_px_array[itrk],reco_py_array[itrk],reco_pz_array[itrk]);
-            	particle.SetVectM(trk,MASS_PION); 
-            	if(itrk!=rec_elect_index) 
-                {
-                	hfs += particle; 
-                	h_eta_REC_trk->Fill(trk.Eta());
-                	if(fabs(trk.Eta())<3.0)
-                    {
-                		if(reco_charge_array[itrk]>0) kplusREC.SetVectM(trk,MASS_KAON);
-                		if(reco_charge_array[itrk]<0) kminusREC.SetVectM(trk,MASS_KAON);
-                	}
-            	}
-            }
-        
-            // 4vector of VM;
-            if(kplusREC.E()!=0. && kminusREC.E()!=0.)
-            {
-            	vmREC=kplusREC+kminusREC;
-            }
-            h_VM_mass_REC_cut2->Fill(vmREC.M());
-            h_VM_pt_REC_cut2->Fill(vmREC.Pt());
-        	h_VM_pz_REC_cut2->Fill(vmREC.Pz());
-        	h_VM_p_REC_cut2->Fill(vmREC.P());
-            h_VM_Epz_MC_cut2->Fill(vmMC.E()-vmMC.Pz());
-            h_VM_Epz_REC_cut2->Fill(vmREC.E()-vmREC.Pz());
-            h_VM_Epz_response_cut2->Fill(vmREC.E()-vmREC.Pz(),vmMC.E()-vmMC.Pz());
-            h_VM_pt_response_cut2->Fill(vmREC.Pt(),vmMC.Pt());
-
-            // e' p from emcal
+                             // e' p from emcal
             h_e_pt_REC_EEMC_cut2->Fill(scatClusEREC.Pt());
         	h_e_pz_REC_EEMC_cut2->Fill(scatClusEREC.Pz());
         	h_e_p_REC_EEMC_cut2->Fill(scatClusEREC.P());
@@ -1625,8 +1676,8 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
         	h_e_p_REC_trk_cut2->Fill(scatMCmatchREC.P());
 
             // E_cal vs p_trk
-            h_EvsP_REC_cut2->Fill(scatMCmatchREC.P(),scatREC.E());
-            h_EvsP_MC_cut2->Fill(scatMC.P(),scatREC.E());
+            h_EvsP_REC_cut2->Fill(scatMCmatchREC.P(),scatClusEREC.E());
+            h_EvsP_MC_cut2->Fill(scatMC.P(),scatMC.E());
 
             // cluster-base DIS kine;
             TLorentzVector qbeamREC=ebeam-scatClusEREC; // emcal e' reco
@@ -1657,7 +1708,6 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
         	// track-base Epz scat' e
             double EpzREC_trk = (scatMCmatchREC+hfs).E() - (scatMCmatchREC+hfs).Pz();
             h_Epz_REC_trk_cut2->Fill(EpzREC_trk);
-            double EpzREC = (scatClusEREC+hfs).E() - (scatMCmatchREC+hfs).Pz();
             h_Epz_REC_cut2->Fill(EpzREC);
             h_Epz_response_cut2->Fill(EpzREC,scatMC.E()-scatMC.Pz());
             h_Epz_MC_cut2->Fill(scatMC.E()-scatMC.Pz());
@@ -1667,20 +1717,16 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
             h_EcalOverPtrk_cut2->Fill(scatClusEREC.E()/scatMCmatchREC.P());
             h_EtrkOverPcal_cut2->Fill(scatMCmatchREC.E()/scatClusEREC.P());
             h_EoverP_response_cut2->Fill(scatClusEREC.E()/scatMCmatchREC.P(),scatMC.E()/scatMC.P());
-    
-            if( EpzREC>27||EpzREC<40 )
-            {
-                if( EoverP>0.8||EoverP<1.18 )
-                {	
-                    if(Q2REC>1.||Q2REC<10.)
-                    {
-                        if(yREC>0.01||yREC<0.85)
-                        {
-                            // VM rec
-                            if(vmREC.E()!=0){
-                            // select phi mass and rapidity window 
-                        	if( fabs(vmREC.M()-1.02)<0.02&& fabs(vmREC.Rapidity())<3.5)
-                        	{
+                                
+                                h_VM_mass_REC_cut2->Fill(vmREC.M());
+            h_VM_pt_REC_cut2->Fill(vmREC.Pt());
+        	h_VM_pz_REC_cut2->Fill(vmREC.Pz());
+        	h_VM_p_REC_cut2->Fill(vmREC.P());
+            h_VM_Epz_MC_cut2->Fill(vmMC.E()-vmMC.Pz());
+            h_VM_Epz_REC_cut2->Fill(vmREC.E()-vmREC.Pz());
+            h_VM_Epz_response_cut2->Fill(vmREC.E()-vmREC.Pz(),vmMC.E()-vmMC.Pz());
+            h_VM_pt_response_cut2->Fill(vmREC.Pt(),vmMC.Pt());
+
                             	// 2 versions: track and energy cluster:
                         		double t_trk_REC = giveme_t_method_L(ebeam,scatMCmatchREC,abeam,vmREC);  // method L (track e')
                             	double t_REC = giveme_t_method_L(ebeam,scatClusEREC,abeam,vmREC); // method L (EEMC e')
@@ -1724,7 +1770,9 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
                     		h_t_res_trk_cut2->Fill(t_MC, res);
 	
                         	// t EEMC resolution;
-                    		res = (t_MC-t_REC)/t_MC;
+                    		double res_percent = (t_MC-t_REC)/t_MC;
+                    		h_t_res_EEMC_cut2_percent->Fill(t_MC, res_percent);
+                            res = (t_MC-t_REC);
                     		h_t_res_EEMC_cut2->Fill(t_MC, res);
 
                     		// apply cut with // subtracted out of t
