@@ -12,12 +12,12 @@ using namespace std;
 
 void getImage()
 {
-    const char* file = "merged_sartre_18x110_cut.root";
+    const char* file = "merged_sartre_18x110_cut.root"; // input root file with |t| distribution
     TFile* input = new TFile(file);
     
-    TH1D* hdsigmadt_MC = (TH1D*)input->Get("h_t_MC");
-    TH1D* hdsigmadt_REC = (TH1D*)input->Get("h_t_REC_EEMC"); // For method L reco
-    TH1D* hdsigmadt_REC_new = (TH1D*)input->Get("h_t_REC_wRES_cut_pi12"); // For new method reco
+    TH1D* hdsigmadt_MC = (TH1D*)input->Get("h_t_MC"); // method E 
+    TH1D* hdsigmadt_REC = (TH1D*)input->Get("h_t_REC_EEMC"); // method L reco
+    TH1D* hdsigmadt_REC_new = (TH1D*)input->Get("h_t_REC_wRES_cut_pi12"); // projection method reco
 
     int nbins = hdsigmadt_MC->GetNbinsX();
     double dsigmadt_MC,dsigmadt_REC,dsigmadt_REC_new,tBinWidth,t,b,delta,F_b_MC,F_b_REC,F_b_REC_new,result1=0,result2=0,result3=0;
@@ -55,13 +55,24 @@ void getImage()
             dsigmadt_REC /= 1e7;
             dsigmadt_REC_new /= 1e7;
 
-            //double bessel = TMath::BesselJ0(b*delta/hbarc); // for 2D transformation
-            double bessel = 0.0; // for 3D transformation
+            /*
+                Uncomment  bessel for 2D transformation
+                and comment out 3D bessel below
+            */
+            //double bessel = TMath::BesselJ0(b*delta/hbarc);
+
+            /*
+                3D transformation
+            */
+            double bessel = 0.0; 
             double x = b*delta/hbarc;
 
             if (dsigmadt_MC>0 || dsigmadt_REC>0 || dsigmadt_REC_new>0)
             {
-                // for 3D transformation (comment out "if else" statement if want 2D transformation)
+                /*
+                    for 3D transformation 
+                    comment out "if else" statement if want 2D transformation
+                */
                 if (fabs(x)<1e-6 || fabs(x-TMath::Pi())<1e-6) 
                 {
                     bessel = 0.0;
@@ -90,12 +101,16 @@ void getImage()
                 F_b_REC_new += result3;
             }
         }
-        // for 2d
+        /*
+            Uncomment for 2d and comment out 3D below
+        */
         //F_b_MC*=prefactor;F_b_MC/=hbarc;
         //F_b_REC*=prefactor;F_b_REC/=hbarc;
         //F_b_REC_new*=prefactor;F_b_REC_new/=hbarc;
 
-        // for 3d
+        /*
+            for 3d
+        */
         F_b_MC *= prefactor;F_b_MC /= (2*hbarc);
         F_b_REC *= prefactor;F_b_REC /= (2*hbarc);
         F_b_REC_new *= prefactor;F_b_REC_new /= (2*hbarc);
@@ -154,23 +169,12 @@ void getImage()
         }
     }
     
-   /* gStyle->SetOptStat(0); 
-    gStyle->SetOptTitle(1);
-    gStyle->SetTitleFontSize(.043); 
-    gStyle->SetTitleX(.23);
-    gStyle->SetTitleY(0.96);*/
-    
-    //hF_b_MC->SetTitle("3D Fourier-Bessel Transform of |t| Distribution");
-    //hF_b_MC->SetTitle("2D Fourier-Bessel Transform of |t| Distribution");
     hF_b_MC->GetXaxis()->SetTitle("b [fm]");
     hF_b_MC->GetYaxis()->SetTitle("F(b)/#scale[0.6]{#int} F(b) db");
     hF_b_MC->GetXaxis()->SetTitleOffset(1.2);
     hF_b_MC->GetYaxis()->SetTitleOffset(1.5);
     hF_b_MC->GetYaxis()->SetRangeUser(-0.05, 0.17);
-    //hF_b_MC->SetMarkerStyle(21); 
-    //hF_b_MC->SetMarkerColor(kBlack);
     hF_b_MC->SetLineColor(kBlack);
-    //hF_b_MC->SetMarkerSize(0.8);
     hF_b_MC->SetLineWidth(2);
     hF_b_MC->GetXaxis()->SetLabelSize(0.04);  
     hF_b_MC->GetYaxis()->SetLabelSize(0.04);
@@ -193,10 +197,9 @@ void getImage()
 	TString daug_label="K^{+}K^{-}";
 
     // Add labels
-	// Add labels
-		TLatex* r42 = new TLatex(0.22, 0.9, "eAu 10x100 GeV");
-		r42->SetNDC();
-		r42->Draw("same");
+	TLatex* r42 = new TLatex(0.22, 0.9, "eAu 10x100 GeV");
+	r42->SetNDC();
+	r42->Draw("same");
 
     TLatex* label_2 = new TLatex(0.22,0.81, Form("True ion size = %.2f fm",FWHM_MC));
     label_2->SetNDC();

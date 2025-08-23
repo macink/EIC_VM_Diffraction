@@ -57,6 +57,8 @@ void generate_all_plots_Lnorm(TString filename)
 	// t distribution
 	TH1D* h_t_MC = (TH1D*) file->Get("h_t_MC"); // method E
 	TH1D* h_t_REC_EEMC = (TH1D*) file->Get("h_t_REC_EEMC"); // method L
+	TH1D* h_t_REC_EEMC_cut = (TH1D*) file->Get("h_t_REC_EEMC_cut"); // method L within position threshold
+	TH1D* h_t_REC_EEMC_cut2 = (TH1D*) file->Get("h_t_REC_EEMC_cut2"); // method L outside of position threshold
 	TH1D* h_t_REC_new_method = (TH1D*) file->Get("h_t_REC_new_method"); // projection method no resolution
 
 	// t reco with resolution and angle cut
@@ -162,7 +164,7 @@ void generate_all_plots_Lnorm(TString filename)
 		h_t_REC_new_method->Scale((M_PI/2)/(M_PI/2));
 		
 		// normalize to total events
-		if(integral_MC>0 && integral_REC>0 && integral_REC_cut>0 && integral_REC_cut>0) 
+		if(integral_MC>0 && integral_REC>0 && integral_REC_new_method) 
 		{
     		h_t_REC_EEMC->Scale(integral_MC/integral_REC);
 			h_t_REC_new_method->Scale(integral_MC/integral_REC_new_method);
@@ -206,8 +208,6 @@ void generate_all_plots_Lnorm(TString filename)
 		w7->AddEntry(h_t_MC, Form("%s_{MC} %s evts", vm_label.Data(),formatWithCommas(integral_MC).c_str()), "L");
 		w7->AddEntry(h_t_REC_EEMC, Form("%s_{L: RECO} %s evts", vm_label.Data(),formatWithCommas(integral_REC).c_str()), "P");
 		w7->AddEntry(h_t_REC_new_method, Form("%s_{#theta_{max}= #pi/2: RECO} %s evts", vm_label.Data(),formatWithCommas(integral_REC_new_method).c_str()), "P");
-		w7->AddEntry(h_t_REC_EEMC_cut, Form("%s_{L: RECO} %s evts", vm_label.Data(),formatWithCommas(integral_REC_cut).c_str()), "P");
-		w7->AddEntry(h_t_REC_EEMC_cut2, Form("%s_{L: RECO} %s evts", vm_label.Data(),formatWithCommas(integral_REC_cut2).c_str()), "P");
 		w7->Draw("same");
 
 		TLegend *w8 = new TLegend(0.45,0.6,0.61,0.51);

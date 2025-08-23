@@ -7,7 +7,6 @@ submit=$1
 ###############################################################
 
 if [ $submit -eq 2 ]; then
-    #configs=(BeAGLE1.03.02-1.0_DIS_eAu_10x100_q2_1to10_ab_run)
     configs=(sartre1.39-1.0_coherent_phi_eAu_bsat_10x100_ab)
     pwd=$PWD
     for config in "${configs[@]}"; do

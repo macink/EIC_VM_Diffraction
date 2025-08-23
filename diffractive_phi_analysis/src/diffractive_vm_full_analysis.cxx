@@ -96,8 +96,10 @@ struct Event
 
 int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
 {	
-    // read in multiple root files at a time	
-    TString listname = rec_file;
+    /*
+        Uncomment this block to read in multiple root files at a time	
+    */
+    /*TString listname = rec_file;
     TString outname = outputfile;
     TChain *chain = new TChain("events");
     int nfiles = 0;
@@ -128,17 +130,18 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
     }
     inputstream->close();
     printf("[i] Read in %d files with %lld events in total\n", nfiles, chain->GetEntries());
-    TTreeReader tree_reader(chain);
+    TTreeReader tree_reader(chain);*/
 
-    // Uncomment this block to run single files at a time
-    // and comment out everything above
     /*
+        Uncomment this block to run single files at a time
+        and comment out everything above
+    */
     TString name_of_input = (TString) rec_file;
     std::cout << "Input file = " << name_of_input << endl;
     auto tree = new TChain("events");
     tree->Add(name_of_input);
     TTreeReader tree_reader(tree);       // !the tree reader
-    */
+    
 
     // MC particle arrays for each MC particle
     TTreeReaderArray<int> mc_genStatus_array = {tree_reader, "MCParticles.generatorStatus"};
@@ -188,7 +191,7 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
     TTreeReaderArray<float> omd_x_array = {tree_reader, "ForwardOffMTrackerRecHits.position.x"};
     TTreeReaderArray<float> omd_y_array = {tree_reader, "ForwardOffMTrackerRecHits.position.y"};
     TTreeReaderArray<float> omd_z_array = {tree_reader, "ForwardOffMTrackerRecHits.position.z"};
-
+    
     TString output_name_dir = outputfile+"_output.root";
     cout << "Output file = " << output_name_dir << endl;
     TFile* output = new TFile(output_name_dir,"RECREATE");
@@ -497,7 +500,7 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
     TH1D* h_t_REC_wRES_cut_pi6_cut2 = new TH1D("h_t_REC_wRES_cut_pi6_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
     TH1D* h_t_REC_wRES_cut_pi9 = new TH1D("h_t_REC_wRES_cut_pi9",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
     TH1D* h_t_REC_wRES_cut_pi9_cut = new TH1D("h_t_REC_wRES_cut_pi9_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
-        TH1D* h_t_REC_wRES_cut_pi9_cut2 = new TH1D("h_t_REC_wRES_cut_pi9_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
+    TH1D* h_t_REC_wRES_cut_pi9_cut2 = new TH1D("h_t_REC_wRES_cut_pi9_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
     TH1D* h_t_REC_wRES_cut_pi12 = new TH1D("h_t_REC_wRES_cut_pi12",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
     TH1D* h_t_REC_wRES_cut_pi12_cut = new TH1D("h_t_REC_wRES_cut_pi12_cut",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
     TH1D* h_t_REC_wRES_cut_pi12_cut2 = new TH1D("h_t_REC_wRES_cut_pi12_cut2",";|t|_{RECO} [GeV/c]^{2}; counts",100,0,0.2);
@@ -576,8 +579,8 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
 
     // Uncomment this block to run single files at a time
     // and comment out "chain->GetEntries();""
-    //tree_reader.SetEntriesRange(0, tree->GetEntries()); 
-    chain->GetEntries();
+    tree_reader.SetEntriesRange(0, tree->GetEntries()); 
+    //chain->GetEntries();
     while (tree_reader.Next()) 
     {
          /*---------------
@@ -677,7 +680,7 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
     	for(int ihit=0;ihit<rp_x_array.GetSize();ihit++)
         {
       		Hit_RP hit;
-			hit.x=rp_x_array[ihit];h_VM_mass_MC
+			hit.x=rp_x_array[ihit];
 			hit.y=rp_y_array[ihit];
 			hit.z=rp_z_array[ihit];
     	    event->hit_rp.push_back(hit);

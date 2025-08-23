@@ -1,7 +1,7 @@
 #!/bin/bash
 
-inputs=("merged_sartre_10x100.root") 
-output_dir="/home/macilla_vanilla/eic/EICreconOutputReader"
+inputs=("sartre_bnonsat_Au_phi_ab_eAu_q2_15_1.7944.eicrecon.edm4eic.root_output.root") 
+output_dir="/eic/u/macink/EICreconOutputReader/output_sartre_eAu_diffractive_phi_10x100"
 
 mkdir -p "${output_dir}" 
 
