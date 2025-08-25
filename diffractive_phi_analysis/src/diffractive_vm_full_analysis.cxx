@@ -577,7 +577,7 @@ int diffractive_vm_full_analysis(TString rec_file, TString outputfile)
     TH1D* h_y_afterCut = new TH1D("h_y_afterCut",";y",100,0.01,0.85);
     TH1D* h_VM_Epz_MC_cut = new TH1D("h_VM_Epz_MC_cut",";(E_{VM,MC}-p_{z,VM,MC}) [GeV]",100,0,20);
 
-    // Uncomment this block to run single files at a time
+    // Uncomment this line to run single files at a time
     // and comment out "chain->GetEntries();""
     tree_reader.SetEntriesRange(0, tree->GetEntries()); 
     //chain->GetEntries();
