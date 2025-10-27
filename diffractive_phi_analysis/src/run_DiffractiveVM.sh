@@ -1,7 +1,8 @@
 #!/bin/bash
 
 input=$1
-output_dir="/eic/u/macink/EICreconOutputReader/output_sartre_eAu_diffractive_phi_10x100"
+output_dir="/home/macilla_vanilla/EIC_VM_Diffraction/diffractive_phi_analysis"
+#"/eic/u/macink/EICreconOutputReader/output_sartre_eAu_diffractive_phi_10x100"
 
 mkdir -p "${output_dir}"
 
